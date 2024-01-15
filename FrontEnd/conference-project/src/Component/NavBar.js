@@ -16,7 +16,7 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a href="." className="flex items-center hover:text-blue-500 transition-colors">
           Pages
         </a>
       </Typography>
@@ -26,7 +26,7 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a href="." className="flex items-center hover:text-blue-500 transition-colors">
           Account
         </a>
       </Typography>
@@ -36,7 +36,7 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a href="." className="flex items-center hover:text-blue-500 transition-colors">
           Blocks
         </a>
       </Typography>
@@ -46,7 +46,7 @@ function NavList() {
         color="blue-gray"
         className="p-1 font-medium"
       >
-        <a href="#" className="flex items-center hover:text-blue-500 transition-colors">
+        <a href="." className="flex items-center hover:text-blue-500 transition-colors">
           Docs
         </a>
       </Typography>

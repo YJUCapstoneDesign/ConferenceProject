@@ -1,9 +1,9 @@
 function HomeContent() {
-    return (
-      <div>
-        <p>Home</p>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <p>BANNER</p>
+    </div>
+  );
+}
 
 export default HomeContent;

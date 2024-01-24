@@ -1,7 +1,10 @@
+import React from "react";
+import banner from "../img/banner.png";
+
 function HomeContent() {
   return (
     <div>
-      <p>BANNER</p>
+      <img src={banner}></img>
     </div>
   );
 }

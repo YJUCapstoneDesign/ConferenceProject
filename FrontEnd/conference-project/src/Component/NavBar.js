@@ -21,7 +21,7 @@ function Nav() {
           className="text-3xl cursor-pointer text-indigo-700 font-black"
           to={paths.home}
         >
-          박운섭
+          Zoom
         </Link>
 
         <ul className="flex items-center gap-5">

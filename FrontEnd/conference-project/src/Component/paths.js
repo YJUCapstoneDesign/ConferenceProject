@@ -4,6 +4,7 @@ const paths = {
   service: "/Service",
   notice: "/Notice",
   login: "/Login",
+  price: "/Price",
 };
 
 export default paths;

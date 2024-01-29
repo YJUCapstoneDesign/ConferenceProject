@@ -1,11 +1,11 @@
 import React from "react";
 
-function AboutContent() {
+function NoticeContent() {
   return (
     <React.Fragment>
-      <p>About</p>
+      <p>Notice</p>
     </React.Fragment>
   );
 }
 
-export default AboutContent;
+export default NoticeContent;

@@ -1,9 +1,11 @@
-function ServiceContent() {
-    return (
-      <div>
-        <p>Service</p>
-      </div>
-    );
-  }
+import React from "react";
 
-  export default ServiceContent;
+function ServiceContent() {
+  return (
+    <React.Fragment>
+      <p>Service</p>
+    </React.Fragment>
+  );
+}
+
+export default ServiceContent;

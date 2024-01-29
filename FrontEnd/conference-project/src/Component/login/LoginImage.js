@@ -1,16 +1,16 @@
 import React from "react";
 import loginImg from "../../img/login.png";
 
-function SignupImg() {
+function LoginImage() {
   return (
     <React.Fragment>
       <img
         src={loginImg}
-        alt="Placeholder Image"
+        alt="Login Illustration"
         className="object-cover w-full h-full"
       />
     </React.Fragment>
   );
 }
 
-export default SignupImg;
+export default LoginImage;

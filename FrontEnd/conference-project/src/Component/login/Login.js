@@ -1,70 +1,65 @@
 import React from 'react';
-import LoginImg from './LoginImage';
+import LoginImg from './LoginImg';
+import { Link, useNavigate } from 'react-router-dom';
+import LoginForm from './LoginForm';
+import LoginMemory from './LoginMemory';
+import { Button } from '@material-tailwind/react';
+import kakaoIcon from '../../img/kakao.png';
+import naverLogo from '../../img/naverLogo.png';
 
 function LoginContent() {
+    const navigate = useNavigate();
     return (
         <React.Fragment>
-            <div className="bg-gray-100 flex justify-center items-center h-screen">
+            <div className="bg-gray-100 flex justify-center items-center h-screen overflow-hidden">
                 {/* Left: Image */}
-                <div className="w-1/2 h-screen hidden lg:block">
+                <div className="w-1/2 h-screen hidden lg:block end-50">
                     <LoginImg />
                 </div>
+
                 {/* Right: Login Form */}
                 <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
-                    <h1 className="text-2xl font-semibold mb-4">Login</h1>
+                    {/* Back to Website */}
+                    <p className="flex justify-start">
+                        <button>
+                            <Link to={'/'}>◀ Back to website</Link>
+                        </button>
+                    </p>
+                    <h1 className="text-4xl font-semibold mb-4 flex justify-start pt-6 ...">Login</h1>
+
                     <form action="/" method="POST">
                         {/* Username Input */}
-                        <div className="mb-4">
-                            <label htmlFor="username" className="block text-gray-600">
-                                Username
-                            </label>
-                            <input
-                                type="text"
-                                id="username"
-                                name="username"
-                                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                                autoComplete="off"
-                            />
-                        </div>
-                        {/* Password Input */}
-                        <div className="mb-4">
-                            <label htmlFor="password" className="block text-gray-600">
-                                Password
-                            </label>
-                            <input
-                                type="password"
-                                id="password"
-                                name="password"
-                                className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
-                                autoComplete="off"
-                            />
-                        </div>
+                        <LoginForm />
                         {/* Remember Me Checkbox */}
-                        <div className="mb-4 flex items-center">
-                            <input type="checkbox" id="remember" name="remember" className="text-blue-500" />
-                            <label htmlFor="remember" className="text-gray-600 ml-2">
-                                Remember Me
-                            </label>
-                        </div>
+                        <LoginMemory />
                         {/* Forgot Password Link */}
-                        <div className="mb-6 text-blue-500">
-                            <a href="/" className="hover:underline">
-                                Forgot Password?
+                        <div className="mb-6 text-[#787878]">
+                            <a href="/" className="hover:underline font-semibold">
+                                Forgot Password?　
+                            </a>
+                            <a href="../Signup" className="hover:underline font-semibold">
+                                /　Sign up Here
                             </a>
                         </div>
                         {/* Login Button */}
-                        <button
-                            type="submit"
-                            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold rounded-md py-2 px-4 w-full"
-                        >
-                            Login
-                        </button>
                     </form>
-                    {/* Sign up  Link */}
-                    <div className="mt-6 text-blue-500 text-center">
-                        <a href="/" className="hover:underline">
-                            Sign up Here
-                        </a>
+                    <div className="flex justify-center items-center gap-2 py-8 pl-3 flex-wrap">
+                        <Button color="blue-gray" className="flex items-center gap-3 text-[#787878]">
+                            <img
+                                src="https://docs.material-tailwind.com/icons/google.svg"
+                                alt="metamask"
+                                className="h-7 w-7"
+                            />
+                            Continue With Google
+                        </Button>
+                        <Button className="flex items-center gap-2  text-[#787878]">
+                            <img src={kakaoIcon} alt="metamask" className="h-9 w-9" />
+                            Continue With kakao
+                        </Button>
+                        <Button className="flex justify-center items-center gap-2  text-[#787878]">
+                            <img src={naverLogo} alt="metamask" className="h-11 w-11" />
+                            Continue With Naver
+                        </Button>
                     </div>
                 </div>
             </div>

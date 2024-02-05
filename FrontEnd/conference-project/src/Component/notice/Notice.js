@@ -1,89 +1,112 @@
-import React from 'react';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Pagination, Scrollbar, A11y, Autoplay } from 'swiper/modules';
-import 'swiper/css/bundle';
-import Card from '../Card';
-import { Button } from '@material-tailwind/react';
-import './Notice.css';
+import React from "react";
+import { useState } from "react";
+
+import "react-responsive-carousel/lib/styles/carousel.min.css";
+import { Carousel } from "react-responsive-carousel";
+import imageData from "./NoticeImg";
 
 function NoticeContent() {
-    return (
-        <div className="flex">
-            <div className="inline-flex flex-col justify-center w-full text-left mx-9 px-5">
-                <h1
-                    style={{
-                        fontSize: '36px',
-                        fontWeight: '600',
-                    }}
-                >
-                    Zoom의 새 소식
-                </h1>
-                <div>
-                    <h2
-                        className="my-5"
-                        style={{
-                            fontStyle: 'normal',
-                            fontWeight: '400',
-                            fontSize: '20px',
-                            lineHeight: '130%',
-                        }}
-                    >
-                        최신 소식을 받아 보고, 모범 사례를 배우고, 더 많은 정보를 얻으세요
-                    </h2>
-                    <Button variant="filled">filled</Button>
-                </div>
-            </div>
-            <Swiper
-                modules={[Navigation, Pagination, Scrollbar, A11y]}
-                onSwiper={(swiper) => console.log(swiper)}
-                loop={true}
-                pagination={{ clickable: true }}
-                loopAdditionalSlides={1}
-                zoom={false}
-                slidesPreView={1}
-                autoplay={{
-                    delay: 1500,
-                }}
-                navigation
+  const renderSlides = imageData.map((img) => (
+    <div key={img.alt}>
+      <img src={img.url} alt={img.alt} />
+    </div>
+  ));
+
+  const [current, setCurrent] = useState(0);
+  function handleChange(index) {
+    setCurrent(index);
+  }
+
+  return (
+    <div className="bg-white dark:bg-gray-800">
+      {/* 1 */}
+      <nav className="bg-white dark:bg-gray-800">
+        <div className="container p-6 mx-auto">
+          <a
+            className="block text-2xl font-bold text-center text-gray-800 dark:text-white lg:text-3xl hover:text-gray-700 dark:hover:text-gray-300"
+            href="/"
+          >
+            UnMute
+          </a>
+
+          <div className="flex items-center justify-center mt-6 text-gray-600 capitalize dark:text-gray-300">
+            <a
+              href="/"
+              className="text-gray-800 dark:text-gray-200 border-b-2 border-blue-500 mx-1.5 sm:mx-6"
             >
-                <SwiperSlide>
-                    <Card
-                        title="Zoom AI Companion소개"
-                        contents="사용자에게 도움을 주는 신뢰할 수 있는 디지털 어시스턴트입니다. Zoom 사용자 계정의 유료 서비스에 추가 비용 없이 포함되어 있습니다. 일부 업종과 지역은 이용 대답에서 제외될 수 있습니다."
-                        button="자세히 살펴보기"
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <Card
-                        title="온디맨드로 즐기는 Zoomtopia"
-                        contents="지금 Zoomtopia 세션을 시청해 보세요. 아직 등록하지 않으셨나요? 등록하신 후, 키노트 세션과 다른 세션들을 원하는 때에 온디맨드로 확인하실 수 있습니다!"
-                        button="지금 보기"
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <Card
-                        title="Zoom 화이트보드로 창의력 발휘하기"
-                        contents="개인, 하이브리드 팀, 원격 팀이 함께 모여 브레인스토밍하고 학습할 수 있는 협업 공간입니다. "
-                        button="협업 시작"
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <Card
-                        title="Zoom IQ for Sales 소개"
-                        contents="영업 대화를 실행 가능한 통찰력으로 바꾸는 Zoom Meetings 및 Zoom Phone용 대화형 인텔리전스 솔루션입니다."
-                        button="무료 가입"
-                    />
-                </SwiperSlide>
-                <SwiperSlide>
-                    <Card
-                        title="참여도 높은 가상 이벤트 설계"
-                        contents="백스테이지, 세션 브랜딩 및 웹 세미나 반응으로 가상 및 하이브리드 이벤트를 강화하세요"
-                        button="무료 가입"
-                    />
-                </SwiperSlide>
-            </Swiper>
+              home
+            </a>
+
+            <a
+              href="/"
+              className="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6"
+            >
+              features
+            </a>
+
+            <a
+              href="/"
+              className="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6"
+            >
+              pricing
+            </a>
+
+            <a
+              href="/"
+              className="border-b-2 border-transparent hover:text-gray-800 dark:hover:text-gray-200 hover:border-blue-500 mx-1.5 sm:mx-6"
+            >
+              blog
+            </a>
+          </div>
         </div>
-    );
+      </nav>
+
+      {/* 2 */}
+      <div className="container flex flex-col px-6 py-4 mx-auto space-y-6 md:h-128 md:py-16 md:flex-row md:items-center md:space-x-6">
+        <div className="flex flex-col items-center w-full md:flex-row md:w-1/2">
+          <div className="flex justify-center order-2 mt-6 md:mt-0 md:space-y-3 md:flex-col">
+            <button className="w-3 h-3 mx-2 bg-blue-500 rounded-full md:mx-0 focus:outline-none"></button>
+            <button className="w-3 h-3 mx-2 bg-gray-300 rounded-full md:mx-0 focus:outline-none hover:bg-blue-500"></button>
+            <button className="w-3 h-3 mx-2 bg-gray-300 rounded-full md:mx-0 focus:outline-none hover:bg-blue-500"></button>
+            <button className="w-3 h-3 mx-2 bg-gray-300 rounded-full md:mx-0 focus:outline-none hover:bg-blue-500"></button>
+          </div>
+
+          <div className="max-w-lg md:mx-12 md:order-2">
+            <h1 className="text-3xl font-medium tracking-wide text-gray-800 dark:text-white md:text-4xl">
+              The best Apple Watch apps
+            </h1>
+            <p className="mt-4 text-gray-600 dark:text-gray-300">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aut quia
+              asperiores alias vero magnam recusandae adipisci ad vitae
+              laudantium quod rem voluptatem eos accusantium cumque.
+            </p>
+            <div className="mt-6">
+              <a
+                href="#"
+                className="block px-3 py-2 font-semibold text-center text-white transition-colors duration-200 transform bg-blue-500 rounded-md md:inline hover:bg-blue-400"
+              >
+                Download from App Store
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-center w-full h-96 md:w-1/2">
+          <Carousel
+            showArrows={false}
+            autoPlay={true}
+            infiniteLoop={true}
+            showThumbs={false}
+            selectedItem={imageData[current]}
+            onChange={handleChange}
+            className="w-[400px] lg:hidden"
+          >
+            {renderSlides}
+          </Carousel>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 export default NoticeContent;

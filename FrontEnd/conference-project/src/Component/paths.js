@@ -1,12 +1,11 @@
 const paths = {
-    home: '/',
-    about: '/About',
-    service: '/Service',
-    notice: '/Notice',
-    login: '/Login',
-    price: '/Price',
-    signup: '/Signup',
-    notice: '/Notice',
+  home: "/",
+  about: "/About",
+  service: "/Service",
+  notice: "/Notice",
+  login: "/Login",
+  price: "/Price",
+  signup: "/Signup",
 };
 
 export default paths;

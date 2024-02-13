@@ -3,9 +3,6 @@ import HomeText from './HomeText';
 import HomeButton from './HomeButton';
 import HomeImage from './HomeImage';
 import Nav from '../NavBar';
-import About from '../About';
-import Service from '../Service';
-import Notice from '../notice/Notice';
 
 function HomeContent() {
     return (
@@ -24,9 +21,6 @@ function HomeContent() {
                     </div>
                 </div>
             </div>
-            <About />
-            <Service />
-            <Notice />
         </React.Fragment>
     );
 }

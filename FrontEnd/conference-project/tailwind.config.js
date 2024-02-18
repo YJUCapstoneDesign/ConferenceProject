@@ -15,5 +15,5 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: ["@babel/plugin-transform-react-jsx", { throwIfNamespace: false }],
 };

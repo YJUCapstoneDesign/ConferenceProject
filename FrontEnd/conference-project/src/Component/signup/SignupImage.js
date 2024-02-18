@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from "react";
 import loginImg from "../../img/login.png";
 
@@ -8,7 +10,7 @@ function SignupImg() {
         src={loginImg}
         alt="Placeholder Image"
         className="object-cover w-full h-full"
-      />
+      ></img>
     </React.Fragment>
   );
 }

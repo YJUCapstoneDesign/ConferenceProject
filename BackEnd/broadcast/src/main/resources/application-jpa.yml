@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    # 드라이버 설정
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # DB URL 설정
+    url: jdbc:mysql://localhost:3306/oauth2?serverTimezone=Asia/Seoul
+    # DB 계정명 및 비밀번호
+    username: root
+    password: 0000
+  jpa:
+    # JPA 쿼리문 확인 가능
+    show-sql: true
+    hibernate:
+      # 데이터베이스 자동 업데이트
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true

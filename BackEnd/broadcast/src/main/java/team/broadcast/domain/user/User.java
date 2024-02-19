@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team.broadcast.domain.enums.ChatUserRole;
 import team.broadcast.domain.enums.Membership;
+import team.broadcast.domain.enums.UserRole;
 
 @Entity
 @Table(name = "tb_user")
@@ -41,7 +42,7 @@ public class User {
 
     @Column(name = "user_admin")
     @Enumerated(EnumType.STRING)
-    private ChatUserRole admin;
+    private UserRole admin;
 
     @Column(name = "user_membership")
     @Enumerated(EnumType.STRING)
@@ -49,4 +50,8 @@ public class User {
 
     @Column(name = "user_platform")
     private String platform;
+
+    public User(String username) {
+        this.name = username;
+    }
 }

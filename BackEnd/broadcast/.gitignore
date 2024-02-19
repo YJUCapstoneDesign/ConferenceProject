@@ -18,8 +18,8 @@ bin/
 !**/src/test/**/bin/
 
 ### IntelliJ IDEA ###
-application-janus.yml
-application-oauth2.yml
+*.yml
+!application.yml
 .idea
 *.iws
 *.iml

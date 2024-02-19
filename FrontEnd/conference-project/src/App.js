@@ -7,6 +7,7 @@ import NoticeContent from "./Component/notice/NoticePage";
 import PriceContent from "./Component/price/Price";
 import LoginContent from "./Component/login/Login";
 import SignupContent from "./Component/signup/Signup";
+import NoticePage from "./Component/notice/Notice";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/Price" element={<PriceContent />} />
           <Route path="/Login" element={<LoginContent />} />
           <Route path="/Signup" element={<SignupContent />} />
+          <Route path="/NoticePage" element={<NoticePage />} />
         </Routes>
       </div>
     </BrowserRouter>

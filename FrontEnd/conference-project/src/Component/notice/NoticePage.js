@@ -3,7 +3,7 @@ import Navbar from "../NavBar";
 
 function NoticePageContents() {
   return (
-    <section class=" bg-blue-500ray-50 bg-[#000080]">
+    <section class=" bg-blue-500ray-50 bg-[#000080] overflow-hidden">
       <Navbar />
       <div class="py-10  sm:py-16 block lg:py-24 relative bg-opacity-50  z-40  ">
         <div class="relative mx-auto h-full px-4 pb-20   md:pb-10 sm:max-w-xl md:max-w-full md:px-24 lg:max-w-screen-xl lg:px-8">

@@ -3,6 +3,7 @@ import HomeText from './HomeText';
 import HomeButton from './HomeButton';
 import HomeImage from './HomeImage';
 import Nav from '../NavBar';
+import News from '../news/news';
 
 function HomeContent() {
     return (
@@ -21,6 +22,7 @@ function HomeContent() {
                     </div>
                 </div>
             </div>
+            <News />
         </React.Fragment>
     );
 }

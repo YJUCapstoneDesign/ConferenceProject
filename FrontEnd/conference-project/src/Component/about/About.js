@@ -1,6 +1,6 @@
 import React from 'react';
-import ImgWithShadow from './about/Aboutimg';
-import AboutText from './about/AboutText';
+import ImgWithShadow from './Aboutimg';
+import AboutText from './AboutText';
 
 function AboutContent() {
     return (

@@ -3,7 +3,6 @@ package team.broadcast.domain.video_room;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import team.broadcast.global.utils.WebsocketClientEndpoint;
 
 /**
  * issue - 공식문서 참고
@@ -17,23 +16,23 @@ import team.broadcast.global.utils.WebsocketClientEndpoint;
 @Service
 @RequiredArgsConstructor
 public class VideoRoomService {
-  private final WebsocketClientEndpoint clientEndpoint;
+//  private final WebsocketClientEndpoint clientEndpoint;
 
   public void createRoom(String transactionId) {
     // 방 생성 요청 메시지 전송
     String message = "{\"janus\":\"message\",\"body\":{\"request\":\"create\"},\"transaction\":\"" + transactionId + "\"}";
-    clientEndpoint.sendMessage(message);
+//    clientEndpoint.sendMessage(message);
   }
 
   public void joinRoom(String roomId, String transactionId) {
     // 방 참가 요청 메시지 전송
     String message = "{\"janus\":\"message\",\"body\":{\"request\":\"join\",\"room\":" + roomId + "},\"transaction\":\"" + transactionId + "\"}";
-    clientEndpoint.sendMessage(message);
+//    clientEndpoint.sendMessage(message);
   }
 
   public void destroyRoom(String roomId, String transactionId) {
     // 방 삭제 요청 메시지 전송
     String message = "{\"janus\":\"message\",\"body\":{\"request\":\"destroy\",\"room\":" + roomId + "},\"transaction\":\"" + transactionId + "\"}";
-    clientEndpoint.sendMessage(message);
+//    clientEndpoint.sendMessage(message);
   }
 }

@@ -113,7 +113,7 @@ public class JwtProvider {
         return refreshToken.getRefreshToken();
     }
 
-    public static enum JwtCode {
+    public enum JwtCode {
         DENIED,
         EXPIRED,
         ACCESS

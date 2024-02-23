@@ -17,7 +17,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import team.broadcast.domain.jwt.JwtProvider;
 import team.broadcast.domain.jwt.JwtVerifyFilter;
-import team.broadcast.global.handler.CommonLoginSuccessHandler;
+import team.broadcast.global.handler.MyAuthFailureHandler;
+import team.broadcast.global.handler.MyAuthSuccessHandler;
 
 import java.util.Arrays;
 
@@ -27,7 +28,8 @@ import java.util.Arrays;
 public class SecurityConfig {
   private final OAuth2UserService oAuth2UserService;
   private final JwtProvider jwtProvider;
-  private final CommonLoginSuccessHandler commonLoginSuccessHandler;
+  private final MyAuthSuccessHandler oauthLoginSuccessHandler;
+  private final MyAuthFailureHandler oauthLoginFailHandler;
 
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
@@ -77,7 +79,8 @@ public class SecurityConfig {
     http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
         httpSecurityOAuth2LoginConfigurer
             .loginPage("/oauth2/login")
-            .successHandler(commonLoginSuccessHandler)
+            .successHandler(oauthLoginSuccessHandler)
+            .failureHandler(oauthLoginFailHandler) // 로그인 실패시 사용하는 핸들러
             .userInfoEndpoint(userInfoEndpointConfig ->
                 userInfoEndpointConfig.userService(oAuth2UserService)));
 

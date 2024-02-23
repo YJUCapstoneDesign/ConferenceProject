@@ -42,9 +42,10 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
     KakaoUserInfo kakaoUserinfo = new KakaoUserInfo(attributes);
     String id = kakaoUserinfo.getSocialId();
     String name = kakaoUserinfo.getName();
+    String email = kakaoUserinfo.getEmail();
 
     Optional<User> bySocialId = userRepository.findById(id);
-    User user = bySocialId.orElseGet(() -> saveSocialUser(id, name, "kakao"));
+    User user = bySocialId.orElseGet(() -> saveSocialUser(id, name, email, "kakao"));
 
     /*
      * Date-2024-02-19:22:49
@@ -55,12 +56,13 @@ public class OAuth2UserService extends DefaultOAuth2UserService {
 
   }
 
-  public User saveSocialUser(String id, String name, String platform) {
+  public User saveSocialUser(String id, String name, String email, String platform) {
     User newUser = User.builder()
         .id(id)
         .name(name)
+        .email(email)
         .platform(platform)
-        .admin(UserRole.USER)
+        .admin(UserRole.USER) // 기본 값을 저장하는 것
         .membership(Membership.BASIC)
         .build();
     return userRepository.save(newUser);

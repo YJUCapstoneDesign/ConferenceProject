@@ -21,6 +21,7 @@ import team.broadcast.global.handler.MyAuthFailureHandler;
 import team.broadcast.global.handler.MyAuthSuccessHandler;
 
 import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableMethodSecurity
@@ -31,14 +32,17 @@ public class SecurityConfig {
   private final MyAuthSuccessHandler oauthLoginSuccessHandler;
   private final MyAuthFailureHandler oauthLoginFailHandler;
 
+  /*
+   * Cors 관련 설정
+   */
   @Bean
   public CorsConfigurationSource corsConfigurationSource() {
     CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-    corsConfiguration.setAllowedOriginPatterns(Arrays.asList("*"));
-    corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST"));
+    corsConfiguration.setAllowedOriginPatterns(List.of("*"));
+    corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
     corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
-    corsConfiguration.setAllowCredentials(true);
+    corsConfiguration.setAllowCredentials(false);
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     source.registerCorsConfiguration("/**", corsConfiguration); // 모든 경로에 대해서 CORS 설정을 적용
 
@@ -52,6 +56,7 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http.formLogin(AbstractHttpConfigurer::disable); // form login 비활성화
     // cors 설정
     http.cors(httpSecurityCorsConfigurer ->
         httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()));

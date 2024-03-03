@@ -50,7 +50,6 @@ public class OAuthAttributes {
   public User toEntity(SocialType socialType, OAuthUserInfo oauth2UserInfo) {
     return User.builder()
         .platform(socialType.name())
-        .id(oauth2UserInfo.getId())
         .email(oauth2UserInfo.getEmail())
         .nickname(oauth2UserInfo.getNickname())
         .admin(UserRole.USER)

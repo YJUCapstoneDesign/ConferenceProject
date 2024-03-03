@@ -21,7 +21,7 @@ function NoticeContent() {
     };
 
     return (
-        <div className="bg-gray-800 dark:bg-gray-900">
+        <div className="bg-gray-800 dark:bg-gray-900 mt-32">
             <nav className="bg-gray-800 dark:bg-gray-900">
                 <div className="container p-6 mx-auto">
                     <a

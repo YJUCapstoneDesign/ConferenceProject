@@ -4,11 +4,14 @@ import HomeButton from './HomeButton';
 import HomeImage from './HomeImage';
 import Nav from '../NavBar';
 import News from '../news/news';
+import Notice from '../notice/Notice';
+import Service from '../service/Service';
+import About from '../about/About';
 
 function HomeContent() {
     return (
         <React.Fragment>
-            <div className="relative h-screen pt-10 sm:pt-0 mb-10 bg-banner">
+            <div className="relative h-[117vh] sm:pt-0 bg-banner">
                 <Nav />
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center md:gap-20 mt-48">
                     <div className="content">
@@ -22,7 +25,20 @@ function HomeContent() {
                     </div>
                 </div>
             </div>
-            <News />
+            <div data-spy="scroll" data-target="#navbar-example2" data-offset="0">
+                <div id="one">
+                    <About />
+                </div>
+                <div id="two">
+                    <Notice />
+                </div>
+                <div id="three">
+                    <Service />
+                </div>
+                <div id="four">
+                    <News />
+                </div>
+            </div>
         </React.Fragment>
     );
 }

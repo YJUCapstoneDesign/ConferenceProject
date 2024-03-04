@@ -22,4 +22,5 @@ public class CustomOAuth2User extends DefaultOAuth2User {
     this.email = email;
     this.role = role;
   }
+  
 }

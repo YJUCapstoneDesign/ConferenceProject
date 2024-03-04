@@ -23,6 +23,8 @@ import team.broadcast.domain.user.UserRepository;
 import javax.crypto.KeyGenerator;
 import java.io.IOException;
 
+import static org.springframework.security.core.userdetails.User.*;
+
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
@@ -90,7 +92,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
             password = KeyGenerators.string().generateKey();
         }
 
-        UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
+        UserDetails userDetails = builder()
                 .username(myUser.getEmail())
                 .password(password)
                 .roles(myUser.getAdmin().name())

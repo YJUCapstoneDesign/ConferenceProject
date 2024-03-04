@@ -21,6 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private static final String KAKAO = "kakao";
+    private static final String NAVER = "naver";
     private final UserRepository userRepository;
 
     @Override
@@ -52,6 +53,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     }
 
     private SocialType getSocialType(String registrationId) {
+        if (NAVER.equals(registrationId)) {
+            return SocialType.NAVER;
+        }
         if (KAKAO.equals(registrationId)) {
             return SocialType.KAKAO;
         }

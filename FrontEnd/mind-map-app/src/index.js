@@ -3,11 +3,10 @@ import './style.css';
 import coseBilkent from 'cytoscape-cose-bilkent';
 import nodesData from './nodes';
 import edgesData from './edges';
-import addNode from './addNode';
 
 // console.log(nodesData);
 // console.log(edgesData);
-console.log(addNode);
+// console.log(addNode);
 
 cytoscape.use(coseBilkent);
 
@@ -69,7 +68,6 @@ const cy = cytoscape({
         },
     ],
     layout: {
-        // 레이아웃을 설정
         name: 'cose-bilkent',
         animate: false,
         gravityRangeCompound: 1.5,

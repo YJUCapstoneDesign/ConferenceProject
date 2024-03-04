@@ -1,3 +1,5 @@
+import node from './addNode'
+
 const data = [
     {
         data: {
@@ -21,5 +23,7 @@ const data = [
         },
     },
 ];
+
+// data.push(node)
 
 export default data;

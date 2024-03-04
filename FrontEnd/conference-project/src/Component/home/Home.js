@@ -11,7 +11,7 @@ import About from '../about/About';
 function HomeContent() {
     return (
         <React.Fragment>
-            <div className="relative h-[117vh] sm:pt-0 bg-banner">
+            <div className="relative h-[112.7vh] sm:pt-0 bg-banner">
                 <Nav />
                 <div className="container mx-auto grid grid-cols-1 md:grid-cols-2 items-center md:gap-20 mt-48">
                     <div className="content">

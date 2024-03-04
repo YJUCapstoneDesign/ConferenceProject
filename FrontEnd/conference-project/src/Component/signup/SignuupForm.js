@@ -3,7 +3,7 @@ import SignupBnt from './SignupButton';
 
 function SignupForm() {
     // Array of input labels
-    const inputLabels = ['Name', 'Email', 'Password', 'Address', 'Phone'];
+    const inputLabels = ['Name', 'Email', 'Nickname', 'Password', 'Address', 'Phone'];
 
     return (
         <React.Fragment>

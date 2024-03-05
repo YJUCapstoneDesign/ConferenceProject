@@ -1,28 +1,44 @@
+import img1 from './img/1.jpg';
+import img2 from './img/2.jpg';
+import img3 from './img/3.jpg';
+import img4 from './img/4.jpg';
+import img5 from './img/5.jpg';
+
 const imageData = [
     {
-        label: 'Image 1',
+        label: 'Image1',
         alt: 'image1',
-        url: 'https://img.freepik.com/premium-photo/photo-of-businesslike-man-30s-wearing-office-clothes-and-headset-sitting-by-computer-in-call-center_171337-46408.jpg',
+        src: img1,
+        width: 550,
+        height: 350,
     },
     {
-        label: 'Image 2',
+        label: 'Image2',
         alt: 'image2',
-        url: 'https://img.freepik.com/premium-photo/photo-of-businesslike-man-30s-wearing-office-clothes-and-headset-sitting-by-computer-in-call-center_171337-46408.jpg',
+        src: img2,
+        width: 550,
+        height: 350,
     },
     {
-        label: 'Image 3',
+        label: 'Image3',
         alt: 'image3',
-        url: 'https://img.freepik.com/premium-photo/photo-of-businesslike-man-30s-wearing-office-clothes-and-headset-sitting-by-computer-in-call-center_171337-46408.jpg',
+        src: img3,
+        width: 550,
+        height: 350,
     },
     {
-        label: 'Image 4',
+        label: 'Image4',
         alt: 'image4',
-        url: 'https://img.freepik.com/premium-photo/photo-of-businesslike-man-30s-wearing-office-clothes-and-headset-sitting-by-computer-in-call-center_171337-46408.jpg',
+        src: img4,
+        width: 550,
+        height: 350,
     },
     {
-        label: 'Image 5',
+        label: 'Image5',
         alt: 'image5',
-        url: 'https://img.freepik.com/premium-photo/photo-of-businesslike-man-30s-wearing-office-clothes-and-headset-sitting-by-computer-in-call-center_171337-46408.jpg',
+        src: img5,
+        width: 550,
+        height: 350,
     },
 ];
 

@@ -2,7 +2,7 @@ import React from 'react';
 import HomeText from './HomeText';
 import HomeButton from './HomeButton';
 import HomeImage from './HomeImage';
-import Nav from '../Navbar';
+import Nav from '../NavBar';
 import News from '../news/news';
 import Notice from '../notice/Notice';
 import Service from '../service/Service';
@@ -39,7 +39,7 @@ function HomeContent() {
                 <div id="four">
                     <News />
                 </div>
-                <div id='five'>
+                <div id="five">
                     <Footer />
                 </div>
             </div>

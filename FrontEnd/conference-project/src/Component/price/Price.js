@@ -1,16 +1,18 @@
 import { Button } from '@material-tailwind/react';
+import Nav from '../NavBar';
 
 const PricingPage = () => {
     return (
         <div className="min-h-full bg-gray-200 pb-12">
-            <div class="w-full bg-blue-900 pt-16 pb-24 text-center">
+            <div class="w-full bg-blue-900 pt-3 pb-24 text-center">
+                <Nav />
                 <h4 class="text-2xl text-gray-100">Choose the right plan for you</h4>
                 <p class="text-sm text-gray-100 mt-2">
                     Pricing built for businesses of all sizes. Choose package that suits your needs.
                 </p>
                 <div class="flex items-center justify-center mt-8">
                     <div className="flex w-max gap-4">
-                        <Button color="red">color blue</Button>
+                        <Button className="bg-black">button</Button>
                     </div>
                 </div>
             </div>

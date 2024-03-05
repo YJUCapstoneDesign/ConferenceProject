@@ -1,17 +1,17 @@
-import React from 'react';
+import React from "react";
 
 function SignupButton() {
-    return (
-        <React.Fragment>
-            <button
-                id='signup-button'
-                type="submit"
-                className="bg-black hover:bg-blue-600 text-white font-semibold rounded-md p-3 px-4 w-full mt-10 rounded-3xl"
-            >
-                Sign Up
-            </button>
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <button
+        id="signup-button"
+        type="submit"
+        className="bg-[#000000] hover:bg-[#787878] text-white font-semibold rounded-md py-2 px-4 w-full"
+      >
+        Sign Up
+      </button>
+    </React.Fragment>
+  );
 }
 
 export default SignupButton;

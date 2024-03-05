@@ -31,7 +31,7 @@ public class UserService {
                 .membership(Membership.BASIC)
                 .build();
 
-        userRepository.save(newUser);
+        userRepository.saveAndFlush(newUser);
         return userDto;
     }
 }

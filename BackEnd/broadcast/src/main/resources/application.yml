@@ -1,3 +1,5 @@
+
 spring:
   profiles:
     include: janus, oauth2, jpa, jwt
+

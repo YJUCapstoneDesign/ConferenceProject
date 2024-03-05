@@ -22,6 +22,20 @@ const data = [
             label: 'JS',
         },
     },
+    {
+        data: {
+            id: 'c',
+            url: 'https://namu.wiki/w/JavaScript',
+            label: 'C',
+        },
+    },
+    {
+        data: {
+            id: 'java',
+            url: 'https://namu.wiki/w/JavaScript',
+            label: 'JAVA',
+        },
+    },
 ];
 
 // data.push(node)

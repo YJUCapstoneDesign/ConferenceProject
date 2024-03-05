@@ -7,6 +7,7 @@ import News from '../news/news';
 import Notice from '../notice/Notice';
 import Service from '../service/Service';
 import About from '../about/About';
+import Footer from '../footer/Footer';
 
 function HomeContent() {
     return (
@@ -37,6 +38,9 @@ function HomeContent() {
                 </div>
                 <div id="four">
                     <News />
+                </div>
+                <div id='five'>
+                    <Footer />
                 </div>
             </div>
         </React.Fragment>

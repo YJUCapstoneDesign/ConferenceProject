@@ -8,6 +8,7 @@ import PriceContent from './Component/price/Price';
 import LoginContent from './Component/login/Login';
 import SignupContent from './Component/signup/Signup';
 import Adminpage from './Component/admin/adminpage';
+import PricePage from './Component/price/Price';
 
 import NoticePage from './Component/notice/Notice';
 
@@ -23,8 +24,9 @@ function App() {
                     <Route path="/Price" element={<PriceContent />} />
                     <Route path="/Login" element={<LoginContent />} />
                     <Route path="/Signup" element={<SignupContent />} />
-                    <Route path="/NoticePage" element={<NoticePage />} />
+                    <Route path="/Notice" element={<NoticePage />} />
                     <Route path="/Admin" element={<Adminpage />} />
+                    <Route path="/Price" element={<PricePage />} />
                 </Routes>
             </div>
         </BrowserRouter>

@@ -4,10 +4,9 @@ import SignupButton from './SignupButton';
 
 function SignupForm() {
     useEffect(() => {
-        // 회원가입 데이터를 서버에 보내는 함수
         const sendDataToServer = async () => {
             try {
-                const name = document.getElementById('input-0').value;
+                const username = document.getElementById('input-0').value;
                 const email = document.getElementById('input-1').value;
                 const password = document.getElementById('input-2').value;
                 const nickname = document.getElementById('input-3').value;
@@ -15,7 +14,7 @@ function SignupForm() {
                 const phone = document.getElementById('input-5').value;
 
                 const response = await axios.post('/api/signup', {
-                    name,
+                    username,
                     email,
                     password,
                     nickname,
@@ -28,10 +27,19 @@ function SignupForm() {
             }
         };
 
-        document.getElementById('signup-button').addEventListener('click', sendDataToServer);
-
+        const signupButton = document.getElementById('signup-button');
+        
+        // 'signup-button' 요소에 click 이벤트 리스너를 등록
+        if(signupButton) {
+            signupButton.addEventListener('click', sendDataToServer);
+        }
+        
+        // useEffect의 클린업 함수를 사용하여 컴포넌트가 언마운트될 때 이벤트 리스너를 제거
         return () => {
-            document.getElementById('signup-button').removeEventListener('click', sendDataToServer);
+            if(signupButton) {
+                document.removeEventListener('click', sendDataToServer);
+            }
+            
         };
     }, []);
 

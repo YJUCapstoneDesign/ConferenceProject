@@ -12,7 +12,7 @@ import team.broadcast.domain.user.service.UserService;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/signup")
+    @PostMapping("/api/signup")
     public String signup(@RequestBody UserDto userDto) {
         try {
             userService.join(userDto);

@@ -16,7 +16,6 @@ function LoginContent() {
           className="bg-cover bg-no-repeat bg-center relative "
           style={{
             backgroundImage: `url(${BgImg})`, // 이미지 경로를 직접 사용
-            //이미지 어둡게 설정
           }}
         >
           <div className="p-20">
@@ -29,11 +28,13 @@ function LoginContent() {
               {/* Right: Login Form */}
               <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
                 {/* Back to Website */}
-                <p className="flex justify-start">
-                  <button>
-                    <Link to={"/"}>◀ Back to website</Link>
-                  </button>
-                </p>
+                <div className="flex justify-start">
+                  <p className="hidden lg:block">
+                    <button>
+                      <Link to={"/"}>◀ Back to website</Link>
+                    </button>
+                  </p>
+                </div>
                 <h1 className="text-4xl font-semibold mb-4 flex justify-start pt-6 ...">
                   Login
                 </h1>
@@ -44,6 +45,12 @@ function LoginContent() {
                   {/* Remember Me Checkbox */}
                   <LoginMemory />
                   {/* Forgot Password Link */}
+                  <button
+                    type="submit"
+                    className="bg-black hover:bg-blue-600 text-white font-semibold rounded-md p-3 px-4 w-full"
+                  >
+                    Login
+                  </button>
                   <div className="mb-6 text-[#787878]">
                     <a href="/" className="hover:underline font-semibold">
                       Forgot Password? /

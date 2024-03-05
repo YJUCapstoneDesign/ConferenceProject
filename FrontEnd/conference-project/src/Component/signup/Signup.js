@@ -4,6 +4,8 @@ import SignupForm from './SignuupForm';
 import { Link } from 'react-router-dom';
 
 function SignupContent() {
+    
+
     return (
         <React.Fragment>
             <div className="bg-gray-100 flex justify-center items-center h-screen overflow-hidden">

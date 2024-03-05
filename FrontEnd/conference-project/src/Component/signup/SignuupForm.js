@@ -1,15 +1,45 @@
-import React from 'react';
-import { useEffect, useState } from 'react';
-import SignupBnt from './SignupButton';
+import React, { useEffect } from 'react';
 import axios from 'axios';
+import SignupButton from './SignupButton';
 
 function SignupForm() {
-    // Array of input labels
-    const inputLabels = ['Name', 'Email', 'Nickname', 'Password', 'Address', 'Phone'];
+    useEffect(() => {
+        // 회원가입 데이터를 서버에 보내는 함수
+        const sendDataToServer = async () => {
+            try {
+                const name = document.getElementById('input-0').value;
+                const email = document.getElementById('input-1').value;
+                const password = document.getElementById('input-2').value;
+                const nickname = document.getElementById('input-3').value;
+                const address = document.getElementById('input-4').value;
+                const phone = document.getElementById('input-5').value;
+
+                const response = await axios.post('/api/signup', {
+                    name,
+                    email,
+                    password,
+                    nickname,
+                    address,
+                    phone
+                });
+                console.log('회원가입 성공:', response.data);
+            } catch (error) {
+                console.error('회원가입 실패:', error);
+            }
+        };
+
+        document.getElementById('signup-button').addEventListener('click', sendDataToServer);
+
+        return () => {
+            document.getElementById('signup-button').removeEventListener('click', sendDataToServer);
+        };
+    }, []);
+
+    const inputLabels = ['Name', 'Email', 'Password', 'Nickname', 'Address', 'Phone'];
 
     return (
         <React.Fragment>
-            <form action="/" method="POST" className="my-14">
+            <div className="my-14">
                 {inputLabels.map((label, index) => (
                     <div className="mb-4" key={index}>
                         <label
@@ -29,9 +59,8 @@ function SignupForm() {
                         />
                     </div>
                 ))}
-                {/* Signup Button */}
-                <SignupBnt />
-            </form>
+                <SignupButton />
+            </div>
         </React.Fragment>
     );
 }

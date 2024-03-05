@@ -29,7 +29,7 @@ function LoginContent() {
               <div className="lg:p-36 md:p-52 sm:20 p-8 w-full lg:w-1/2">
                 {/* Back to Website */}
                 <div className="flex justify-start">
-                  <p className="hidden lg:block">
+                  <p>
                     <button>
                       <Link to={"/"}>◀ Back to website</Link>
                     </button>

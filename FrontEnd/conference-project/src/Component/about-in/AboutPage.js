@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import Swiper from "swiper";
 import "swiper/swiper-bundle.css";
-// import "tailwindcss/tailwind.css";
 import "./Servicedesign.css";
+import Nav from "../Navbar"
 import AboutText from "./AboutText";
 import AboutSwiper from "./AboutSwiper";
 
@@ -37,7 +37,6 @@ function About() {
 
   return (
     <React.Fragment>
-      {/* <!-- component --> */}
       <div
         className="bg-no-repeat bg-cover bg-center relative"
         style={{
@@ -46,6 +45,7 @@ function About() {
         }}
       >
         <div className="absolute bg-gradient-to-r from-gray-900 to-gray-900 opacity-75 inset-0 z-0"></div>
+        <Nav />
         <div>
           <div className="min-h-screen flex justify-center">
             <div className="grid grid-cols-1 gap-4 items-center z-10 mx-10 lg:grid-cols-2 lg:mx-0">

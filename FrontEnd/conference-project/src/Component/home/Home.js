@@ -2,7 +2,7 @@ import React from 'react';
 import HomeText from './HomeText';
 import HomeButton from './HomeButton';
 import HomeImage from './HomeImage';
-import Nav from '../Navbar2';
+import Nav from '../Navbar';
 import News from '../news/news';
 import Notice from '../notice/Notice';
 import Service from '../service/Service';

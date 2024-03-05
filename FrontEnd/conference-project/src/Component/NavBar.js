@@ -1,65 +1,90 @@
-import { Link } from 'react-router-dom';
-import React from 'react';
-import paths from './paths';
+import { Disclosure } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+// import Logo from "../img/unmute.jpg";
+import paths from "./paths";
 
-function Nav(props) {
-    const linkAttr = {
-        color: 'hover:text-cyan-500 text-indigo-700 transition-colors font-black',
-    };
+const navigation = [
+  { name: "HOME", path: paths.home , current: false },
+  { name: "ABOUT", path: paths.about , current: false },
+  { name: "SERVICE", path: paths.service , current: false },
+  { name: "NOTICE", path: paths.notice , current: false },
+  { name: "LOGIN", path: paths.login , current: false },
+];
 
-    const navItems = [
-        { text: 'HOME', path: paths.home },
-        { text: 'ABOUT', path: paths.about },
-        { text: 'SERVICE', path: paths.service },
-        { text: 'NOTICE', path: paths.notice },
-    ];
-
-    return (
-        <div>
-            <div className="h-20 mx-auto px-5 flex items-center justify-between text-white">
-                <Link
-                    className="text-3xl cursor-pointer text-white font-bold"
-                    to={paths.home}
-                    style={{ margin: '20px', fontSize: '2.5rem' }}
-                >
-                    Zoom
-                </Link>
-
-                <ul
-                    className="flex items-center gap-5"
-                    style={{
-                        marginRight: '20px',
-                    }}
-                >
-                    {navItems.map((item) => (
-                        <li key={item.text}>
-                            <Link
-                                className={`${linkAttr.color} text-white`}
-                                to={item.path}
-                                style={{
-                                    marginRight: '25px',
-                                }}
-                            >
-                                {item.text}
-                            </Link>
-                        </li>
-                    ))}
-                    <li>
-                        <Link
-                            className="font-bold text-white rounded-xl"
-                            to={paths.login}
-                            style={{
-                                padding: '0.5rem 1rem',
-                                backgroundColor: '#000080',
-                            }}
-                        >
-                            LOGIN
-                        </Link>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    );
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
 }
 
-export default Nav;
+export default function Example() {
+  return (
+    <Disclosure as="nav">
+      {({ open }) => (
+        <>
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div className="relative flex h-16 items-center justify-between">
+              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                {/* Mobile menu button*/}
+                <Disclosure.Button className="absolute inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <span className="absolute -inset-0.5" />
+                  <span className="sr-only">Open main menu</span>
+                  {open ? (
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                  )}
+                </Disclosure.Button>
+              </div>
+              <div className="absolute left-12 flex flex-1 sm:flex-none sm:h-45 items-center text-white text-bold justify-center">
+                {/* <img className="h-8 w-auto " src={Logo} alt="Your Company" /> */}
+                　UNMUTE
+              </div>
+              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-end">
+                <div className="hidden sm:ml-6 sm:block">
+                  <div className="flex space-x-4">
+                    {navigation.map((item) => (
+                      <a
+                        key={item.name}
+                        href={item.path} // Changed 'href' to 'path'
+                        className={classNames(
+                          item.current
+                            ? "bg-gray-900 text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium ",
+                          "hover:cursor-pointer"
+                        )}
+                        aria-current={item.current ? "page" : undefined}
+                      >
+                        {item.name}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <Disclosure.Panel className="sm:hidden">
+            <div className="space-y-1 px-2 pb-3 pt-2">
+              {navigation.map((item) => (
+                <Disclosure.Button
+                  key={item.name}
+                  as="a"
+                  href={item.path} // Changed 'href' to 'path'
+                  className={classNames(
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
+                  )}
+                  aria-current={item.current ? "page" : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
+              ))}
+            </div>
+          </Disclosure.Panel>
+        </>
+      )}
+    </Disclosure>
+  );
+}

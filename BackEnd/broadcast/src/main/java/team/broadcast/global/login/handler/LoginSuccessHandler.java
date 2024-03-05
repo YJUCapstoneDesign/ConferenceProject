@@ -10,13 +10,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import team.broadcast.domain.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.domain.jwt.service.JwtService;
-import team.broadcast.domain.user.User;
 import team.broadcast.domain.user.UserRepository;
 
 import java.io.IOException;
-import java.util.Optional;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -24,7 +21,6 @@ import java.util.Optional;
 public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private final JwtService jwtService;
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${jwt.access.expiration}")
     private String accessTokenExpiration;

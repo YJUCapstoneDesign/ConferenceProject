@@ -110,7 +110,7 @@ public class SecurityConfig {
         http.sessionManagement(httpSecuritySessionManagementConfigurer ->
                 httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // 모든 접근에 대해 허용
+        // 모든 접근에 대해 허용 <수정 필요>
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
 

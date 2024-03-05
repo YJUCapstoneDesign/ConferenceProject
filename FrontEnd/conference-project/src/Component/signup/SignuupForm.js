@@ -1,5 +1,7 @@
 import React from 'react';
+import { useEffect, useState } from 'react';
 import SignupBnt from './SignupButton';
+import axios from 'axios';
 
 function SignupForm() {
     // Array of input labels

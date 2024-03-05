@@ -7,6 +7,7 @@ const paths = {
   price: "/Price",
   signup: "/Signup",
   noticePage: "/NoticePage",
+  adminPage: '/Admin',
 };
 
 export default paths;

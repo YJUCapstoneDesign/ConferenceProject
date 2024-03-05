@@ -7,6 +7,7 @@ import NoticeContent from './Component/notice-in/NoticePage';
 import PriceContent from './Component/price/Price';
 import LoginContent from './Component/login/Login';
 import SignupContent from './Component/signup/Signup';
+import Adminpage from './Component/admin/adminpage';
 
 import NoticePage from './Component/notice/Notice';
 
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/Login" element={<LoginContent />} />
                     <Route path="/Signup" element={<SignupContent />} />
                     <Route path="/NoticePage" element={<NoticePage />} />
+                    <Route path="/Admin" element={<Adminpage />} />
                 </Routes>
             </div>
         </BrowserRouter>

@@ -1,0 +1,93 @@
+.list--header {
+  display: flex;
+  margin: 2rem 0;
+  justify-content: space-between;
+}
+
+.list--header h2 {
+  color: #526d82;
+}
+
+.list--header select {
+  border-radius: 10px;
+  border: none;
+  padding: 8px 12px;
+  border: 1px solid #dde6ed;
+  color: #526d82;
+}
+
+.list--container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.list {
+  display: flex;
+  padding-right: 10px;
+  align-items: center;
+  justify-content: space-between;
+  transition: 0.3s ease-in-out;
+}
+
+.teacher--detail {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  color: #526d82;
+}
+
+.teacher--detail img {
+  width: 50px;
+  height: 50px;
+  background: #dde6ed;
+  border-radius: 50%;
+}
+
+.list:hover {
+  background: #dde6ed;
+  border-radius: 10px;
+}
+
+
+.button-delete {
+  background: #27374d;
+  border-radius: 11px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  display: flex;
+  font-family: Mija,-apple-system,BlinkMacSystemFont,Roboto,"Roboto Slab","Droid Serif","Segoe UI",system-ui,Arial,sans-serif;
+  font-size: 0.8em;
+  font-weight: 15;
+  justify-content: center;
+  line-height: 33.4929px;
+  padding: .1em 1em;
+  text-align: center;
+  text-decoration: none;
+  text-decoration-skip-ink: auto;
+  text-shadow: rgba(0, 0, 0, .3) 1px 1px 1px;
+  text-underline-offset: 1px;
+  transition: all .2s ease-in-out;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+  width: 8%;
+  word-break: break-word;
+  border: 0;
+}
+
+.button-delete:active,
+.button-delete:focus {
+  border-bottom-style: none;
+  border-color: #dadada;
+  box-shadow: rgba(0, 0, 0, .3) 0 3px 3px inset;
+  outline: 0;
+}
+
+.button-delete:hover {
+  border-bottom-style: none;
+  border-color: #dadada;
+  transform: scale(1.04);
+  cursor: pointer;
+}

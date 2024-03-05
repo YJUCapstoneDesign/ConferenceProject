@@ -9,8 +9,8 @@ import LoginContent from './Component/login/Login';
 import SignupContent from './Component/signup/Signup';
 import Adminpage from './Component/admin/adminpage';
 import PricePage from './Component/price/Price';
-
 import NoticePage from './Component/notice/Notice';
+import PassWord from './Component/password/password';
 
 function App() {
     return (
@@ -27,6 +27,7 @@ function App() {
                     <Route path="/Notice" element={<NoticePage />} />
                     <Route path="/Admin" element={<Adminpage />} />
                     <Route path="/Price" element={<PricePage />} />
+                    <Route path="/Pass" element={<PassWord />} />
                 </Routes>
             </div>
         </BrowserRouter>

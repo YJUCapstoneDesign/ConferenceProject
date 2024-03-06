@@ -23,7 +23,7 @@
   margin-left: auto;
   margin-right: auto;
   padding-top: 8%;
-  padding-bottom: 8%; 
+  padding-bottom: 1%; 
   padding-left: 5%;
   padding-right: 5%;
   border: 1px solid #ddd;
@@ -85,17 +85,19 @@
   box-shadow: none !important;
   background: #454545 !important;
   outline: 0;
+  margin-bottom: 150px;
 }
 
 .carousel.carousel-slider .control-arrow {
   background: #000080 !important;
   height: 50px !important;
   position: absolute;
-  top: 35% !important;
+  top: 50% !important;
 }
 
 .News {
   text-align: center;
+  margin-top: -250px;
 }
 
 @media only screen and (max-width: 934px) {

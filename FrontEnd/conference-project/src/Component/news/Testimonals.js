@@ -10,12 +10,12 @@ export default class Testimonials extends Component {
                 showArrows={true}
                 infiniteLoop={true}
                 showThumbs={false}
-                showStatus={false}
+                showStatus={false}  
                 autoPlay={true}
                 interval={6100}
             >
                 <div>
-                    <img src="/img/messi.jpg" />
+                    <img src="/img/messi.png" />
                     <div className="myCarousel">
                         <h3>messi</h3>
                         <h4>Soccer Player</h4>

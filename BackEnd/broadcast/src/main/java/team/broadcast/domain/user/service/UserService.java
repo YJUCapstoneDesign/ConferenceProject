@@ -2,13 +2,12 @@ package team.broadcast.domain.user.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import team.broadcast.domain.enums.Membership;
-import team.broadcast.domain.enums.UserRole;
-import team.broadcast.domain.user.User;
-import team.broadcast.domain.user.UserRepository;
+import team.broadcast.domain.user.enums.Membership;
+import team.broadcast.domain.user.enums.UserRole;
+import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.domain.user.dto.UserDto;
 
 @Service

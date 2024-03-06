@@ -1,4 +1,4 @@
-package team.broadcast.domain.oauth2.userinfo;
+package team.broadcast.global.oauth2.userinfo;
 
 import java.util.Map;
 

@@ -1,4 +1,4 @@
-package team.broadcast.domain.enums;
+package team.broadcast.domain.user.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package team.broadcast.global.handler;
+package team.broadcast.global.oauth2.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

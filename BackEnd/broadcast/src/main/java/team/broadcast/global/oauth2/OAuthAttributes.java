@@ -1,15 +1,14 @@
-package team.broadcast.domain.oauth2;
+package team.broadcast.global.oauth2;
 
 import lombok.Builder;
 import lombok.Getter;
-import team.broadcast.domain.enums.Membership;
-import team.broadcast.domain.enums.SocialType;
-import team.broadcast.domain.enums.UserRole;
-import team.broadcast.domain.oauth2.userinfo.GoogleOAuthUserInfo;
-import team.broadcast.domain.oauth2.userinfo.KakaoOauthUserInfo;
-import team.broadcast.domain.oauth2.userinfo.NaverOAuthUserInfo;
-import team.broadcast.domain.oauth2.userinfo.OAuthUserInfo;
-import team.broadcast.domain.user.User;
+import team.broadcast.domain.user.enums.Membership;
+import team.broadcast.domain.user.enums.UserRole;
+import team.broadcast.global.oauth2.userinfo.GoogleOAuthUserInfo;
+import team.broadcast.global.oauth2.userinfo.KakaoOauthUserInfo;
+import team.broadcast.global.oauth2.userinfo.NaverOAuthUserInfo;
+import team.broadcast.global.oauth2.userinfo.OAuthUserInfo;
+import team.broadcast.domain.user.entity.User;
 
 import java.util.Map;
 

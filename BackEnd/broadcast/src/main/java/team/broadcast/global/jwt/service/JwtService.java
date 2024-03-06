@@ -1,4 +1,4 @@
-package team.broadcast.domain.jwt.service;
+package team.broadcast.global.jwt.service;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,10 +11,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import team.broadcast.domain.jwt.refresh.RefreshToken;
-import team.broadcast.domain.jwt.refresh.RefreshTokenRepository;
-import team.broadcast.domain.user.User;
-import team.broadcast.domain.user.UserRepository;
+import team.broadcast.global.jwt.refresh.RefreshToken;
+import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
+import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.repository.UserRepository;
 
 import java.security.Key;
 import java.util.Base64;

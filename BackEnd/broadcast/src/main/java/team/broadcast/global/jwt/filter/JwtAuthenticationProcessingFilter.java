@@ -1,4 +1,4 @@
-package team.broadcast.domain.jwt.filter;
+package team.broadcast.global.jwt.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -14,13 +14,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.web.filter.OncePerRequestFilter;
-import team.broadcast.domain.jwt.refresh.RefreshToken;
-import team.broadcast.domain.jwt.refresh.RefreshTokenRepository;
-import team.broadcast.domain.jwt.service.JwtService;
-import team.broadcast.domain.user.User;
-import team.broadcast.domain.user.UserRepository;
+import team.broadcast.global.jwt.refresh.RefreshToken;
+import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
+import team.broadcast.global.jwt.service.JwtService;
+import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.repository.UserRepository;
 
-import javax.crypto.KeyGenerator;
 import java.io.IOException;
 
 import static org.springframework.security.core.userdetails.User.*;

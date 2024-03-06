@@ -10,8 +10,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import team.broadcast.domain.jwt.service.JwtService;
-import team.broadcast.domain.user.UserRepository;
+import team.broadcast.global.jwt.service.JwtService;
+import team.broadcast.domain.user.repository.UserRepository;
 
 import java.io.IOException;
 

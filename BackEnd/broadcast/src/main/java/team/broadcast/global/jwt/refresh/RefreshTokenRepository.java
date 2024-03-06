@@ -1,4 +1,4 @@
-package team.broadcast.domain.jwt.refresh;
+package team.broadcast.global.jwt.refresh;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

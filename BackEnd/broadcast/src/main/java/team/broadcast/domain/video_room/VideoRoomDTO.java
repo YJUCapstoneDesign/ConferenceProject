@@ -2,12 +2,8 @@ package team.broadcast.domain.video_room;
 
 
 import lombok.*;
-import team.broadcast.domain.chatuser.ChatUserDTO;
-import team.broadcast.domain.enums.ChatType;
 
 import java.time.LocalDateTime;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter

@@ -1,12 +1,12 @@
-package team.broadcast.domain.user;
+package team.broadcast.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.broadcast.domain.enums.Membership;
-import team.broadcast.domain.enums.UserRole;
+import team.broadcast.domain.user.enums.Membership;
+import team.broadcast.domain.user.enums.UserRole;
 
 @Entity
 @Table(name = "tb_user")

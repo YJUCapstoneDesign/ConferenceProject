@@ -1,4 +1,4 @@
-package team.broadcast.global.handler;
+package team.broadcast.global.oauth2.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import team.broadcast.domain.jwt.service.JwtService;
-import team.broadcast.domain.oauth2.CustomOAuth2User;
-import team.broadcast.domain.user.User;
+import team.broadcast.global.jwt.service.JwtService;
+import team.broadcast.global.oauth2.CustomOAuth2User;
 
 import java.io.IOException;
 

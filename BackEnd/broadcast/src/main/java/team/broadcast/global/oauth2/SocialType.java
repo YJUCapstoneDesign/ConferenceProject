@@ -1,4 +1,4 @@
-package team.broadcast.domain.enums;
+package team.broadcast.global.oauth2;
 
 public enum SocialType {
   KAKAO, GOOGLE, NAVER

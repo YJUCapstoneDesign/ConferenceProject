@@ -3,7 +3,7 @@
 function OurService() {
     return (
         <div>
-            <section className="container mx-auto px-8 py-8 lg:py-40">
+            <section className="container mx-auto px-8 py-8 lg:py-28">
                 <h2 className="block antialiased tracking-normal font-sans text-4xl font-semibold leading-[1.3] text-blue-gray-900 !text-3xl !leading-snug lg:!text-4xl">
                     Our Service
                 </h2>
@@ -16,7 +16,7 @@ function OurService() {
                 <div className="mt-10 grid grid-cols-1 gap-10 lg:grid-cols-3 text-left">
                     <div className="relative flex flex-col bg-clip-border rounded-xl bg-transparent text-gray-700 shadow-md relative grid min-h-[30rem] items-end overflow-hidden rounded-xl">
                         <img
-                            src="./conference.jpg"
+                            src="./img/conference.jpg"
                             alt="bg"
                             className="absolute inset-0 h-full w-full object-cover object-center"
                         />
@@ -31,7 +31,7 @@ function OurService() {
                         </div>
                     </div>
                     <div className="relative flex flex-col bg-clip-border rounded-xl bg-transparent text-gray-700 shadow-md relative grid min-h-[30rem] items-end overflow-hidden rounded-xl">
-                        <img src="" alt="bg" className="absolute inset-0 h-full w-full object-cover object-center" />
+                        <img src="./img/brain.jpg" alt="bg" className="absolute inset-0 h-full w-full object-cover object-center" />
                         <div className="absolute inset-0 bg-black/70"></div>
                         <div className="p-6 relative flex flex-col justify-end">
                             <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-white">
@@ -43,7 +43,7 @@ function OurService() {
                         </div>
                     </div>
                     <div className="relative flex flex-col bg-clip-border rounded-xl bg-transparent text-gray-700 shadow-md relative grid min-h-[30rem] items-end overflow-hidden rounded-xl">
-                        <img src="" alt="bg" className="absolute inset-0 h-full w-full object-cover object-center" />
+                        <img src="./img/Ai.jpg" alt="bg" className="absolute inset-0 h-full w-full object-cover object-center" />
                         <div className="absolute inset-0 bg-black/70"></div>
                         <div className="p-6 relative flex flex-col justify-end">
                             <h4 className="block antialiased tracking-normal font-sans text-2xl font-semibold leading-snug text-white">

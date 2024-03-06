@@ -1,8 +1,9 @@
-
+import Nav from '../NavBar'
 
 function OurService() {
     return (
         <div>
+            <Nav style={{color : "black"}} />
             <section className="container mx-auto px-8 py-8 lg:py-28">
                 <h2 className="block antialiased tracking-normal font-sans text-4xl font-semibold leading-[1.3] text-blue-gray-900 !text-3xl !leading-snug lg:!text-4xl">
                     Our Service

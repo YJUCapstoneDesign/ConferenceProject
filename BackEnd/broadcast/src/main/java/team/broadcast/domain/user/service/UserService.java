@@ -2,6 +2,7 @@ package team.broadcast.domain.user.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.enums.Membership;
@@ -25,7 +26,7 @@ public class UserService {
 
         User newUser = User.builder()
                 .name(userDto.getUsername())
-                .nickname(userDto.getNickname())
+                .nickname(generateRandomName(15))
                 // 비밀번호를 암호화해서 저장
                 .pwd(passwordEncoder.encode(userDto.getPassword()))
                 .email(userDto.getEmail())
@@ -36,5 +37,10 @@ public class UserService {
 
         userRepository.save(newUser);
         return userDto;
+    }
+
+    // 지정한 수 만큼의 길이를 가지는 문자와 숫자로 구성된 랜덤한 이름을 생성
+    public String generateRandomName(int nameLength) {
+        return RandomStringUtils.random(nameLength, true, true);
     }
 }

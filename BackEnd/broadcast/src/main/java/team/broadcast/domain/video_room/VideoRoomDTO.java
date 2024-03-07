@@ -20,7 +20,7 @@ public class VideoRoomDTO {
     private int currentMemberCount; // 현재 채팅방 인원수
     private int maxMemberCount; // 채팅방 최대 인원 수 지정
 
-    private ChatType chatType; // 채팅 타입 여부
+//    private ChatType chatType; // 채팅 타입 여부
 
     private LocalDateTime startTime; // 방을 생성한 시간
     private LocalDateTime endTime; // 방 종료시간

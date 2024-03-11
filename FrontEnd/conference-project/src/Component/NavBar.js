@@ -36,7 +36,7 @@ export default function Example(props) {
                             </div>
                             <div className="absolute left-12 flex flex-1 sm:flex-none sm:h-45 items-center text-white text-bold justify-center">
                                 {/* <img className="h-8 w-auto " src={Logo} alt="Your Company" /> */}
-                                　UNMUTE
+                                <a href='/'>UNMUTE</a>
                             </div>
                             <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-end">
                                 <div className="hidden sm:ml-6 sm:block">

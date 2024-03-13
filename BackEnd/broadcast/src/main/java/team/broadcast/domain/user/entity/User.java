@@ -1,50 +1,48 @@
 package team.broadcast.domain.user.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import team.broadcast.domain.user.enums.Membership;
 import team.broadcast.domain.user.enums.UserRole;
 
 @Entity
-@Table(name = "tb_user")
+@Table(name = "TB_USER")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id_seq")
+    @Column(name = "USER_ID_SEQ")
     private Long id;
 
-    @Column(name = "user_name", length = 20)
+    @Column(name = "USER_NAME", length = 20)
     private String name;
 
-    @Column(name = "user_pwd", length = 100)
+    @Column(name = "USER_PWD", length = 100)
     private String pwd;
 
-    @Column(name = "user_nickname", length = 20)
+    @Column(name = "USER_NICKNAME", length = 20)
     private String nickname;
 
-    @Column(name = "user_phone")
+    @Column(name = "USER_PHONE")
     private String phone;
 
-    @Column(name = "user_email", unique = true, length = 50)
+    @Column(name = "USER_EMAIL", unique = true, length = 50)
     private String email;
 
-    @Column(name = "user_admin")
+    @Column(name = "USER_ADMIN")
     @Enumerated(EnumType.STRING)
     private UserRole admin;
 
-    @Column(name = "user_membership")
+    @Column(name = "USER_MEMBERSHIP")
     @Enumerated(EnumType.STRING)
     private Membership membership;
 
-    @Column(name = "user_platform", length = 10)
+    @Column(name = "USER_PLATFORM", length = 10)
     private String platform;
 
     public User(String username) {

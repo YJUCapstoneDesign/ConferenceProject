@@ -2,6 +2,7 @@ package team.broadcast.domain.user.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.domain.user.dto.UserDto;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
@@ -19,7 +21,11 @@ public class UserService {
 
     @Transactional
     public UserDto join(UserDto userDto) throws Exception {
+        if (userDto.getEmail() == null) {
+            throw new IllegalAccessException("데이터가 들어 오지 않았습니다.");
+        }
 
+        // 이메일 중복 검사.
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new IllegalAccessException("이미 존재하는 회원입니다.");
         }
@@ -34,6 +40,8 @@ public class UserService {
                 .admin(UserRole.USER)
                 .membership(Membership.BASIC)
                 .build();
+
+        log.info("user={}", newUser);
 
         userRepository.save(newUser);
         return userDto;

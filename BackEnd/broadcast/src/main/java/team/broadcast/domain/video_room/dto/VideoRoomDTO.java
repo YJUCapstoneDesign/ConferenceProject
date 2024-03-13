@@ -1,9 +1,11 @@
-package team.broadcast.domain.video_room;
+package team.broadcast.domain.video_room.dto;
 
 
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 @Setter
@@ -26,16 +28,14 @@ public class VideoRoomDTO {
     private LocalDateTime endTime; // 방 종료시간
     private Integer activeMinute; // 방 활성화 가능 시간(분 단위) null 인 경우 무제한
 
-    // 테스트에서 아래 부분 에러 발생!!
-//  private Map<Long, ?> chatUserList = new ConcurrentHashMap<>(); // 방안에 소속되어 있는 ChatUser 들의 리스트이다.
+    private Map<Long, ?> chatUserList = new ConcurrentHashMap<>(); // 방안에 소속되어 있는 ChatUser 들의 리스트이다.
 
     public VideoRoomDTO(long roomId, String roomName, int roomPwd) {
         this.roomId = roomId;
         this.roomName = roomName;
         this.roomPwd = roomPwd;
-        if (this.roomPwd != null) {
-            secretCheck = true;
-        }
+        this.secretCheck = true;
+
     }
 
 }

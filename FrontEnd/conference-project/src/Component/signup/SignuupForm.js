@@ -7,6 +7,7 @@ import { ErrorMessage } from '@hookform/error-message';
 function SignupForm() {
     const inputLabels = ['Name', 'Email', 'Password', 'Address', 'Phone'];
     const inputPlaceholders = ['Enter to Name ', 'Enter to Email', 'Enter to Password', 'Enter to Address', 'Enter to Phone Number'];
+    const nameList = ['name', 'email', 'password', 'address', 'phone'];
 
     const {
         register,
@@ -45,7 +46,7 @@ function SignupForm() {
                             })}
                             type={label === 'Password' ? 'password' : 'text'}
                             id={`input-${index}`}
-                            name={`input-${index}`}
+                            name={`${nameList[index]}`}
                             className="w-full border border-gray-300 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 rounded-xl"
                             autoComplete="off"
                             placeholder={inputPlaceholders[index]}

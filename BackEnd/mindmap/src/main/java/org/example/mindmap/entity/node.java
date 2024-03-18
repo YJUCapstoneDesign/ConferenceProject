@@ -4,19 +4,19 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "tbl_memo")
+@Table(name = "node")
 @Getter
 @ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Memo {
+public class node {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // MySQL의 AUTO_INCREMENT를 사용
-    private Long id;
+    private Long nd_id;
 
-    @Column(length = 200, nullable = false)
-    private String memoText;
+    //@Column(length = 200, nullable = false)
+    //private String node;
 
 }

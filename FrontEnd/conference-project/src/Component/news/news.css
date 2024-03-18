@@ -89,7 +89,7 @@
 }
 
 .carousel.carousel-slider .control-arrow {
-  background: #000080 !important;
+  background: #ced4da !important;
   height: 50px !important;
   position: absolute;
   top: 50% !important;
@@ -97,7 +97,11 @@
 
 .News {
   text-align: center;
-  margin-top: -250px;
+  margin-top: -300px;
+}
+
+.News-header {
+  height: 750px;
 }
 
 @media only screen and (max-width: 934px) {

@@ -52,6 +52,28 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+      - asset/images/
+
+  fonts:
+    - family: GothicA1ExtraBold
+      fonts:
+        - asset: asset/fonts/GothicA1-ExtraBold.ttf
+    - family: GothicA1Medium
+      fonts:
+        - asset: asset/fonts/GothicA1-Medium.ttf
+    - family: GothicA1Regular
+      fonts:
+        - asset: asset/fonts/GothicA1-Regular.ttf
+    - family: GothicA1SemiBold
+      fonts:
+        - asset: asset/fonts/GothicA1-SemiBold.ttf
+    - family: GothicA1Bold
+      fonts:
+        - asset: asset/fonts/GothicA1-Bold.ttf
+
+
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

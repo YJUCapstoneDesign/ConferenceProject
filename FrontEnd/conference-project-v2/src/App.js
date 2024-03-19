@@ -1,22 +1,19 @@
 import React from 'react'
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import Testimonials from './components/Testimonials';
-import ServiceContent from './components/Service';
-import Footer from './components/Footer';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Scrollspy from './components/scrollspy';
+import PassWord from './components/password';
 
 // App
 function App() {
   return (
-    <div>
-      <Navbar />
-      <Hero />
-      <About />
-      <ServiceContent />
-      <Testimonials />
-      <Footer />
-    </div>
+    <BrowserRouter>
+            <div className="App"> 
+                <Routes>
+                    <Route path="/" element={<Scrollspy />} />
+                    <Route path="/Pass" element={<PassWord />} />
+                </Routes>
+            </div>
+    </BrowserRouter>
   );
 }
 

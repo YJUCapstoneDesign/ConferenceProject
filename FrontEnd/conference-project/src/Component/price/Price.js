@@ -1,5 +1,5 @@
 import { Button } from '@material-tailwind/react';
-import Nav from '../NavBar';
+import Nav from './NavBar';
 
 const PricingPage = () => {
     return (

@@ -12,18 +12,16 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
 @Repository
-public class JanusSessionMemoryRepository {
+public class JanusSessionRepository {
     private static Map<Long, JanusSession> sessions = new ConcurrentHashMap<>();
-    private static long sequence = 0L;
 
     public JanusSession save(JanusSession session) {
-        session.setId(++sequence);
-        sessions.put(session.getId(), session);
+        sessions.put(session.getSessionId(), session);
         return session;
     }
 
-    public Optional<JanusSession> findById(long id) {
-        return Optional.ofNullable(sessions.get(id));
+    public Optional<JanusSession> findBySessionId(long sessionId) {
+        return Optional.ofNullable(sessions.get(sessionId));
     }
 
     public List<JanusSession> findByAll() {

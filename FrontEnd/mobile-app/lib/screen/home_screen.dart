@@ -17,11 +17,11 @@ class HomeScreen extends StatelessWidget {
         bottom: true,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
-
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Expanded(child: Center(
-              child: _HomeLogo(),
+            Expanded(
+              child: Center(
+                child: _HomeLogo(),
               ),
             ),
             _HomeButton(),
@@ -40,10 +40,7 @@ class _HomeLogo extends StatelessWidget {
       child: Text(
         'UNMUTE',
         style: TextStyle(
-          color: Colors.white,
-          fontSize: 40,
-          fontFamily: 'GothicA1ExtraBold'
-        ),
+            color: Colors.white, fontSize: 40, fontFamily: 'GothicA1ExtraBold'),
       ),
     );
   }
@@ -54,10 +51,10 @@ class _HomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        children: [
-          Container(
-            margin: EdgeInsets.only(bottom: 10.0),
+        child: Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0),
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
               minimumSize: Size(350, 50),
@@ -70,15 +67,13 @@ class _HomeButton extends StatelessWidget {
             },
             child: Text(
               'Login',
-              style: TextStyle(
-                fontFamily: 'GothicA1ExtraBold'
-              ),
+              style: TextStyle(fontFamily: 'GothicA1ExtraBold'),
             ),
           ),
-          ),
-          Container(
-            margin: EdgeInsets.only(bottom: 50.0),
-          child : OutlinedButton(
+        ),
+        Container(
+          margin: EdgeInsets.only(bottom: 50.0),
+          child: OutlinedButton(
             style: OutlinedButton.styleFrom(
               minimumSize: Size(350, 50),
               shape: RoundedRectangleBorder(
@@ -88,15 +83,14 @@ class _HomeButton extends StatelessWidget {
             onPressed: () {
               print('Register Button is clicked');
             },
-            child: Text('Register',
+            child: Text(
+              'Register',
               style: TextStyle(
-                fontFamily: 'GothicA1ExtraBold'
-              ),
+                  color: Colors.white, fontFamily: 'GothicA1ExtraBold'),
             ),
           ),
-          ),
-        ],
-      )
-    );
+        ),
+      ],
+    ));
   }
 }

@@ -44,7 +44,7 @@ function ServiceContent() {
                     <h1>What are our services</h1>
                     <hr></hr>
                     <p>The best conference program with various features</p>
-                    <a href="/" className="slider-btn">
+                    <a href="/Ourservice" className="slider-btn">
                         more information
                     </a>
                 </div>

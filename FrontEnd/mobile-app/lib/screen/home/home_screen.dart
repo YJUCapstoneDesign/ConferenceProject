@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobileapp/screen/login/login_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -15,17 +16,17 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         top: true,
         bottom: true,
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            children: [
-              SizedBox(width: 20), // 왼쪽 여백
-              _HomeLogo(),
-              SizedBox(width: 20), // 로고와 버튼 사이의 간격 조정
-              _HomeButton(),
-              SizedBox(width: 20), // 오른쪽 여백
-            ],
-          ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: Center(
+                child: _HomeLogo(),
+              ),
+            ),
+            _HomeButton(),
+          ],
         ),
       ),
     );
@@ -50,43 +51,50 @@ class _HomeLogo extends StatelessWidget {
 class _HomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return Center(
+        child: Column(
       children: [
-        ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            minimumSize: Size(350, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        Container(
+          margin: EdgeInsets.only(bottom: 10.0),
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              minimumSize: Size(350, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-          ),
-          onPressed: () {
-            print('Login Button is clicked');
-          },
-          child: Text(
-            'Login',
-            style: TextStyle(fontFamily: 'GothicA1ExtraBold'),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+            child: Text(
+              'Login',
+              style: TextStyle(fontFamily: 'GothicA1ExtraBold'),
+            ),
           ),
         ),
-        SizedBox(height: 10), // 버튼 사이의 간격 조정
-        OutlinedButton(
-          style: OutlinedButton.styleFrom(
-            minimumSize: Size(350, 50),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(10),
+        Container(
+          margin: EdgeInsets.only(bottom: 50.0),
+          child: OutlinedButton(
+            style: OutlinedButton.styleFrom(
+              minimumSize: Size(350, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
             ),
-          ),
-          onPressed: () {
-            print('Register Button is clicked');
-          },
-          child: Text(
-            'Register',
-            style:
-                TextStyle(color: Colors.white, fontFamily: 'GothicA1ExtraBold'),
+            onPressed: () {
+              print('Register Button is clicked');
+            },
+            child: Text(
+              'Register',
+              style: TextStyle(
+                  color: Colors.white, fontFamily: 'GothicA1ExtraBold'),
+            ),
           ),
         ),
       ],
-    );
+    ));
   }
 }

@@ -12,14 +12,45 @@ class LoginScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            _BackButton(),
             _Title(),
             _InputBox(),
+            _LoginButton(),
           ],
         ),
       ),
     );
   }
 }
+
+class _BackButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Container(
+          margin: EdgeInsets.only(top: 20.0, left: 20.0, bottom: 30.0),
+          child: IconButton(
+            style: IconButton.styleFrom(
+                backgroundColor: Colors.transparent,
+                side: BorderSide(
+                  color: Colors.white,
+                  width: 1.0,
+                  style: BorderStyle.solid,
+                )
+            ),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+            onPressed: () {},
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 
 class _Title extends StatelessWidget {
   @override
@@ -109,7 +140,44 @@ class _InputBox extends StatelessWidget {
               ),
             ),
           ),
+          Container(
+            margin: EdgeInsets.only(top: 10.0, left: 200.0),
+            child: Text(
+              'Forgot your password?',
+              style: TextStyle(
+                color: Colors.white,
+                fontFamily: 'GothicA1ExtraBold',
+                fontSize: 12.0,
+              ),
+            ),
+          ),
         ],
+      ),
+    );
+  }
+}
+
+class _LoginButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(top: 30.0),
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          minimumSize: Size(350, 50),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
+        onPressed: () {},
+        child: Text(
+          'Login',
+          style: TextStyle(
+            color: Colors.white,
+            fontFamily: 'GothicA1ExtraBold',
+            fontSize: 16.0,
+          ),
+        ),
       ),
     );
   }

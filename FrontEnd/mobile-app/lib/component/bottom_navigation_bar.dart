@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 class MyCustomBottomNavigationBar extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

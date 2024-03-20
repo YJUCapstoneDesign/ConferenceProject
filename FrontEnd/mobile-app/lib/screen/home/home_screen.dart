@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobileapp/screen/login/login_screen.dart';
+import 'package:mobileapp/screen/signup/signup_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -85,7 +86,10 @@ class _HomeButton extends StatelessWidget {
               ),
             ),
             onPressed: () {
-              print('Register Button is clicked');
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SignUpScreen()),
+              );
             },
             child: Text(
               'Register',

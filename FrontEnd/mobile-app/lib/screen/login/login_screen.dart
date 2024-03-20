@@ -1,6 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobileapp/screen/home/home_screen.dart';
+import 'package:mobileapp/component/back_button.dart';
+import 'package:mobileapp/screen/signup/signup_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   @override
@@ -17,7 +19,7 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _BackButtonWidget(),
+                BackButtonWidget(),
                 _TitleWidget(),
                 _InputBoxWidget(),
                 _LoginButtonWidget(),
@@ -37,41 +39,6 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-// 뒤로 가기 버튼
-class _BackButtonWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Container(
-          margin: EdgeInsets.only(top: 20.0, left: 30.0, bottom: 30.0),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8.0),
-            border: Border.all(
-              color: Colors.white,
-              width: 2.0,
-              style: BorderStyle.solid,
-            ),
-          ),
-          width: 45.0,
-          height: 45.0,
-          alignment: Alignment.center, // Center align the content of the container
-          child: IconButton(
-            iconSize: 24.0,
-            icon: Icon(
-              Icons.chevron_left,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ],
     );
   }
 }
@@ -383,7 +350,7 @@ class _RegisterTextButtonWidget extends StatelessWidget {
                   recognizer: TapGestureRecognizer()..onTap = () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()),
+                      MaterialPageRoute(builder: (context) => SignUpScreen()),
                     );
                   },
                 ),

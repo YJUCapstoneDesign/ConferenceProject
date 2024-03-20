@@ -7,7 +7,7 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @Getter
 @ToString
-public class JanusError extends Throwable {
+public class JanusError extends Exception {
     private final Integer code;
     private final String reason;
 

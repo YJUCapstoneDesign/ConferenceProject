@@ -13,11 +13,4 @@ public class VideoRoomDestroyRequest {
     private final String secret;
     private final String request = "destroy";
 
-    @Override
-    public String toString() {
-        return "AudioBridgeCreateRoomRequest[" +
-                "room=" + room + ", " +
-                "secret=" + secret + ", " +
-                "request=" + request + ']';
-    }
 }

@@ -1,6 +1,5 @@
 package team.broadcast.domain.video_room.service;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,16 +7,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 import team.broadcast.domain.janus.dto.JanusRequest;
 import team.broadcast.domain.janus.dto.JanusResponse;
 import team.broadcast.domain.janus.dto.JanusSession;
 import team.broadcast.domain.janus.enums.JanusPlugin;
-import team.broadcast.domain.janus.handle.VideoRoomHandle;
+import team.broadcast.domain.janus.repository.JanusSessionRepository;
 import team.broadcast.domain.janus.service.JanusClient;
 import team.broadcast.domain.video_room.dto.*;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class VideoRoomServiceTest {
@@ -25,17 +21,16 @@ class VideoRoomServiceTest {
     @Autowired
     private VideoRoomService videoRoomService;
     @Autowired
+    private JanusSessionRepository sessionRepository;
+    @Autowired
     private JanusClient client;
-    private VideoRoomHandle handle;
 
 
     // 초기화 작업
     @BeforeEach
     public void init() throws Exception {
-        JanusSession session = JanusSession.builder()
-                .id(1L)
-                .UserId(1L)
-                .build();
+        JanusSession session = new JanusSession();
+        session.setUserId(1L);
         JanusResponse sessionResponse = client.createSession().block();
         session.setSessionId(sessionResponse.getDataId());
         JsonObject json = new JsonObject();
@@ -43,8 +38,9 @@ class VideoRoomServiceTest {
 
         JanusRequest request = new JanusRequest("attach", JanusRequest.newTransaction(), session.getSessionId(), null, json);
         JanusResponse response = client.send(request).block();
-        handle = new VideoRoomHandle(session, response.getDataId(), client, new Gson());
-        videoRoomService.setHandle(handle);
+        session.setHandleId(response.getDataId());
+
+        sessionRepository.save(session);
     }
 
     @Test
@@ -57,7 +53,7 @@ class VideoRoomServiceTest {
         VideoRoomDTO room = videoRoomService.createRoom(1L, createRequest);
 
         // 방 삭제
-        VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(roomId, secret);
+        VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(room.getRoomId(), room.getRoomPwd());
         videoRoomService.destroyRoom(videoRoomDestroyRequest);
     }
 
@@ -74,8 +70,8 @@ class VideoRoomServiceTest {
 
         // 방 수정
         VideoRoomEditRequest editRequest = VideoRoomEditRequest.builder()
-                .room(roomId)
-                .secret(secret)
+                .room(room.getRoomId())
+                .secret(room.getRoomPwd())
                 .newSecret(newSecret)
                 .build();
 
@@ -83,7 +79,7 @@ class VideoRoomServiceTest {
 
 
         // 방 삭제
-        VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(roomId, newSecret);
+        VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(updatedRoom.getRoomId(), updatedRoom.getRoomPwd());
         videoRoomService.destroyRoom(videoRoomDestroyRequest);
     }
 }

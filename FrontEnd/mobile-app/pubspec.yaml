@@ -52,6 +52,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - asset/images/
+
   fonts:
     - family: GothicA1ExtraBold
       fonts:
@@ -68,6 +71,9 @@ flutter:
     - family: GothicA1Bold
       fonts:
         - asset: asset/fonts/GothicA1-Bold.ttf
+    - family: RobotoMedium
+      fonts:
+        - asset: asset/fonts/Roboto-Medium.ttf
 
 
 

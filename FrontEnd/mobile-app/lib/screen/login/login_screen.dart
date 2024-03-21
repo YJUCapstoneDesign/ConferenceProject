@@ -24,15 +24,9 @@ class LoginScreen extends StatelessWidget {
                 _InputBoxWidget(),
                 _LoginButtonWidget(),
                 _LineWidget(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    _KakaoButtonWidget(),
-                    _NaverButtonWidget(),
-                    _GoogleButtonWidget(),
-                  ],
-                ),
+                _KakaoButtonWidget(),
+                _NaverButtonWidget(),
+                _GoogleButtonWidget(),
                 _RegisterTextButtonWidget(),
               ],
             ),
@@ -235,7 +229,7 @@ class _KakaoButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 25.0, right: 25.0),
+      margin: EdgeInsets.only(top: 25.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         color: Color(0xFF0B0B5A),
@@ -265,7 +259,7 @@ class _NaverButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 25.0, right: 25.0),
+      margin: EdgeInsets.only(top: 25.0),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10.0),
         color: Color(0xFF0B0B5A),

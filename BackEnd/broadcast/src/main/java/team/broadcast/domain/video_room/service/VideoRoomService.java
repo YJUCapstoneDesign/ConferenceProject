@@ -2,24 +2,21 @@ package team.broadcast.domain.video_room.service;
 
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-import team.broadcast.domain.janus.dto.JanusRequest;
 import team.broadcast.domain.janus.dto.JanusResponse;
 import team.broadcast.domain.janus.dto.JanusSession;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.repository.JanusSessionRepository;
 import team.broadcast.domain.janus.service.JanusClient;
-import team.broadcast.domain.video_room.dto.*;
+import team.broadcast.domain.video_room.dto.VideoRoomCreateRequest;
+import team.broadcast.domain.video_room.dto.VideoRoomDTO;
+import team.broadcast.domain.video_room.dto.VideoRoomDestroyRequest;
+import team.broadcast.domain.video_room.dto.VideoRoomEditRequest;
 import team.broadcast.domain.video_room.repository.VideoRoomRepository;
-
-import java.time.Duration;
 
 @Service
 @Slf4j
@@ -106,17 +103,4 @@ public class VideoRoomService {
 
         videoRoomRepository.delete(payload.getRoom());
     }
-
-//    @Transactional
-//    public void join(VideoRoomJoinPublisherRequest payload) {
-//        VideoRoomDTO room = videoRoomRepository.findById(payload.getRoom());
-//
-//        JanusSession session = sessionRepository.findByUserId(room.getPublisherId())
-//                .orElseThrow(() -> new IllegalArgumentException(SESSION_NOT_FOUND_EXCEPTION));
-//
-//        janusClient.sendMessage(session.getSessionId(), session.getHandleId(), payload)
-//                .subscribe(response -> log.info("join publisher response={}", response),
-//                        error -> log.error("join error={}", error));
-//    }
-
 }

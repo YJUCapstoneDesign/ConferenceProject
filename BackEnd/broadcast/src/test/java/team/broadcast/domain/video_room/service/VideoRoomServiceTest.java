@@ -13,7 +13,10 @@ import team.broadcast.domain.janus.dto.JanusSession;
 import team.broadcast.domain.janus.enums.JanusPlugin;
 import team.broadcast.domain.janus.repository.JanusSessionRepository;
 import team.broadcast.domain.janus.service.JanusClient;
-import team.broadcast.domain.video_room.dto.*;
+import team.broadcast.domain.video_room.dto.VideoRoomCreateRequest;
+import team.broadcast.domain.video_room.dto.VideoRoomDTO;
+import team.broadcast.domain.video_room.dto.VideoRoomDestroyRequest;
+import team.broadcast.domain.video_room.dto.VideoRoomEditRequest;
 
 @SpringBootTest
 class VideoRoomServiceTest {
@@ -46,14 +49,14 @@ class VideoRoomServiceTest {
     @Test
     @DisplayName("방 생성")
     void createRoom() throws Exception {
-        Long roomId = 4000L;
-        String secret = "1234";
+        Long roomId = 5678L;
+        String secret = "5678";
         // 방 생성
-        VideoRoomCreateRequest createRequest = new VideoRoomCreateRequest(roomId, secret, secret);
+        VideoRoomCreateRequest createRequest = new VideoRoomCreateRequest(roomId, secret, null);
         VideoRoomDTO room = videoRoomService.createRoom(1L, createRequest);
 
-        // 방 삭제
-        VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(room.getRoomId(), room.getRoomPwd());
+//        // 방 삭제
+        VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(roomId, secret);
         videoRoomService.destroyRoom(videoRoomDestroyRequest);
     }
 

@@ -1,27 +1,29 @@
 import React from 'react';
 
+
 const Signin = () => {
     return (
         <div className='Sign-in'>
-            <div className="py-40">
+            <div className="py-32">
               <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl">
                     <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage: "url('https://source.unsplash.com/random/?conference')"}}></div>
                     <div className="w-full p-8 lg:w-1/2">
-                        <h2 className="text-2xl font-bold text-gray-700 text-left">Welcome!</h2>
+                        <a href="/" className=''><p className='text-xs font-mono text-decoration-line: underline mb-5'> Back to Website</p></a>
+                        <h2 className="text-2xl font-bold text-gray-700 font-mono text-left">Welcome!</h2>
                         {/* <p className="text-xl text-gray-600 text-center">Welcome back!</p> */}
                         <div className="mt-4">
-                            <label className="block text-gray-700 text-sm font-bold mb-2">Email</label>
-                            <input className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded-3xl py-2 px-4 block w-full appearance-none" type="email" />
+                            <label className="block text-gray-700 text-sm font-bold font-mono mb-2">Email</label>
+                            <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none" type="email" />
                         </div>
                         <div className="mt-4">
                             <div className="flex justify-between">
-                                <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                                <label className="block text-gray-700 text-sm  font-mono font-bold mb-2">Password</label>
                             </div>
-                            <input className="bg-gray-200 text-gray-700 focus:outline-none focus:shadow-outline border border-gray-300 rounded-3xl py-2 px-4 block w-full appearance-none" type="password" />
+                            <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none" type="password" />
                             <a href="/" className="text-xs text-gray-500">Forget Password?</a>
                         </div>
                         <div className="mt-8">
-                            <button className="bg-gray-700 text-white font-bold py-2 px-4 w-full rounded-3xl hover:bg-gray-600 text-base">Login</button>
+                            <button className="bg-gray-950 text-white font-bold py-2 px-4 w-full rounded-3xl hover:bg-gray-700 text-base">Login</button>
                         </div>
                         <div className="mt-4 flex items-center justify-between">
                             <span className="border-b w-1/5 lg:w-1/4"></span>
@@ -43,7 +45,7 @@ const Signin = () => {
                             <div className="px-4 py-2">
                                 <img className="h-6 w-6" src="../images/naver.png" alt="네이버"/>
                             </div>
-                            <p className="px-4 py-2 w-5/6 text-center text-gray-600 font-bold text-base">Sign in with Google</p>
+                            <p className="px-4 py-2 w-5/6 text-center text-gray-600 font-bold text-base">Sign in with Naver</p>
                         </a>
                         <a href="/" className="flex items-center justify-center mt-4 text-white rounded-3xl shadow-md hover:bg-gray-100">
                             <div className="px-4 py-2">
@@ -54,7 +56,7 @@ const Signin = () => {
                                     <path d="M36.3425 16.7358H35V16.6667H20V23.3333H29.4192C28.7592 25.1975 27.56 26.805 26.0133 27.9758C26.0142 27.975 26.015 27.975 26.0158 27.9742L31.1742 32.3392C30.8092 32.6708 36.6667 28.3333 36.6667 20C36.6667 18.8825 36.5517 17.7917 36.3425 16.7358Z" fill="#1976D2"/>
                                 </svg>
                             </div>
-                            <p className="px-4 py-2 w-5/6 text-center text-gray-600 font-bold text-base">Sign in with Google</p>
+                            <p className="px-4 py-2 w-5/6 text-center text-gray-600 font-bold text-base">Sign in with Kakao</p>
                         </a>
                     </div>
                 </div>

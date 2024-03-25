@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import {Link} from 'react-scroll'
 import { FaBars, FaTimes } from 'react-icons/fa'
 
-import './Navbar.css'
+import './css/Navbar.css'
 
 const Navbar = () => {
 

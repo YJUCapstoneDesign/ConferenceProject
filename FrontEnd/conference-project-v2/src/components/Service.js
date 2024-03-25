@@ -5,7 +5,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, EffectCoverflow, Autoplay } from 'swiper/modules';
 
 import 'swiper/css/bundle';
-import './Service.css';
+import './css/Service.css';
 
 const slider = [
     {
@@ -88,9 +88,6 @@ function ServiceContent() {
                         <div>
                             <h2>{data.title}</h2>
                             <p>{data.description}</p>
-                            <a href={`${data.url}`} target="_blank" className="slider-btn">
-                                explore
-                            </a>
                         </div>
                     </SwiperSlide>
                 ))}

@@ -4,7 +4,7 @@ import Janus from "janus-gateway"
 const JanusVideoRoom = ({ children, janus, roomId }) => {
   useEffect(() => {
     if (janus) {
-      //TODO : This is a sample code. You should implement your own logic.
+      
     }
   }, [janus])
   return (

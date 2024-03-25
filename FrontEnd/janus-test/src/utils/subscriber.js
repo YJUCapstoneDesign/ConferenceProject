@@ -71,11 +71,10 @@ export function subscribeRemoteFeed(janus, opaqueId, room, id, pvtId, display, a
       Janus.log("Janus says this WebRTC PeerConnection (feed #" + remoteFeed.rfindex + ") is " + (on ? "up" : "down") + " now");
     },
 
-    onlocalstream: function (stream) {
+    onlocaltrack: function (track, on) {
       // The subscriber stream is recvonly, we don't expect anything here
     },
 
-    // TODO: Modify this function remove jquery and use react refs
     onremotetrack: function (track, mid, on, metadata) {
       Janus.debug(
         "Remote feed #" + remoteFeed.rfindex +
@@ -86,27 +85,13 @@ export function subscribeRemoteFeed(janus, opaqueId, room, id, pvtId, display, a
       let stream = null;
       // If we're here, a new track was added
       if (track.kind === "audio") {
-        // New audio track: create a stream out of it, and use a hidden <audio> element
         stream = new MediaStream([track]);
         Janus.log("Created remote audio stream:", stream);
-        // Janus.attachMediaStream($('#remotevideo' + remoteFeed.rfindex + '-' + mid).get(0), stream);
 
       } else {
 
         stream = new MediaStream([track]);
         Janus.log("Created remote video stream:", stream);
-        // Janus.attachMediaStream($('#remotevideo' + remoteFeed.rfindex + '-' + mid).get(0), stream);
-        // Note: we'll need this for additional videos too
-        // if (!bitrateTimer[remoteFeed.rfindex]) {
-        //   $('#curbitrate' + remoteFeed.rfindex).removeClass('hide').removeClass('hide');
-        //   bitrateTimer[remoteFeed.rfindex] = setInterval(function () {
-        //     if (!$("#videoremote" + remoteFeed.rfindex + ' video').get(0))
-        //       return;
-        //     // Display updated bitrate, if supported
-        //     let bitrate = remoteFeed.getBitrate();
-        //     $('#curbitrate' + remoteFeed.rfindex).text(bitrate);
-        //   }, 1000);
-        // }
 
       }
       callback(remoteFeed, "onremotetrack", stream);

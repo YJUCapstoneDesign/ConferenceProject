@@ -36,7 +36,7 @@ const Navbar = () => {
                         <Link to="notice" spy={true} smooth={true} offset={-150} duration={500} onClick={closeMenu}>Notice</Link>
                     </li>
                     <li className='nav-item'>
-                        <a href='/'>Login</a>
+                        <a href='/Login'>Login</a>
                     </li>
                 </ul>
             </nav>

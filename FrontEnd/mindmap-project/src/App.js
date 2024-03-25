@@ -6,19 +6,21 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: [
-      ],
-      edges: [
-        
-      ]
+      nodes: [],
+      edges: []
     };
   }
 
 // 노드 추가
 handleAddNode = () => {
-  const label = prompt('Enter label for new node');
+  const label = prompt('Enter label for new node (한글 10글자, 영어 15글자):');
   if (!label || !/^[a-zA-Z가-힣0-9\s]*$/.test(label)) {
-    alert('유효하지 않은 노드 레이블입니다.');
+    alert('Invalid node label.');
+    return;
+  }
+  let maxCharacters = /[a-zA-Z]/.test(label) ? 15 : 10;
+  if (label.length > maxCharacters) {
+    alert(`Node label should be maximum ${maxCharacters} characters long.`);
     return;
   }
   const id = label.toLowerCase().replace(/\s+/g, '-');
@@ -28,20 +30,17 @@ handleAddNode = () => {
   }));
 };
 
-  handleRemoveNode = () => {
-    const label = prompt('Enter label for node to remove');
-    this.setState(prevState => ({
-      nodes: prevState.nodes.filter(node => node.data.label !== label),
-      edges: prevState.edges.filter(edge => edge.data.source !== label && edge.data.target !== label)
-    }));
-  };
-
 // 노드 업데이트
 handleUpdateNode = () => {
-  const label = prompt('Enter label for node to edit');
-  const newLabel = prompt('Enter new label for node');
+  const label = prompt('Enter label for node to edit (한글 10글자, 영어 15글자):');
+  const newLabel = prompt('Enter new label for node (한글 10글자, 영어 15글자):');
   if (!label || !newLabel || !/^[a-zA-Z가-힣0-9\s]*$/.test(newLabel)) {
-    alert('유효하지 않은 노드 레이블입니다.');
+    alert('Invalid node label.');
+    return;
+  }
+  let maxCharacters = /[a-zA-Z]/.test(newLabel) ? 15 : 10;
+  if (newLabel.length > maxCharacters) {
+    alert(`Node label should be maximum ${maxCharacters} characters long.`);
     return;
   }
   this.setState(prevState => ({
@@ -53,6 +52,7 @@ handleUpdateNode = () => {
     })
   }));
 };
+
 
   // 노드 연결
   handleConnectNodes = () => {

@@ -1,0 +1,20 @@
+.node {
+    label: data(label);
+    background-color: #666;
+    color: #fff;
+    text-valign: center;
+    text-halign: center;
+    font-size: 12px;
+    width: label;
+    height: label;
+}
+
+.edge {
+    label: data(label);
+    curve-style: bezier;
+    target-arrow-shape: triangle;
+    line-color: #ccc;
+    target-arrow-color: #ccc;
+    font-size: 9px;
+    width: 2;
+}

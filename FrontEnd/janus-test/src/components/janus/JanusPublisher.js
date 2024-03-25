@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Janus from 'janus-gateway';
 import { publishToRoom, publishOwnFeed, unpublishOwnFeed } from '../../utils/publisher';
 
-const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPubPvtId, children }) => {
+const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPubPvtId, render }) => {
   const [playerState, setPlayerState] = useState("Ready");
   const [isMuted, setIsMuted] = useState(false);
   const [sfutest, setSfuTest] = useState(null);
@@ -81,22 +81,22 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
     sfutest.send({ "message": { "request": "configure", "bitrate": bitrate } });
   }
 
-  const playerElement = children ? children : <JanusPlayer />;
+  // const playerElement = children ? children : <JanusPlayer />;
 
   return (
     <div className="janus-publisher">
       <div className="janus-video">
-        {React.cloneElement(playerElement, {
-          ref: videoArea,
-          isPublisher: true,
-          status: playerState,
-          isMuted: isMuted,
-          onStart: onStartClick,
-          onStop: onStopClick,
-          onMute: onMuteClick,
-          onUnmute: onUnMuteClick,
-          onBandwidthChange: onBandwidthChange
-        })}
+      {render({
+        videoRef: videoArea,
+        isPublisher: true,
+        status: playerState,
+        isMuted,
+        onStartClick,
+        onStopClick,
+        onMuteClick,
+        onUnMuteClick,
+        onBandwidthChange
+      })}
       </div>
     </div>
   )

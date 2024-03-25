@@ -198,31 +198,6 @@ export function publishOwnFeed(sfutest, useAudio) {
         }
       }
     });
-
-  // Publish our stream
-  // sfutest.createOffer(
-  //   {
-  //     // Add data:true here if you want to publish datachannels as well
-  // 		media: { audioRecv: false, videoRecv: false, audioSend: useAudio, videoSend: true },
-  // 		simulcast: false,
-
-  //     success: function (jsep) {
-  //       Janus.debug("Got publisher SDP!");
-  //       Janus.debug(jsep);
-
-  //       var publish = { "request": "configure", "audio": useAudio, "video": true };
-  //       sfutest.send({ "message": publish, "jsep": jsep });
-  //     },
-
-  //     error: function (error) {
-  //       Janus.error("WebRTC error:", error);
-  //       if (useAudio) {
-  //         publishOwnFeed(sfutest, false);
-  //       } else {
-  //         Janus.log("Error publishing feed: " + error);
-  //       }
-  //     }
-  //   });
 }
 
 

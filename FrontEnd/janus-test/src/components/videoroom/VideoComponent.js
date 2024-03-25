@@ -20,6 +20,14 @@ const VideoComponent = () => {
     const [pubPvtId, setPubPvtId] = React.useState(null);
     const [show, setShow] = React.useState(false);
 
+    // 새로고침 방지
+    useEffect(() => {
+        window.onbeforeunload = function () {
+            return "떠나시겠습니까?";
+        }
+    }, []);
+
+
     const handleShow = () => {
 
         if (!room || !username) {
@@ -30,13 +38,13 @@ const VideoComponent = () => {
             alert("Room Id는 숫자만 입력 가능합니다.");
             return;
         }
-        setRoom(Number(room));
+        setRoom(Number(room)); // room을 숫자로 변환
         setShow(true);
     }
 
     const handleRoom = (event) => {
         const value = event.target.value;
-        if (/^\d*$/.test(value)) {
+        if (/^\d*$/.test(value)) { // 숫자만 입력 가능하도록 정규식 검사
             setRoom(value);
         }
     };
@@ -44,6 +52,12 @@ const VideoComponent = () => {
     const handleUsername = (e) => {
         setUsername(e.target.value);
     }
+
+    // TODO: 사용자가 입장할 때 마다 그에 맞는 janus subscriber를 생성하도록 수정
+
+    const render = [1,2,3,4,5].map((v) => {
+        return (<div key={v}>hello-{v}</div>)
+    })
 
 
 
@@ -59,27 +73,48 @@ const VideoComponent = () => {
             </div>
             {show &&
                 <JanusComponent server={janusServer}>
-                    <JanusVideoRoom>
-                        <JanusPublisher
-                            opaqueId={opaqueId}
-                            room={room}
-                            username={username}
-                            // setRoom={setRoom}
-
-                            setPubId={setPubId}
-                            setPubPvtId={setPubPvtId}
-                        >
-                            <JanusPlayer readyText="Something" />
-                        </JanusPublisher>
-                        <JanusSubscriber
-                            opaqueId={opaqueId}
-                            room={room}
-                            pubId={pubId}
-                            pubPvtId={pubPvtId}
-                        >
-                            <JanusPlayer readyText="Something" />
-                        </JanusSubscriber>
-                    </JanusVideoRoom>
+                    <JanusVideoRoom
+                        renderChildren={({ janus, roomId }) => (
+                            <>
+                                <JanusPublisher
+                                    janus={janus}
+                                    room={room}
+                                    opaqueId={opaqueId}
+                                    username={username}
+                                    setPubId={setPubId}
+                                    setPubPvtId={setPubPvtId}
+                                    render={({ videoRef, isPublisher, status, onStartClick, onStopClick, onMuteClick, onUnMuteClick, onBandwidthChange }) => (
+                                        <JanusPlayer
+                                            ref={videoRef}
+                                            isPublisher={isPublisher}
+                                            status={status}
+                                            onStart={onStartClick}
+                                            onStop={onStopClick}
+                                            onMute={onMuteClick}
+                                            onUnmute={onUnMuteClick}
+                                            onBandwidthChange={onBandwidthChange}
+                                        />
+                                    )}
+                                />
+                                <JanusSubscriber
+                                    janus={janus}
+                                    room={room}
+                                    opaqueId={opaqueId}
+                                    pubId={pubId}
+                                    pubPvtId={pubPvtId}
+                                    render={({ videoRef, isPublisher, status }) => (
+                                        <JanusPlayer
+                                            ref={videoRef}
+                                            isPublisher={isPublisher}
+                                            status={status}
+                                        // Plus any other props JanusPlayer needs
+                                        />
+                                    )}
+                                />
+                                {render}
+                            </>
+                        )}
+                    />
                     {/* Janus Chat 부분이 들어올 곳 */}
                 </JanusComponent>
             }

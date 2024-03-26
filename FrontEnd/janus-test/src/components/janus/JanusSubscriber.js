@@ -14,6 +14,8 @@ const JanusSubscriber = ({ janus, opaqueId, room, pubId, pubPvtId, render }) => 
 
   const remoteFeedCallback = (_remoteFeed, eventType, data) => {
     setRemoteFeed(_remoteFeed);
+
+
     if (eventType === "onremotetrack") {
       mystream = data;
       const videoContainer = videoArea.current;
@@ -26,7 +28,8 @@ const JanusSubscriber = ({ janus, opaqueId, room, pubId, pubPvtId, render }) => 
       }
       var videoTracks = mystream.getVideoTracks();
       if (videoTracks === null || videoTracks === undefined || videoTracks.length === 0) {
-        setPlayerState("Error");
+        // setPlayerState("Error");
+        setPlayerState("Paused");
       }
     } else if (eventType === "oncleanup") {
       setPlayerState("Paused");

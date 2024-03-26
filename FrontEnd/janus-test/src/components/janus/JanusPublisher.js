@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Janus from 'janus-gateway';
 import { publishToRoom, publishOwnFeed, unpublishOwnFeed } from '../../utils/publisher';
 
-const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPubPvtId, render }) => {
+const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPubPvtId, setFeeds, render }) => {
   const [playerState, setPlayerState] = useState("Ready");
   const [isMuted, setIsMuted] = useState(false);
   const [sfutest, setSfuTest] = useState(null);
@@ -16,10 +16,12 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
         (_sfutest, eventType, data) => {
           setSfuTest(_sfutest);
 
-          console.log("### eventType ", eventType);
-
           if (eventType == "joined") {
             const { id, private_id } = data;
+
+            // 이미 접속한 publisher의 id를 저장
+            const publishers = data.publishers;
+            setFeeds(publishers);
 
 
             setPubId(id);

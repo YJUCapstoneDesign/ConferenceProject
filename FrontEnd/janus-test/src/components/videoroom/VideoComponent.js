@@ -18,14 +18,8 @@ const VideoComponent = () => {
     const [username, setUsername] = React.useState('');
     const [pubId, setPubId] = React.useState(null);
     const [pubPvtId, setPubPvtId] = React.useState(null);
+    const [feeds, setFeeds] = React.useState([]); // publisher의 feeds를 저장
     const [show, setShow] = React.useState(false);
-
-    // 새로고침 방지
-    useEffect(() => {
-        window.onbeforeunload = function () {
-            return "떠나시겠습니까?";
-        }
-    }, []);
 
 
     const handleShow = () => {
@@ -53,14 +47,6 @@ const VideoComponent = () => {
         setUsername(e.target.value);
     }
 
-    // TODO: 사용자가 입장할 때 마다 그에 맞는 janus subscriber를 생성하도록 수정
-
-    const render = [1,2,3,4,5].map((v) => {
-        return (<div key={v}>hello-{v}</div>)
-    })
-
-
-
     return (
         <Fragment>
             <div>
@@ -83,6 +69,7 @@ const VideoComponent = () => {
                                     username={username}
                                     setPubId={setPubId}
                                     setPubPvtId={setPubPvtId}
+                                    setFeeds={setFeeds}
                                     render={({ videoRef, isPublisher, status, onStartClick, onStopClick, onMuteClick, onUnMuteClick, onBandwidthChange }) => (
                                         <JanusPlayer
                                             ref={videoRef}
@@ -96,22 +83,25 @@ const VideoComponent = () => {
                                         />
                                     )}
                                 />
-                                <JanusSubscriber
-                                    janus={janus}
-                                    room={room}
-                                    opaqueId={opaqueId}
-                                    pubId={pubId}
-                                    pubPvtId={pubPvtId}
-                                    render={({ videoRef, isPublisher, status }) => (
-                                        <JanusPlayer
-                                            ref={videoRef}
-                                            isPublisher={isPublisher}
-                                            status={status}
-                                        // Plus any other props JanusPlayer needs
-                                        />
-                                    )}
-                                />
-                                {render}
+                                {feeds.map((feed) => (
+                                    <JanusSubscriber
+                                        key={feed.id}
+                                        janus={janus}
+                                        room={room}
+                                        opaqueId={opaqueId}
+                                        pubId={feed.id}
+                                        pubPvtId={pubPvtId}
+                                        render={({ videoRef, isPublisher, status }) => (
+                                            <JanusPlayer
+                                                ref={videoRef}
+                                                isPublisher={isPublisher}
+                                                status={status}
+                                            // Plus any other props JanusPlayer needs
+                                            />
+                                        )}
+                                    />
+                                ))
+                                }
                             </>
                         )}
                     />

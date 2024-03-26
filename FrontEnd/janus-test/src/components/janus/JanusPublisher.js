@@ -27,28 +27,29 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
             setPubId(id);
             setPubPvtId(private_id); // publisher의 id와 private_id를 저장
 
+            // setPlayerState("Live");
             setPlayerState("Paused");
-          }else if(eventType === "onlocaltrack"){
-              mystream = data;
-              Janus.log(" ::: Got a local stream ::: ", mystream);
-              const videoContainer = videoArea.current;
-              const videoPlayer = videoContainer.querySelector(".janus-video-player")
+          } else if (eventType === "onlocaltrack") {
+            mystream = data;
+            Janus.log(" ::: Got a local stream ::: ", mystream);
+            const videoContainer = videoArea.current;
+            const videoPlayer = videoContainer.querySelector(".janus-video-player")
 
-              Janus.attachMediaStream(videoPlayer, mystream);
-              if (_sfutest.webrtcStuff.pc.iceConnectionState !== "completed" &&
-                  _sfutest.webrtcStuff.pc.iceConnectionState !== "connected") {
-                  setPlayerState("Live");
-              }
-              var videoTracks = mystream.getVideoTracks();
-              if (videoTracks === null || videoTracks === undefined || videoTracks.length === 0) {
-                  setPlayerState("Error");
-              }
-          }else if(eventType === "oncleanup"){
-              setPlayerState("Paused");
-              setIsMuted(false);
-          }else if(eventType === "error"){
+            Janus.attachMediaStream(videoPlayer, mystream);
+            if (_sfutest.webrtcStuff.pc.iceConnectionState !== "completed" &&
+              _sfutest.webrtcStuff.pc.iceConnectionState !== "connected") {
+              setPlayerState("Live");
+            }
+            var videoTracks = mystream.getVideoTracks();
+            if (videoTracks === null || videoTracks === undefined || videoTracks.length === 0) {
               setPlayerState("Error");
-              setIsMuted(false);
+            }
+          } else if (eventType === "oncleanup") {
+            setPlayerState("Paused");
+            setIsMuted(false);
+          } else if (eventType === "error") {
+            setPlayerState("Error");
+            setIsMuted(false);
           }
         }
       );
@@ -88,17 +89,17 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
   return (
     <div className="janus-publisher">
       <div className="janus-video">
-      {render({
-        videoRef: videoArea,
-        isPublisher: true,
-        status: playerState,
-        isMuted,
-        onStartClick,
-        onStopClick,
-        onMuteClick,
-        onUnMuteClick,
-        onBandwidthChange
-      })}
+        {render({
+          videoRef: videoArea,
+          isPublisher: true,
+          status: playerState,
+          isMuted,
+          onStartClick,
+          onStopClick,
+          onMuteClick,
+          onUnMuteClick,
+          onBandwidthChange
+        })}
       </div>
     </div>
   )

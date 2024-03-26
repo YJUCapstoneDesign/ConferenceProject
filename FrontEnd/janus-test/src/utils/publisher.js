@@ -6,8 +6,6 @@ export function publishToRoom(janus, opaqueId, room, pin, username, isPublisher,
   let mystream = null; // 사용자의 미디어 스트림이 저장될 변수
   let localTracks = {};
 
-  console.log("### isPublisher", isPublisher)
-  // console.log("callback", typeof callback)
 
   // Janus 객체가 없으면 종료
   if (!janus) {
@@ -74,6 +72,7 @@ export function publishToRoom(janus, opaqueId, room, pin, username, isPublisher,
       const event = msg.videoroom;
       if (event != undefined && event != null) {
         if (event === "joined") {
+          publishOwnFeed(sfutest, true);
           callback(sfutest, "joined", msg)
         } else if (event === "destroyed") {
           Janus.warn("The room has been destroyed!");

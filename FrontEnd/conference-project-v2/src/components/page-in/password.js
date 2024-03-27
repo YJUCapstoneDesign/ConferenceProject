@@ -1,7 +1,7 @@
   
 function PassWord() {
   return (
-    <div className="App bg-gray-100">
+    <div className="App animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
       <div className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
           <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">비밀번호를 잊어버리셨나요?</h1> 

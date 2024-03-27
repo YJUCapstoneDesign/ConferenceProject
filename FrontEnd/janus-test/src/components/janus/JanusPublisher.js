@@ -9,6 +9,8 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
 
   const videoArea = useRef(null);
   let mystream = null;
+  const newFeeds = []; // 새로운 피드 정보를 임시 저장할 배열
+  const feedStreams = {}; // id별 스트림을 저장할 객체
 
   useEffect(() => {
     if (janus && username) {
@@ -17,12 +19,28 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
           setSfuTest(_sfutest);
 
           if (eventType == "joined") {
-            const { id, private_id } = data;
+            const { id, private_id } = data; // 자신의 id와 private_id를 저장
 
-            // 이미 접속한 publisher의 id를 저장
-            const publishers = data.publishers;
-            setFeeds(publishers);
+            const list = data.publishers;
 
+            for (let f in list) {
+              if (list[f]["dummy"])
+                continue;
+              let id = list[f]["id"];
+              let streams = list[f]["streams"];
+              let display = list[f]["display"];
+              for (let i in streams) {
+                let stream = streams[i];
+                stream["id"] = id;
+                stream["display"] = display;
+              }
+              feedStreams[id] = streams;
+              Janus.debug("  >> [" + id + "] " + display + ":", streams);
+
+              newFeeds.push({ id, streams, display });
+            }
+
+            setFeeds(newFeeds);
 
             setPubId(id);
             setPubPvtId(private_id); // publisher의 id와 private_id를 저장
@@ -31,6 +49,7 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
             setPlayerState("Paused");
           } else if (eventType === "onlocaltrack") {
             mystream = data;
+
             Janus.log(" ::: Got a local stream ::: ", mystream);
             const videoContainer = videoArea.current;
             const videoPlayer = videoContainer.querySelector(".janus-video-player")
@@ -66,17 +85,22 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
   }
 
   const onMuteClick = () => {
+    console.log("onMuteClick");
     if (!sfutest.isAudioMuted()) {
       sfutest.muteAudio();
     }
-
+    console.log("현재 Mute 상태", isMuted)
+    console.log("현재 상태", playerState)
     setIsMuted(sfutest.isAudioMuted());
   }
 
   const onUnMuteClick = () => {
+    console.log("onUnMuteClick");
     if (sfutest.isAudioMuted()) {
       sfutest.unmuteAudio();
     }
+
+    console.log("현재 상태", playerState)
     setIsMuted(sfutest.isAudioMuted());
   }
 
@@ -84,7 +108,7 @@ const JanusPublisher = ({ janus, opaqueId, room, pin, username, setPubId, setPub
     sfutest.send({ "message": { "request": "configure", "bitrate": bitrate } });
   }
 
-  // const playerElement = children ? children : <JanusPlayer />;
+
 
   return (
     <div className="janus-publisher">

@@ -72,6 +72,7 @@ export function publishToRoom(janus, opaqueId, room, pin, username, isPublisher,
       const event = msg.videoroom;
       if (event != undefined && event != null) {
         if (event === "joined") {
+
           publishOwnFeed(sfutest, true);
           callback(sfutest, "joined", msg)
         } else if (event === "destroyed") {
@@ -165,11 +166,12 @@ export function publishToRoom(janus, opaqueId, room, pin, username, isPublisher,
 
 
 export function publishOwnFeed(sfutest, useAudio) {
+
   let tracks = [];
 
   if (useAudio)
     tracks.push({ type: 'audio', capture: true, recv: false });
-  tracks.push({
+    tracks.push({
     type: 'video', capture: true, recv: false,
     // We may need to enable simulcast or SVC on the video track
     simulcast: false,

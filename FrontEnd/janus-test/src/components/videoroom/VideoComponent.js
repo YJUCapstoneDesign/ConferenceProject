@@ -70,10 +70,11 @@ const VideoComponent = () => {
                                     setPubId={setPubId}
                                     setPubPvtId={setPubPvtId}
                                     setFeeds={setFeeds}
-                                    render={({ videoRef, isPublisher, status, onStartClick, onStopClick, onMuteClick, onUnMuteClick, onBandwidthChange }) => (
+                                    render={({ videoRef, isPublisher, status, isMuted,onStartClick, onStopClick, onMuteClick, onUnMuteClick, onBandwidthChange }) => (
                                         <JanusPlayer
                                             ref={videoRef}
                                             isPublisher={isPublisher}
+                                            isMuted={isMuted}
                                             status={status}
                                             onStart={onStartClick}
                                             onStop={onStopClick}
@@ -83,14 +84,14 @@ const VideoComponent = () => {
                                         />
                                     )}
                                 />
-                                {feeds.map((feed) => (
+                                {feeds && feeds.length > 0 &&
                                     <JanusSubscriber
-                                        key={feed.id}
                                         janus={janus}
                                         room={room}
                                         opaqueId={opaqueId}
-                                        pubId={feed.id}
+                                        pubId={pubId}
                                         pubPvtId={pubPvtId}
+                                        feeds={feeds}
                                         render={({ videoRef, isPublisher, status }) => (
                                             <JanusPlayer
                                                 ref={videoRef}
@@ -100,7 +101,6 @@ const VideoComponent = () => {
                                             />
                                         )}
                                     />
-                                ))
                                 }
                             </>
                         )}

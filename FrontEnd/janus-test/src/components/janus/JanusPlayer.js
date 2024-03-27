@@ -34,6 +34,7 @@ const JanusPlayer = React.forwardRef((
             </div>
             {/* 비디오 부분 */}
             <video
+                ref={ref}
                 className="janus-video-player"
                 autoPlay
                 playsInline />

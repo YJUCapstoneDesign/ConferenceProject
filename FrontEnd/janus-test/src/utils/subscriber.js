@@ -1,8 +1,23 @@
 import Janus from "janus-gateway";
 
 
-export function subscribeRemoteFeed(janus, opaqueId, room, id, pvtId, display, audio, video, callback) {
+export function subscribeRemoteFeed(janus, opaqueId, room, pvtId, display, audio, video, feeds, callback) {
   let remoteFeed = null;
+  let subscription = [];
+
+  // feeds의 안의 streams 배열의 stream.id를 streams 배열에 넣어준다
+  for (let f in feeds) {
+    for (let i in feeds[f].streams) {
+      let stream = feeds[f].streams[i];
+      // If we're going to subscribe to a simulcast stream, ask for all available layers
+      if (stream.type === "video" && Janus.webRTCAdapter.browserDetails.browser === "safari" &&
+        ((stream.codec === "vp8" && !Janus.safariVp8))) {
+        continue;
+      }
+
+      subscription.push({ feed: stream.id });
+    }
+  }
 
   janus.attach({
     plugin: "janus.plugin.videoroom",
@@ -19,17 +34,10 @@ export function subscribeRemoteFeed(janus, opaqueId, room, id, pvtId, display, a
         "request": "join",
         "room": room,
         "ptype": "subscriber",
-        "feed": id,
+        "streams": subscription,
+        "use_msid": true,
         "private_id": pvtId,
-        "data": true
       };
-
-      if (Janus.webRTCAdapter.browserDetails.browser === "safari" &&
-        (video === "vp9" || (video === "vp8" && !Janus.safariVp8))) {
-        if (video)
-          video = video.toUpperCase()
-        subscribe["offer_video"] = false;
-      }
 
       remoteFeed.videoCodec = video;
       remoteFeed.send({ "message": subscribe });
@@ -68,7 +76,7 @@ export function subscribeRemoteFeed(janus, opaqueId, room, id, pvtId, display, a
     },
 
     webrtcState: function (on) {
-      Janus.log("Janus says this WebRTC PeerConnection (feed #" + remoteFeed.rfindex + ") is " + (on ? "up" : "down") + " now");
+      Janus.log("Janus says this WebRTC PeerConnection (feed #" + remoteFeed.rfid + ") is " + (on ? "up" : "down") + " now");
     },
 
     onlocaltrack: function (track, on) {
@@ -76,24 +84,30 @@ export function subscribeRemoteFeed(janus, opaqueId, room, id, pvtId, display, a
     },
 
     onremotetrack: function (track, mid, on, metadata) {
-      Janus.debug(
-        "Remote feed #" + remoteFeed.rfindex +
-        ", remote track (mid=" + mid + ") " +
+      Janus.debug("remote track (mid=" + mid + ") " +
         (on ? "added" : "removed") +
         (metadata ? " (" + metadata.reason + ") " : "") + ":", track
       );
+      if (!on) {
+        return;
+      }
+
       let stream = null;
       // If we're here, a new track was added
       if (track.kind === "audio") {
         stream = new MediaStream([track]);
+        // remoteFeed.remoteTracks[mid] = stream;
         Janus.log("Created remote audio stream:", stream);
 
       } else {
 
         stream = new MediaStream([track]);
+        // remoteFeed.remoteTracks[mid] = stream;
         Janus.log("Created remote video stream:", stream);
 
       }
+      remoteFeed.rfid = stream.id;
+      remoteFeed.rfdisplay = stream.display;
       callback(remoteFeed, "onremotetrack", stream);
     },
 

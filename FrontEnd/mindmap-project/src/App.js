@@ -11,28 +11,47 @@ class App extends React.Component {
     };
   }
 
-  componentDidMount() {
-    // Cytoscape.js 인스턴스에 이벤트 리스너를 추가합니다.
-    this.cy.on('keydown', this.handleKeyDown);
-  }
+  
 
   handleAddNode = () => {
-    const label = prompt('새 노드의 레이블을 입력하세요 (한글 10글자, 영어 15글자):');
-    if (!label || !/^[a-zA-Z가-힣0-9\s]*$/.test(label)) {
-      alert('유효하지 않은 노드 레이블입니다.');
-      return;
-    }
-    let maxCharacters = /[a-zA-Z]/.test(label) ? 15 : 10;
-    if (label.length > maxCharacters) {
-      alert(`노드 레이블은 최대 ${maxCharacters}글자여야 합니다.`);
-      return;
-    }
-    const id = label.toLowerCase().replace(/\s+/g, '-');
-    const newNode = { data: { id: id, label: label }, position: { x: 300, y: 300 } };
-    this.setState(prevState => ({
-      nodes: [...prevState.nodes, newNode]
-    }));
+    fetch('http://localhost:8080/api/nodes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        label: '새 노드',
+        position: { x: 300, y: 300 },  
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('네트워크 응답이 실패');
+      }
+      return response.json();
+    })
+    .then(data => {
+      const label = prompt('새 노드의 레이블을 입력하세요 (한글 10글자, 영어 15글자):');
+      if (!label || !/^[a-zA-Z가-힣0-9\s]*$/.test(label)) {
+        alert('유효하지 않은 노드 레이블입니다.');
+        return;
+      }
+      let maxCharacters = /[a-zA-Z]/.test(label) ? 15 : 10;
+      if (label.length > maxCharacters) {
+        alert(`노드 레이블은 최대 ${maxCharacters}글자여야 합니다.`);
+        return;
+      }
+      const id = label.toLowerCase().replace(/\s+/g, '-');
+      const newNode = { data: { id: id, label: label }, position: { x: 300, y: 300 } };
+      this.setState(prevState => ({
+        nodes: [...prevState.nodes, newNode]
+      }));
+    })
+    .catch(error => {
+      console.error('에러 메세지 : ', error);
+    });
   };
+  
 
   handleUpdateNode = () => {
     const label = prompt('편집할 노드의 레이블을 입력하세요 (한글 10글자, 영어 15글자):');
@@ -102,19 +121,6 @@ class App extends React.Component {
     }));
   };
 
-  handleKeyDown = (e) => {
-    if (e.key === 'Delete') {
-      const selectedNodes = this.cy.$('node:selected');
-      if (selectedNodes.length > 0) {
-        const labels = selectedNodes.map(node => node.data('label'));
-        this.setState(prevState => ({
-          nodes: prevState.nodes.filter(node => !labels.includes(node.data.label)),
-          edges: prevState.edges.filter(edge => !labels.includes(edge.data.source) && !labels.includes(edge.data.target))
-        }));
-      }
-    }
-  };
-
   handleSaveButton = () => {
     console.log('노드:', this.state.nodes);
     console.log('엣지:', this.state.edges);
@@ -122,7 +128,7 @@ class App extends React.Component {
 
   render(){
     const elements = [...this.state.nodes, ...this.state.edges];
-    const layout = { name: 'preset' };
+    const layout = { name: 'random' };
 
     return (
       <div>

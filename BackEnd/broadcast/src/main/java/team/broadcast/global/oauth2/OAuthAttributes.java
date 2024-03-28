@@ -2,8 +2,8 @@ package team.broadcast.global.oauth2;
 
 import lombok.Builder;
 import lombok.Getter;
-import team.broadcast.domain.user.enums.Membership;
-import team.broadcast.domain.user.enums.UserRole;
+import team.broadcast.domain.enumstore.enums.Membership;
+import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.global.oauth2.userinfo.GoogleOAuthUserInfo;
 import team.broadcast.global.oauth2.userinfo.KakaoOauthUserInfo;
 import team.broadcast.global.oauth2.userinfo.NaverOAuthUserInfo;

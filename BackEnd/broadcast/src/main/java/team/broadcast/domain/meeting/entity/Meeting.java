@@ -6,8 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
+import team.broadcast.domain.attender.entity.Attender;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /*
@@ -37,4 +40,8 @@ public class Meeting {
 
     @Column(name = "MGT_END")
     private LocalDateTime endTime;
+
+    @OneToMany
+    @JoinColumn(name = "MTG_ID")
+    private List<Attender> attenders = new ArrayList<>();
 }

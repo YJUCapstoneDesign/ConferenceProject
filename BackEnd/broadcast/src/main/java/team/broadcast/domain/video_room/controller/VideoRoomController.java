@@ -2,10 +2,9 @@ package team.broadcast.domain.video_room.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
-import team.broadcast.domain.video_room.dto.VideoRoomDTO;
+import team.broadcast.domain.video_room.dto.VideoRoom;
 import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.service.VideoRoomService;
 
@@ -17,7 +16,7 @@ public class VideoRoomController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoRoomDTO createRoom(@RequestBody VideoRoomCreate createRequest) {
+    public VideoRoom createRoom(@RequestBody VideoRoomCreate createRequest) {
         try {
             return videoRoomService.createRoom(createRequest.getEmail(), createRequest);
 

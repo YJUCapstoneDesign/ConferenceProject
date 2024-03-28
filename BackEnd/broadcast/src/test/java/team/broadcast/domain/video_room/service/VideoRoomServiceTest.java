@@ -1,6 +1,5 @@
 package team.broadcast.domain.video_room.service;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -8,12 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import team.broadcast.domain.user.dto.UserDto;
 import team.broadcast.domain.user.service.UserService;
-import team.broadcast.domain.video_room.dto.VideoRoomDTO;
+import team.broadcast.domain.video_room.dto.VideoRoom;
 import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
 import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.dto.request.VideoRoomEditRequest;
-
-import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -59,7 +56,7 @@ class VideoRoomServiceTest {
                 .request("create")
                 .build();
 
-        VideoRoomDTO room = videoRoomService.createRoom(email, testRoom);
+        VideoRoom room = videoRoomService.createRoom(email, testRoom);
 
         // 방이 생성이 되었는지 확인
         assertThat(room).isNotNull();
@@ -90,7 +87,7 @@ class VideoRoomServiceTest {
                 .request("create")
                 .build();
 
-        VideoRoomDTO room = videoRoomService.createRoom(email, testRoom);
+        VideoRoom room = videoRoomService.createRoom(email, testRoom);
 
         assertThat(room).isNotNull();
 
@@ -102,7 +99,7 @@ class VideoRoomServiceTest {
                 .newSecret(newSecret)
                 .build();
 
-        VideoRoomDTO updatedRoom = videoRoomService.updateRoom(editRequest);
+        VideoRoom updatedRoom = videoRoomService.updateRoom(editRequest);
 
         // 방 이름이 바뀌었는지 확인
         assertThat(updatedRoom.getRoomName()).isEqualTo("안녕하세요");

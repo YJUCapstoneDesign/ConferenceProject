@@ -4,22 +4,17 @@ package team.broadcast.domain.video_room.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
-import team.broadcast.domain.janus.dto.JanusRequest;
-import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
-import team.broadcast.domain.video_room.dto.VideoRoomDTO;
+import team.broadcast.domain.video_room.dto.VideoRoom;
 import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.dto.request.VideoRoomEditRequest;
 import team.broadcast.domain.video_room.dto.response.VideoRoomResponse;
 import team.broadcast.domain.video_room.repository.VideoRoomRepository;
-
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -32,7 +27,7 @@ public class VideoRoomService {
 
     // 1. 비디오 생성
     @Transactional
-    public VideoRoomDTO createRoom(String email, VideoRoomCreate request) throws Exception {
+    public VideoRoom createRoom(String email, VideoRoomCreate request) throws Exception {
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
 
         VideoRoomResponse block = send.block();
@@ -45,7 +40,7 @@ public class VideoRoomService {
 
         VideoRoomResponse.VideoRoomResult response = block.getResponse();
 
-        VideoRoomDTO room = VideoRoomDTO.builder()
+        VideoRoom room = VideoRoom.builder()
                 .roomId(response.getRoom())
                 .roomName(request.getDisplay())
                 .roomPwd(request.getPin())
@@ -58,7 +53,7 @@ public class VideoRoomService {
     }
 
     // 2. 비디오 수정
-    public VideoRoomDTO updateRoom(VideoRoomEditRequest request) throws Exception {
+    public VideoRoom updateRoom(VideoRoomEditRequest request) throws Exception {
 
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
 
@@ -69,7 +64,7 @@ public class VideoRoomService {
         }
         VideoRoomResponse.VideoRoomResult response = block.getResponse();
 
-        VideoRoomDTO updateRoom = VideoRoomDTO.builder()
+        VideoRoom updateRoom = VideoRoom.builder()
                 .roomId(response.getRoom())
                 .roomName(request.getNewDescription())
                 .roomPwd(request.getNewPin())
@@ -94,7 +89,7 @@ public class VideoRoomService {
 
         VideoRoomResponse.VideoRoomResult response = block.getResponse();
 
-        VideoRoomDTO room = videoRoomRepository.findById(response.getRoom());
+        VideoRoom room = videoRoomRepository.findById(response.getRoom());
 
         if (room == null) {
             throw new IllegalAccessException("Destroy Error");

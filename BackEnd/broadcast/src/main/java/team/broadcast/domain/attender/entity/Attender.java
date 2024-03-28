@@ -3,6 +3,7 @@ package team.broadcast.domain.attender.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.user.entity.User;
 
@@ -22,12 +23,17 @@ public class Attender {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "MGT_ID")
+    @JoinColumn(name = "MGT_ID", insertable = false, updatable = false)
     private Meeting meeting;
 
     @ManyToOne
     @JoinColumn(name = "USER_ID_SEQ")
     private User user;
+
+
+    @Column(name = "USER_MTG_ROLE")
+    @Enumerated(EnumType.STRING)
+    private MeetingRole role;
 
 
 }

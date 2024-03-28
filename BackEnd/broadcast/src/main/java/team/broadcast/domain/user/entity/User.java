@@ -2,8 +2,12 @@ package team.broadcast.domain.user.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import team.broadcast.domain.user.enums.Membership;
-import team.broadcast.domain.user.enums.UserRole;
+import team.broadcast.domain.attender.entity.Attender;
+import team.broadcast.domain.enumstore.enums.Membership;
+import team.broadcast.domain.enumstore.enums.UserRole;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "TB_USER")
@@ -44,6 +48,10 @@ public class User {
 
     @Column(name = "USER_PLATFORM", length = 10)
     private String platform;
+
+    @OneToMany
+    @JoinColumn(name = "USER_ID_SEQ")
+    private List<Attender> attenders = new ArrayList<>(); // 양방향 연결
 
     public User(String username) {
         this.name = username;

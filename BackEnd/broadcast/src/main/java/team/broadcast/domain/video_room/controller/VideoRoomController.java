@@ -2,34 +2,35 @@ package team.broadcast.domain.video_room.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import team.broadcast.domain.video_room.dto.VideoRoomCreateRequest;
+import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
 import team.broadcast.domain.video_room.dto.VideoRoomDTO;
-import team.broadcast.domain.video_room.dto.VideoRoomDestroyRequest;
+import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.service.VideoRoomService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/{userId}/room")
+@RequestMapping("/api/room")
 public class VideoRoomController {
     private final VideoRoomService videoRoomService;
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public VideoRoomDTO createRoom(@PathVariable Long userId,
-                                   @RequestBody VideoRoomCreateRequest createRequest) {
+    public VideoRoomDTO createRoom(@RequestBody VideoRoomCreate createRequest) {
         try {
-            return videoRoomService.createRoom(userId, createRequest);
+            return videoRoomService.createRoom(createRequest.getEmail(), createRequest);
+
         } catch (Exception e) {
-            return null;
+            throw new RuntimeException("방 생성에 실패 했습니다.");
         }
     }
 
     @PostMapping("/{videoRoomId}")
     @ResponseStatus(HttpStatus.OK)
-    public String deleteRoom(@PathVariable String userId, @PathVariable Long videoRoomId, String secret) {
+    public String deleteRoom(@PathVariable Long videoRoomId) {
         try {
-            VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(videoRoomId, secret);
+            VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest();
             videoRoomService.destroyRoom(videoRoomDestroyRequest);
             return "deleted room [" + videoRoomId + "]";
         } catch (Exception e) {

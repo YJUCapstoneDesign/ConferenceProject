@@ -29,4 +29,5 @@ public class Attender {
     @JoinColumn(name = "USER_ID_SEQ")
     private User user;
 
+
 }

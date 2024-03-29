@@ -3,6 +3,7 @@ package team.broadcast.domain.video_room.dto;
 
 import lombok.*;
 import team.broadcast.domain.attender.dto.AttenderDTO;
+import team.broadcast.domain.user.dto.UserDto;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -26,6 +27,7 @@ public class VideoRoom {
     private Integer activeMinute; // 방 활성화 가능 시간(분 단위) null 인 경우 무제한
 
     private Long publisherId; // 방 host ID
-    private List<AttenderDTO> participants;
+    private List<AttenderDTO> participants; // 방 참가자 리스트
+
 
 }

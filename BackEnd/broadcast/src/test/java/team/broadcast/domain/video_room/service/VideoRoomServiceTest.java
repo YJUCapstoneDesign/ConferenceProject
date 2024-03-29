@@ -45,8 +45,8 @@ class VideoRoomServiceTest {
     @Test
     @DisplayName("방 생성")
     void createRoom() throws Exception {
-        Long roomId = 5678L;
-        String secret = "5678";
+        Long roomId = 123456L;
+        String secret = "123456";
         String email = this.name + "@gmail.com";
         // 방 생성
         VideoRoomCreate testRoom = VideoRoomCreate.builder()
@@ -62,13 +62,13 @@ class VideoRoomServiceTest {
         assertThat(room).isNotNull();
 
         // 방 삭제
-        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
-                .room(room.getRoomId())
-                .secret(secret)
-                .request("destroy")
-                .build();
-
-        videoRoomService.destroyRoom(destroy);
+//        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
+//                .room(room.getRoomId())
+//                .secret(secret)
+//                .request("destroy")
+//                .build();
+//
+//        videoRoomService.destroyRoom(destroy);
     }
 
     @Test

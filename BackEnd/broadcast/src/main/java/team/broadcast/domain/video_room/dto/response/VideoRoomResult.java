@@ -7,9 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class VideoRoomResponse {
-    private String janus;
-    private String transaction;
-    private VideoRoomResult response;
-
+public class VideoRoomResult {
+    private Long room;
+    private String videoroom;
 }

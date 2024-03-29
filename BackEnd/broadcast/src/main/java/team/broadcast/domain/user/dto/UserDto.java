@@ -1,6 +1,7 @@
 package team.broadcast.domain.user.dto;
 
 import lombok.*;
+import team.broadcast.domain.enumstore.enums.Membership;
 
 @Getter
 @Setter
@@ -15,5 +16,11 @@ public class UserDto {
     private String password;
     private String email;
     private String phone;
+    private Membership membership;
+
+    // 회원인지 확인하는 메서드
+    public boolean isMember() {
+        return membership == Membership.MEMBER;
+    }
 
 }

@@ -2,6 +2,7 @@ import React from 'react';
 
 
 const Signup = () => {
+
     return (
         <div className='Sign-in'>
             <div className="py-24 animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">

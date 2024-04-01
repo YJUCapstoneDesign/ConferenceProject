@@ -4,8 +4,16 @@ body {
 }
 
 #container {
-    height: 90vh;
+    height: 100vh;
     width: 100%;
+    overflow: hidden;
+}
+
+#container .button ul {
+    align-items: center;
+    list-style: none;
+    display: flex;
+    justify-content: center;
 }
 
 input {
@@ -45,8 +53,7 @@ input[type="text"] {
 }
 
 .react-flow {
-    border: 3px solid #9999;
-    border-radius: 10px;
+    border-top: 3px solid #9999;
 }
 
 /* .react-flow_nodes {
@@ -76,4 +83,12 @@ input[type="text"] {
 
 #four:hover {
     background-color: rgb(113, 113, 18);
+}
+
+.react-flow__panel.bottom {
+    bottom: auto;
+}
+
+.react-flow__attribution a {
+    display: none;
 }

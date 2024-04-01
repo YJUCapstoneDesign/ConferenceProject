@@ -9,20 +9,17 @@ import ReactFlow, {
 } from "reactflow";
 import { saveMindMap, loadMindMap } from "./storage";
 import "reactflow/dist/style.css";
+import "../index.css"
 
 const initialNodes = [
     {
         id: "1",
         type: "input",
         data: { label: "Mind Map" },
-        position: { x: 0, y: 0 },
+        position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
         style: { border: "3px solid #9999" },
     },
 ];
-
-console.log(window.screen.width);
-console.log(window.screen.height);
-console.log(initialNodes);
 
 const initialEdges = [];
 const onLoad = (reactFlowInstance) => {
@@ -35,18 +32,22 @@ export default function MindNode() {
     const [name, setName] = useState("");
 
     const addNode = () => {
-        setNodes((e) =>
-            e.concat({
-                id: (e.length + 1).toString(),
+        setNodes((prevNodes) =>
+            prevNodes.concat({
+                id: (prevNodes.length + 1).toString(),
                 data: { label: `${name}` },
                 position: {
-                    x: Math.random() * window.innerWidth,
-                    y: Math.random() * window.innerHeight,
+                    x: Math.random() * window.innerWidth / 3,
+                    y: Math.random() * window.innerHeight / 3,
                 },
                 style: { border: "10px solid #9999" },
             })
         );
+
+        setName("");
     };
+
+
 
     const onConnect = useCallback(
         (params) => setEdges((eds) => addEdge(params, eds)),
@@ -76,8 +77,49 @@ export default function MindNode() {
     };
     const defaultEdgeOptions = { style: connectionLineStyle, type: "mindmap" };
 
+    const proOptions = { hideAttribution: true };
+
     return (
-        <div id="container" style={{ width: window.screen.width, height: window.screen.height }}>
+        <div id="container">
+            <div className="button">
+                <ul>
+                    <li>
+                        <input
+                            type="text"
+                            onChange={(e) => setName(e.target.value)}
+                            name="title"
+                        />
+                        <button id="one" type="button" onClick={addNode}>
+                            Add Node
+                        </button>
+                    </li>
+                    <li>
+                        <button id="two" type="button" onClick={{}}>
+                            Remove Node
+                        </button>
+                    </li>
+                    <li>
+                        <button id="three" type="button" onClick={{}}>
+                            Remove Edge
+                        </button>
+                    </li>
+                    <li>
+                        <button id="two" onClick={handleSaveClick}>
+                            Save Mind Map
+                        </button>
+                    </li>
+                    <li>
+                        <button id="three" onClick={handleLoadClick}>
+                            Load Mind Map
+                        </button>
+                    </li>
+                    <li>
+                        <button id="four" onClick={refreshPage}>
+                            Refresh
+                        </button>
+                    </li>
+                </ul>
+            </div>
             <ReactFlow
                 nodes={nodes}
                 edges={edges}
@@ -98,33 +140,6 @@ export default function MindNode() {
                     }}
                 />
             </ReactFlow>
-            <div>
-                <input
-                    type="text"
-                    onChange={(e) => setName(e.target.value)}
-                    name="title"
-                />
-                <button id="one" type="button" onClick={addNode}>
-                    Add Node
-                </button>
-                <button id="two" type="button" onClick={{}}>
-                    Remove Node
-                </button>
-                <button id="three" type="button" onClick={{}}>
-                    Remove Edge
-                </button>
-            </div>
-            <div>
-                <button id="two" onClick={handleSaveClick}>
-                    Save Mind Map
-                </button>
-                <button id="three" onClick={handleLoadClick}>
-                    Load Mind Map
-                </button>
-                <button id="four" onClick={refreshPage}>
-                    Refresh
-                </button>
-            </div>
         </div>
     );
 }

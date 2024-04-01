@@ -1,0 +1,13 @@
+
+# dependencies
+/node_modules
+/dist
+
+
+
+# security
+/keys/*
+*.pem
+*.key
+
+.env

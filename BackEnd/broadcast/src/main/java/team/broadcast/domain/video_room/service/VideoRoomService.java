@@ -64,9 +64,9 @@ public class VideoRoomService {
 
         videoRoomRepository.save(room);
 
-        if (user.getMembership() == Membership.BASIC) {
-            scheduleRoomDestruction(request.getRoom(), request.getSecret());
-        }
+//        if (user.getMembership() == Membership.BASIC) {
+//            scheduleRoomDestruction(request.getRoom(), request.getSecret());
+//        }
 
         return room;
     }

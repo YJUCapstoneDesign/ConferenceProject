@@ -77,13 +77,7 @@ class App extends React.Component {
             return;
         }
 
-        if (
-            this.state.edges.some(
-                (edge) =>
-                    (edge.data.source === source && edge.data.target === target) ||
-                    (edge.data.source === target && edge.data.target === source)
-            )
-        ) {
+        if (this.state.edges.some((edge) =>(edge.data.source === source && edge.data.target === target) ||(edge.data.source === target && edge.data.target === source))) {
             alert('이미 연결된 노드입니다.');
             return;
         }

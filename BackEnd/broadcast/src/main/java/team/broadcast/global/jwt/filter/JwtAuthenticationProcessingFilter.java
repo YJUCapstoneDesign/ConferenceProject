@@ -18,7 +18,7 @@ import team.broadcast.global.jwt.refresh.RefreshToken;
 import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.repository.UserRepository;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 
 import java.io.IOException;
 

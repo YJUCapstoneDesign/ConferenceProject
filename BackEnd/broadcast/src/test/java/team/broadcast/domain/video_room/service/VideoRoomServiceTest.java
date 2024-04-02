@@ -62,13 +62,13 @@ class VideoRoomServiceTest {
         assertThat(room).isNotNull();
 
         // 방 삭제
-//        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
-//                .room(room.getRoomId())
-//                .secret(secret)
-//                .request("destroy")
-//                .build();
-//
-//        videoRoomService.destroyRoom(destroy);
+        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
+                .room(room.getRoomId())
+                .secret(secret)
+                .request("destroy")
+                .build();
+
+        videoRoomService.destroyRoom(destroy);
     }
 
     @Test

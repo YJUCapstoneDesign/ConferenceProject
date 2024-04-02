@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.repository.UserRepository;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 
 import java.util.Collections;
 import java.util.Map;

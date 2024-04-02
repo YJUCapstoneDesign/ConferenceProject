@@ -46,7 +46,7 @@ dependencies {
     // mysql 데이터베이스 라이브러리
     runtimeOnly 'com.mysql:mysql-connector-j'
     // mongodb 데이터베이스 라이브러리
-    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     // 랜덤한 문자열을 생성하는 라이브러리
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
 }

@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import team.broadcast.global.jwt.refresh.RefreshToken;
 import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.repository.UserRepository;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 
 import java.security.Key;
 import java.util.Base64;

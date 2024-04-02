@@ -6,7 +6,6 @@ import lombok.*;
 import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.user.entity.User;
-
 /*
 회의 참석자 테이블이다.
  */

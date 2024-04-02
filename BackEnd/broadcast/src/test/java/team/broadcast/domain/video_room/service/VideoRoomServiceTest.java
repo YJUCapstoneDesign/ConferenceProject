@@ -45,8 +45,8 @@ class VideoRoomServiceTest {
     @Test
     @DisplayName("방 생성")
     void createRoom() throws Exception {
-        Long roomId = 123456L;
-        String secret = "123456";
+        Long roomId = 12341234L;
+        String secret = "12341234";
         String email = this.name + "@gmail.com";
         // 방 생성
         VideoRoomCreate testRoom = VideoRoomCreate.builder()

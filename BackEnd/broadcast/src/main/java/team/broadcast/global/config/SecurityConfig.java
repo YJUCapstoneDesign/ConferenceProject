@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -19,22 +18,23 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.global.jwt.service.JwtService;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
-import team.broadcast.global.oauth2.handler.MyAuthFailureHandler;
-import team.broadcast.global.oauth2.handler.MyAuthSuccessHandler;
 import team.broadcast.global.login.filter.CustomJsonLoginFilter;
 import team.broadcast.global.login.handler.LoginFailureHandler;
 import team.broadcast.global.login.handler.LoginSuccessHandler;
 import team.broadcast.global.login.service.LoginService;
+import team.broadcast.global.oauth2.handler.MyAuthFailureHandler;
+import team.broadcast.global.oauth2.handler.MyAuthSuccessHandler;
 
 import java.util.Arrays;
 import java.util.List;
 
 @Configuration
-@EnableMethodSecurity
+@EnableWebSocket
 @RequiredArgsConstructor
 public class SecurityConfig {
     private final OAuth2UserService oAuth2UserService;
@@ -108,7 +108,9 @@ public class SecurityConfig {
 
         // 모든 접근에 대해 허용 <수정 필요>
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
-                authorizationManagerRequestMatcherRegistry.anyRequest().permitAll());
+                authorizationManagerRequestMatcherRegistry
+                        .requestMatchers("/ws/**", "/topic/**", "/app/**").permitAll()
+                        .anyRequest().permitAll());
 
         // filter 적용
         http.addFilterAfter(customJsonLoginFilter(), LogoutFilter.class);

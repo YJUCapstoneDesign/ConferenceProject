@@ -3,24 +3,28 @@ package team.broadcast.domain.mindmap.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import team.broadcast.domain.mindmap.edge.entity.Edge;
-import team.broadcast.domain.mindmap.edge.repository.EdgeRepository;
-import team.broadcast.domain.mindmap.node.entity.Node;
-import team.broadcast.domain.mindmap.node.repository.NodeRepository;
+import team.broadcast.domain.mindmap.dto.MindMapDto;
+import team.broadcast.domain.mindmap.entity.MindMap;
+import team.broadcast.domain.mindmap.repository.MindMapRepository;
 
 @Service
 @RequiredArgsConstructor
 public class MindMapService {
-    private final EdgeRepository edgeRepository;
-    private final NodeRepository nodeRepository;
 
-    // TODO: 마인드맵 추가 수정 삭제 코드 만들기
+    private final MindMapRepository mindMapRepository;
+
     @Transactional
-    public String testCode() {
-        Node node = new Node("1", "test");
-        Edge edge = new Edge("1", "1", "2");
-        nodeRepository.save(node);
-        edgeRepository.save(edge);
-        return "stored";
+    public String save(Long roomId, MindMapDto request) {
+        request.setRoomId(roomId);
+        MindMap mindMap = from(request);
+        MindMap savedMindMap = mindMapRepository.save(mindMap);
+        return savedMindMap.getId();
+    }
+
+    public MindMap from(MindMapDto dto) {
+        return MindMap.builder()
+                .data(dto.getData())
+                .roomId(dto.getRoomId())
+                .build();
     }
 }

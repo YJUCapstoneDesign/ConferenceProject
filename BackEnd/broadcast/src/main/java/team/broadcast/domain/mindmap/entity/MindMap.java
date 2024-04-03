@@ -1,4 +1,4 @@
-package team.broadcast.domain.mindmap.node.entity;
+package team.broadcast.domain.mindmap.entity;
 
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
@@ -7,14 +7,18 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collation = "nodes")
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+import java.util.Map;
+
 @Getter
-public class Node {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Document(collection = "mindmaps")
+public class MindMap {
     @Id
     private String id;
 
-    private String label;
+    private Long roomId;
+
+    private Map<String, Object> data;
 }

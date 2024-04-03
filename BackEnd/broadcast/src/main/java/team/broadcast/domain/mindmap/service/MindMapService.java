@@ -14,8 +14,7 @@ public class MindMapService {
     private final MindMapRepository mindMapRepository;
 
     @Transactional
-    public String save(Long roomId, MindMapDto request) {
-        request.setRoomId(roomId);
+    public String save(MindMapDto request) {
         MindMap mindMap = from(request);
         MindMap savedMindMap = mindMapRepository.save(mindMap);
         return savedMindMap.getId();

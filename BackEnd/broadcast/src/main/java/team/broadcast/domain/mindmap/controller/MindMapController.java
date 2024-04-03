@@ -11,12 +11,12 @@ import team.broadcast.domain.mindmap.service.MindMapService;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/{roomId}/mind-map")
+@RequestMapping("/api/mind-map")
 public class MindMapController {
     private final MindMapService mindMapService;
 
     @PostMapping("/save")
-    public ResponseEntity<String> save(@PathVariable Long roomId, @RequestBody MindMapDto request) {
+    public ResponseEntity<String> save(@RequestBody MindMapDto request) {
         if (request == null || request.getData().isEmpty()) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
@@ -24,7 +24,7 @@ public class MindMapController {
         log.info("MindMap request={}", request);
         log.info("MindMap nodes={}", request.getNodes());
         log.info("MindMap edges={}", request.getEdges());
-        String mindMapId = mindMapService.save(roomId, request);
+        String mindMapId = mindMapService.save(request);
 
         return new ResponseEntity<>(mindMapId, HttpStatus.OK);
     }

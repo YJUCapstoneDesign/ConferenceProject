@@ -1,4 +1,4 @@
-package team.broadcast.domain.meeting.repository;
+package team.broadcast.domain.meeting.mysql.repository;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;

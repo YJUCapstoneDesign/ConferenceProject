@@ -22,7 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import team.broadcast.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.global.jwt.service.JwtService;
-import team.broadcast.domain.user.repository.UserRepository;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.oauth2.handler.MyAuthFailureHandler;
 import team.broadcast.global.oauth2.handler.MyAuthSuccessHandler;
 import team.broadcast.global.login.filter.CustomJsonLoginFilter;

@@ -1,4 +1,4 @@
-package team.broadcast.domain.attender.repository;
+package team.broadcast.domain.attender.mysql.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

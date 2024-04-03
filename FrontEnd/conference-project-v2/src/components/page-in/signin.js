@@ -8,8 +8,11 @@ const Signin = () => {
     const navigate = useNavigate(); 
     
     const login = () => {
-        fetch('API 주소', { 
+        fetch('http://localhost:4000/api/test', { 
           method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify({
             email: email,
             password: password,

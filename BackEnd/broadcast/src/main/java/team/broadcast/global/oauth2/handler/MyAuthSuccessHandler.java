@@ -30,7 +30,6 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
         log.info("oAuth2User={}", oAuth2User);
 
         sendToken(response, oAuth2User); // 로그인에 성공한 경우 AccessToken, RefreshToken 생성
-        response.sendRedirect("/");
     }
 
     /*

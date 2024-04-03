@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.repository.UserRepository;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.domain.user.dto.UserDto;
 
 @Service

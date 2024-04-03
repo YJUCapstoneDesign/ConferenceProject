@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.enumstore.enums.MeetingRole;
-import team.broadcast.domain.enumstore.enums.Membership;
+import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.repository.UserRepository;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.domain.video_room.dto.VideoRoom;
 import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
 import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
@@ -36,15 +36,30 @@ public class VideoRoomService {
 
     private static final int LIMIT_ROOM_SECOND = 40 * 60; // 40분
 
+    private VideoRoomResponse checkExceptionResponse(Mono<VideoRoomResponse> responseMono) throws Exception {
+        VideoRoomResponse response = responseMono.block();
+
+        if (response == null) {
+            throw new IllegalAccessException("Response Not Found");
+        }
+
+        if (response.isError()) {
+            throw new JanusError(response.getError());
+        }
+
+        if (response.isPluginError()) {
+            throw new JanusError(response.getResponse().getError_code(), response.getResponse().getError());
+        }
+
+        return response;
+    }
+
     // 1. 비디오 생성
     @Transactional
     public VideoRoom createRoom(String email, VideoRoomCreate request) throws Exception {
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
 
-        VideoRoomResponse block = send.block();
-        if (block == null) {
-            throw new IllegalAccessException("Response Error");
-        }
+        VideoRoomResponse block = checkExceptionResponse(send);
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new IllegalArgumentException("이메일을 찾을 수 없습니다."));
@@ -77,11 +92,8 @@ public class VideoRoomService {
 
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
 
-        VideoRoomResponse block = send.block();
+        VideoRoomResponse block = checkExceptionResponse(send);
 
-        if (block == null) {
-            throw new IllegalAccessException("Update Error");
-        }
         VideoRoomResult response = block.getResponse();
 
         VideoRoom updateRoom = VideoRoom.builder()
@@ -102,10 +114,7 @@ public class VideoRoomService {
 
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
 
-        VideoRoomResponse block = send.block();
-        if (block == null) {
-            throw new IllegalAccessException("Response Error");
-        }
+        VideoRoomResponse block = checkExceptionResponse(send);
 
         VideoRoomResult response = block.getResponse();
 

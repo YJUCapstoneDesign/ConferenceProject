@@ -1,6 +1,13 @@
 spring:
   profiles:
-    include: janus, oauth2, jpa, jwt
+    include: janus, oauth2, jwt
+    group:
+      db: mysql, mongo
+    active: db
+  config:
+    import:
+      - classpath:/db/application-mysql.yml
+      - classpath:/db/application-mongo.yml
 server:
   port: 8080 # 서버 주소
   tomcat:

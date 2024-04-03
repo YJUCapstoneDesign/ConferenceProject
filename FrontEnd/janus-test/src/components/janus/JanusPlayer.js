@@ -10,7 +10,6 @@ const JanusPlayer = React.forwardRef((
         onMute,
         onUnmute,
         onBandwidthChange,
-
         readyText,
         pausedText,
         liveText,

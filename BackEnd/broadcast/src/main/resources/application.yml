@@ -17,3 +17,13 @@ server:
     accept-count: 100
     connection-timeout: 10000
 
+logging:
+  level:
+    org:
+      springframework:
+        # 전체 Spring Framework의 디버그 로그를 활성화
+        '': DEBUG
+        # 웹소켓 관련 디버그 로그를 활성화
+        web: DEBUG
+        # 보안 관련 디버그 로그를 활성화
+        security: DEBUG

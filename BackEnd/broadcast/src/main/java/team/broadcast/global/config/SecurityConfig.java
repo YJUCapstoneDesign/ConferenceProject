@@ -59,6 +59,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowedOriginPatterns(List.of("*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration); // 모든 경로에 대해서 CORS 설정을 적용
 
@@ -109,19 +110,13 @@ public class SecurityConfig {
         // 모든 접근에 대해 허용 <수정 필요>
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
-                        .requestMatchers("/ws/**", "/topic/**", "/app/**").permitAll()
-                        .anyRequest().permitAll());
+                        .requestMatchers("/ws/**", "/topic/**", "/app/**", "/api/signup", "/").permitAll()
+                        .anyRequest().permitAll()); // 임시 작성
 
         // filter 적용
         http.addFilterAfter(customJsonLoginFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonLoginFilter.class);
 
-
-
-        /*
-         * fomLogin() 메소드는 Server에서 로그인 페이지를 연결하는 것으로 React, Vue 같은 다른 클라이언트
-         *   서버를 사용할 때 사용하지 않는다. -> Controller로 매핑한다.
-         */
 
         // oauth 기반 로그인 설정
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->

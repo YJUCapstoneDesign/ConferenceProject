@@ -39,6 +39,7 @@ button {
     border: none;
     background-color: #008cba;
     color: white;
+    margin: 0 10px;
 }
 
 button:hover {
@@ -56,39 +57,18 @@ input[type="text"] {
     border-top: 3px solid #9999;
 }
 
-/* .react-flow_nodes {
-    color: #a02828;
-  } */
-#two {
-    background-color: #4caf50;
-    margin: 5px;
-}
-
-#two:hover {
-    background-color: #63c266;
-}
-
-#three {
-    background-color: #f44336;
-    margin: 2px;
-}
-
-#three:hover {
-    background-color: rgb(190, 68, 68);
-}
-
-#four {
-    background-color: rgb(86, 86, 6);
-}
-
-#four:hover {
-    background-color: rgb(113, 113, 18);
-}
-
 .react-flow__panel.bottom {
     bottom: auto;
 }
 
 .react-flow__attribution a {
     display: none;
+}
+
+@media screen and (max-width: 768px) {}
+
+@media screen and (max-width: 480px) {
+    #container {
+        height: 100%;
+    }
 }

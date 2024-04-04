@@ -2,6 +2,8 @@ import React, { createRef, useEffect, useState, useRef } from "react";
 import { Janus } from "janus-gateway";
 import Video from "./Video/Video";
 import hark from "hark";
+import './VideoComponent.css';
+import Sidebar from "../Sidebar";
 
 const useReference = () => {
   const [reference, setReference] = useState(() => createRef());
@@ -700,7 +702,7 @@ const VideoComponent = (props) => {
             width: "100%",
           }}
         >
-          <div style={{ width: "60%", float: "left" }}>
+          <div style={{ width: "50%", float: "left" }}> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
             <Video
               stream={mainStream.stream}
               username={mainStream.username}
@@ -708,24 +710,24 @@ const VideoComponent = (props) => {
             />
           </div>
         </div>
-        <div style={{ float: "left" }}>
-          <button onClick={handleAudioActiveClick}>
-            {activeAudio ? "소리 끄기" : "소리 켜기"}
+        <div className="button-group">
+          <button onClick={handleAudioActiveClick} className="other_button">
+          {activeAudio ? "o" : "x"}
           </button>
-          <button onClick={handleVideoActiveClick}>
-            {activeVideo ? "비디오 끄기" : "비디오 켜기"}
+          <button onClick={handleVideoActiveClick} className="other_button">
+            {activeVideo ? "o" : "x"}
           </button>
-          <button onClick={handleSpeakerActiveClick}>
-            {activeSpeaker ? "화자 추적 비활성화" : "화자 추적 활성화"}
+          <button onClick={handleSpeakerActiveClick} className="other_button">
+            {activeSpeaker ? "o" : "x"}
           </button>
-          <button onClick={handleSharingActiveClick}>
-            {activeSharing ? "화면 공유 비활성화" : "화면 공유 활성화"}
+          <button onClick={handleSharingActiveClick} className="red-button">
+            {activeSharing ? "o" : "x"}
           </button>
         </div>
         <div
           style={{
             width: "100%",
-            overflowX: "scroll",
+            overflowX: "hidden",
             whiteSpace: "nowrap",
           }}
         >

@@ -1,4 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
+import './video.css';
 const Video = (props) => {
   const videoRef = useRef();
   useEffect(() => {
@@ -12,7 +13,7 @@ const Video = (props) => {
     if (!props.onClick) return;
     props.onClick(videoRef.current.srcObject, props.username);
   };
-
+// 가장 큰 화면 부분 
   return (
     <>
       <div>

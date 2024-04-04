@@ -103,7 +103,7 @@ export default function MindNode() {
 
         // 서버에 저장
         // try {
-        //     const data = JSON.stringify({ nodes: nodes, edges: edges });
+        //     const data = JSON.stringify({data: { nodes: nodes, edges: edges }});
         //     saveMindMap(nodes, edges);
         //     const response = await fetch('/api/mind-map/save', {
         //         method: 'POST',
@@ -137,7 +137,7 @@ export default function MindNode() {
         //     const response = await fetch('/api/mind-map/load');
 
         //     if (response.ok) {
-        //         const loadedData = await response.json();
+        //         const loadedData = await response.text();
         //         setNodes(loadedData.nodes);
         //         setEdges(loadedData.edges);
         //         console.log(loadedData);

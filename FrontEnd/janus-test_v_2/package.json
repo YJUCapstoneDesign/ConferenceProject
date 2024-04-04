@@ -14,7 +14,7 @@
     "dotenv-webpack": "^8.0.1",
     "hark": "^1.2.3",
     "html-webpack-plugin": "^5.6.0",
-    "janus-gateway": "^1.2.1",
+    "janus-gateway": "^1.2.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "webrtc-adapter": "^8.2.3"

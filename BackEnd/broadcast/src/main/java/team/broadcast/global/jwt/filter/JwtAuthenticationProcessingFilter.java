@@ -27,7 +27,7 @@ import static org.springframework.security.core.userdetails.User.*;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-    private static final String NO_CHECK_URL = "/login";
+    private static final String NO_CHECK_URL = "/api/login";
 
     private final JwtService jwtService;
     private final RefreshTokenRepository refreshTokenRepository;

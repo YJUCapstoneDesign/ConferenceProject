@@ -162,4 +162,12 @@ public class JwtService {
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
+
+    public RefreshToken getRefreshToken(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
+        return refreshTokenRepository.findByUserId(user.getId())
+                .orElse(null);
+
+    }
 }

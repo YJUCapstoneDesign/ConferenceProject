@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import team.broadcast.domain.user.service.UserService;
+import team.broadcast.global.jwt.refresh.RefreshToken;
+import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.oauth2.CustomOAuth2User;
 
@@ -20,6 +23,7 @@ import java.io.IOException;
 public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
+    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -32,18 +36,23 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
         sendToken(response, oAuth2User); // 로그인에 성공한 경우 AccessToken, RefreshToken 생성
     }
 
-    /*
-     * TODO : 로그인 성공시 RefreshToken 유/무에 따라 다르게 처리
-     * 해당 메서드는 로그인 성공시 accessToken과 RefreshToken을 발급한다.
-     * 로그인 한 경우 무조건 둘다 발급 하는 것이 아닌 RefreshToken의 유/무 (+ 만료되었는지)에 따라 다르게 처리해야 한다.
-     * 즉 코드를 수정할 필요가 있음.
-     */
+    // RefreshToken 유/무에 따라 accessToken 만 보내거나 RefreshToken 과 같이 보내게 된디.
     private void sendToken(HttpServletResponse response, CustomOAuth2User oAuth2User) {
-        String accessToken = jwtService.generateAccessToken(oAuth2User.getEmail());
-        String refreshToken = jwtService.generateRefreshToken();
+        String email = oAuth2User.getEmail();
+        RefreshToken userRefreshToken = jwtService.getRefreshToken(email);
+        String accessToken = jwtService.generateAccessToken(email);
         response.addHeader(jwtService.getAccessTokenHeader(), "Bearer " + accessToken);
-        response.addHeader(jwtService.getRefreshTokenHeader(), "Bearer " + refreshToken);
 
+
+        // refresh token이 있는 경우 accessToken만 보내도록 한다.
+        if (userRefreshToken != null) {
+            log.info("User RefreshToken={}", userRefreshToken);
+            jwtService.sendAccessToken(response, accessToken);
+            return;
+        }
+
+        String refreshToken = jwtService.generateRefreshToken();
+        response.addHeader(jwtService.getRefreshTokenHeader(), "Bearer " + refreshToken);
         jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
         jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
     }

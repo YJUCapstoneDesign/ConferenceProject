@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
+@Slf4j
 @Component
 public class MyAuthFailureHandler implements AuthenticationFailureHandler {
     @Override
@@ -18,6 +19,8 @@ public class MyAuthFailureHandler implements AuthenticationFailureHandler {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+
+        log.error(exception.getMessage());
 
         String jsonResponse = "{\"message\": \"로그인에 실패했습니다. 이메일이나 비밀번호를 확인해주세요.\"}";
         response.getWriter().write(jsonResponse);

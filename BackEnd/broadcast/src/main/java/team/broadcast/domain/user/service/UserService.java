@@ -32,6 +32,7 @@ public class UserService {
 
         User newUser = User.builder()
                 .name(userDto.getUsername())
+                // 닉네임 같은 경우 초기에 랜덤한 길이의 문자열로 생성되도록 하였다.
                 .nickname(generateRandomName(15))
                 // 비밀번호를 암호화해서 저장
                 .pwd(passwordEncoder.encode(userDto.getPassword()))

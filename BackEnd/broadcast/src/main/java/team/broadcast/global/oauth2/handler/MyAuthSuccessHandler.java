@@ -33,6 +33,7 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     /*
+     * TODO : 로그인 성공시 RefreshToken 유/무에 따라 다르게 처리
      * 해당 메서드는 로그인 성공시 accessToken과 RefreshToken을 발급한다.
      * 로그인 한 경우 무조건 둘다 발급 하는 것이 아닌 RefreshToken의 유/무 (+ 만료되었는지)에 따라 다르게 처리해야 한다.
      * 즉 코드를 수정할 필요가 있음.

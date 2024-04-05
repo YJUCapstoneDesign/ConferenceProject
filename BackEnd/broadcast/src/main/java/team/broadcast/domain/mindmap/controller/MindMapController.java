@@ -24,10 +24,10 @@ public class MindMapController {
         }
 
         log.info("MindMap request={}", request);
-        log.info("MindMap nodes={}", request.getNodes());
-        log.info("MindMap edges={}", request.getEdges());
+
         String mindMapId = mindMapService.save(request);
 
+        log.info("MindMap response={}", mindMapId);
         return new ResponseEntity<>(mindMapId, HttpStatus.OK);
     }
 }

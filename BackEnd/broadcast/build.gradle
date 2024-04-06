@@ -49,6 +49,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
     // 랜덤한 문자열을 생성하는 라이브러리
     implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.14.0'
+    // 유효성 검증 라이브라리
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {

@@ -1,15 +1,13 @@
 package team.broadcast.domain.attender.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.enumstore.enums.MeetingRole;
-import team.broadcast.domain.enumstore.enums.Membership;
-import team.broadcast.domain.meeting.dto.MeetingDTO;
 import team.broadcast.domain.meeting.entity.Meeting;
-import team.broadcast.domain.user.dto.UserDto;
 import team.broadcast.domain.user.entity.User;
-
-import java.util.Map;
 
 @Data
 @NoArgsConstructor

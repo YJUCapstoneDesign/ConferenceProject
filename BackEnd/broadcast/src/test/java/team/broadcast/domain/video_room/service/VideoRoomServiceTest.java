@@ -5,6 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.dto.UserDto;
 import team.broadcast.domain.user.service.UserService;
 import team.broadcast.domain.video_room.dto.VideoRoom;
@@ -15,7 +16,7 @@ import team.broadcast.domain.video_room.dto.request.VideoRoomEditRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- *  방 생성 및 수정, 삭제 테스트
+ * 방 생성 및 수정, 삭제 테스트
  */
 @SpringBootTest
 class VideoRoomServiceTest {
@@ -30,11 +31,9 @@ class VideoRoomServiceTest {
     @BeforeEach
     void init() throws Exception {
         name = userService.generateRandomName(10);
-        UserDto test = UserDto.builder()
-                .id(1L)
+        SignupUser test = SignupUser.builder()
                 .email(name + "@gmail.com")
                 .username("test")
-                .nickname(name)
                 .password("1234")
                 .phone("01011111111")
                 .build();

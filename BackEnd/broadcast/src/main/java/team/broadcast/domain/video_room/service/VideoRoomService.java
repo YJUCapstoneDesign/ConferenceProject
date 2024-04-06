@@ -12,6 +12,7 @@ import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
 import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.domain.video_room.dto.VideoRoom;
 import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
@@ -20,6 +21,7 @@ import team.broadcast.domain.video_room.dto.request.VideoRoomEditRequest;
 import team.broadcast.domain.video_room.dto.response.VideoRoomResponse;
 import team.broadcast.domain.video_room.dto.response.VideoRoomResult;
 import team.broadcast.domain.video_room.repository.VideoRoomRepository;
+import team.broadcast.global.exception.CustomException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +64,7 @@ public class VideoRoomService {
         VideoRoomResponse block = checkExceptionResponse(send);
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("이메일을 찾을 수 없습니다."));
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
         List<AttenderDTO> arr = new ArrayList<>();
         arr.add(new AttenderDTO(user.getId(), request.getRoom(), MeetingRole.HOST));

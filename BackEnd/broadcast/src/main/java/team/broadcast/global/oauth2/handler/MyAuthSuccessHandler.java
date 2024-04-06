@@ -8,9 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import team.broadcast.domain.user.service.UserService;
 import team.broadcast.global.jwt.refresh.RefreshToken;
-import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.oauth2.CustomOAuth2User;
 
@@ -23,7 +21,6 @@ import java.io.IOException;
 public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {

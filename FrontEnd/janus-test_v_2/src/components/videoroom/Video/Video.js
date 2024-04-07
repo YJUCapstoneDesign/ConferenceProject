@@ -19,6 +19,7 @@ const Video = (props) => {
       <div>
         <video
           id="video"
+          className="video"
           style={{ width: "100%", height: "100%" }}
           autoPlay
           playsInline

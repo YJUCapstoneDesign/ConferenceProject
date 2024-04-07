@@ -702,7 +702,8 @@ const VideoComponent = (props) => {
             width: "100%",
           }}
         >
-          <div style={{ width: "50%", float: "left" }}> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
+          <Sidebar/>
+          <div style={{ width: "50%", float: "right" }}> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
             <Video
               stream={mainStream.stream}
               username={mainStream.username}
@@ -729,13 +730,13 @@ const VideoComponent = (props) => {
             width: "100%",
             overflowX: "hidden",
             whiteSpace: "nowrap",
-          }}
-        >
+            float: "right",
+          }}>
           <div
             style={{
               width: "100px",
               height: "100px",
-              float: "left",
+              float: "right",
               margin: "3px",
             }}
           >

@@ -1,0 +1,49 @@
+.sidebar{
+  position: absolute;
+  background-color: #0C0C59;
+  color: #fff;
+  top: 0;
+  left: 0;
+  height: 833px;
+  width: 280px;
+  padding-top:40px;
+  border-top-right-radius: 20px; 
+  border-bottom-right-radius: 20px; 
+  overflow: hidden;
+  justify-content: center;
+}
+
+.sidebar li {
+  list-style: none;
+  padding:  1rem 2rem;
+  border: solid rgba(255, 255, 255, 0.1) 1px;
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-bottom: 20px;
+  width: 170px;
+  border-radius: 20px;
+  gap: 1rem;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sidebar li svg {
+  width: 24px; /* 원하는 너비 */
+  height: 24px; /* 원하는 높이 */
+}
+
+.sidebar li:hover {
+  transition: 1s ease-out;
+  background-color: #fff;
+  color: #000;
+}
+
+.sidebar li:not(:hover) {
+  transition: 1s ease-out;
+}
+
+/* 다른데 부터 하고 결정 */
+@media screen {
+  
+}

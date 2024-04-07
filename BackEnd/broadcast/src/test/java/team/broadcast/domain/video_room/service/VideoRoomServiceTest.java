@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import team.broadcast.domain.user.dto.SignupUser;
-import team.broadcast.domain.user.dto.UserDto;
 import team.broadcast.domain.user.service.UserService;
 import team.broadcast.domain.video_room.dto.VideoRoom;
 import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;

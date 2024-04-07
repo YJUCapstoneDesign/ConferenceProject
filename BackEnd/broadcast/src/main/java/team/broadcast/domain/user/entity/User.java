@@ -56,4 +56,11 @@ public class User {
     public User(String username) {
         this.name = username;
     }
+
+    public void changeUserInfo(String username, String nickname, String password, String phone) {
+        this.name = username;
+        this.pwd = password;
+        this.nickname = nickname;
+        this.phone = phone;
+    }
 }

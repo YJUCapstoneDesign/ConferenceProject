@@ -1,26 +1,21 @@
 package team.broadcast.domain.user.dto;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import team.broadcast.domain.enumstore.enums.Membership;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto {
+public class UpdateUser {
+    @NotBlank(message = "이름을 입력해주세요.")
     private String username;
+    @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickname;
     private String password;
-    private String email;
+    @NotBlank(message = "휴대폰 번호를 입력해주세요.")
     private String phone;
-    private Membership membership;
-
-    // 회원인지 확인하는 메서드
-    public boolean isMember() {
-        return membership == Membership.MEMBER;
-    }
-
 }

@@ -2,26 +2,32 @@ package team.broadcast.domain.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.user.dto.SignupUser;
-import team.broadcast.domain.user.dto.UserDto;
+import team.broadcast.domain.user.dto.UpdateUser;
+import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.service.UserService;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/api/signup")
-    public ResponseEntity<String> signup(@Valid @RequestBody SignupUser user) {
-        log.info("user={}", user);
+    @PostMapping("/signup")
+    public String signup(@RequestBody @Valid SignupUser user) {
         userService.join(user);
-        return new ResponseEntity<>("ok", HttpStatus.OK); // 성공시 Response
+        return "success";
     }
+
+    @GetMapping("/{userId}")
+    public UserResponse getUser(@PathVariable Long userId) {
+        return userService.getUserProfile(userId);
+    }
+
+    @PostMapping("/{userId}/edit")
+    public Long update(@PathVariable Long userId, @RequestBody @Valid UpdateUser user) {
+        return userService.update(userId, user);
+    }
+
 }

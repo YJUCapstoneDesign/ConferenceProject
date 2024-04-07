@@ -3,8 +3,6 @@ package team.broadcast.domain.video_room.dto;
 
 import lombok.*;
 import team.broadcast.domain.attender.dto.AttenderDTO;
-import team.broadcast.domain.user.dto.UserDto;
-
 import java.time.LocalDateTime;
 import java.util.List;
 

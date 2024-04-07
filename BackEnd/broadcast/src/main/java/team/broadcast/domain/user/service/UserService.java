@@ -9,10 +9,11 @@ import org.springframework.stereotype.Service;
 import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.user.dto.SignupUser;
+import team.broadcast.domain.user.dto.UpdateUser;
+import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
-import team.broadcast.domain.user.dto.UserDto;
 import team.broadcast.global.exception.CustomException;
 
 @Service
@@ -45,6 +46,42 @@ public class UserService {
 
         userRepository.save(newUser);
         return newUser.getId();
+    }
+
+    public Long update(Long userId, UpdateUser userDto) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+
+        user.changeUserInfo(userDto.getUsername(),
+                userDto.getNickname(),
+                userDto.getPassword(),
+                userDto.getPhone());
+
+        userRepository.save(user);
+        return user.getId();
+    }
+
+    public UserResponse getUserProfile(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+
+        return UserResponse.builder()
+                .username(user.getName())
+                .nickname(user.getNickname())
+                .email(user.getEmail())
+                .phone(user.getPhone())
+                .membership(user.getMembership())
+                .build();
+    }
+
+    public User findUser(Long userId) {
+        return userRepository.findById(userId)
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+    }
+
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
     }
 
     // 지정한 수 만큼의 길이를 가지는 문자와 숫자로 구성된 랜덤한 이름을 생성

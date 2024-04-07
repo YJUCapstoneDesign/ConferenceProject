@@ -3,8 +3,8 @@ package team.broadcast.domain.video_room.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
 import team.broadcast.domain.video_room.dto.VideoRoom;
+import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
 import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.service.VideoRoomService;
 

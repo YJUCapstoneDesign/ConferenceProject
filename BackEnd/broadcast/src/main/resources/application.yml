@@ -1,6 +1,6 @@
 spring:
   profiles:
-    include: janus, oauth2, jwt
+    include: janus, oauth2, jwt, mail
     group:
       db: mysql, mongo
     active: db

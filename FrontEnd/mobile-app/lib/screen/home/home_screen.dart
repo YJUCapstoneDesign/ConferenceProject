@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobileapp/component/logo.dart';
 import 'package:mobileapp/screen/login/login_screen.dart';
 import 'package:mobileapp/screen/signup/signup_screen.dart';
+import 'package:mobileapp/contentPage/contentsPage.dart';
+
+import '../../component/bottom_navigation_bar.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -30,6 +34,7 @@ class HomeScreen extends StatelessWidget {
           ],
         ),
       ),
+      bottomNavigationBar: MyCustomBottomNavigationBar(),
     );
   }
 }

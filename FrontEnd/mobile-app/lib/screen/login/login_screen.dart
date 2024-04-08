@@ -4,6 +4,8 @@ import 'package:mobileapp/screen/home/home_screen.dart';
 import 'package:mobileapp/component/back_button.dart';
 import 'package:mobileapp/screen/signup/signup_screen.dart';
 
+import '../../component/bottom_navigation_bar.dart';
+
 class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class LoginScreen extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: MyCustomBottomNavigationBar(),
     );
   }
 }

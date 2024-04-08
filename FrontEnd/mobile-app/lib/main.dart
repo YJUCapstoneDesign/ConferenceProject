@@ -1,13 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:mobileapp/contentPage/contentsPage.dart';
+import 'package:mobileapp/roomEntry/roomEntryPage.dart';
 import 'package:mobileapp/screen/home/home_screen.dart';
 import 'package:mobileapp/screen/login/login_screen.dart';
+import 'package:mobileapp/screen/signup/signup_screen.dart';
+import 'package:mobileapp/videoroomPage/videoroomMain.dart';
+
+import 'component/bottom_navigation_bar.dart';
+
 
 void main() {
   // 플러터 프레임워크가 앱을 실행할 준비가 될 떄까지 기다림
   WidgetsFlutterBinding.ensureInitialized();
   runApp(
     MaterialApp(
-      home: HomeScreen(),
+      home: (HomeScreen()),
+
     ),
   );
 }

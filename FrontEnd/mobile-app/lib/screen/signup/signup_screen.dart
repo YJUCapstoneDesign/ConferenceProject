@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobileapp/component/back_button.dart';
 
+import '../../component/bottom_navigation_bar.dart';
+
 class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -20,6 +22,7 @@ class SignUpScreen extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: MyCustomBottomNavigationBar(),
     );
   }
 }
@@ -52,7 +55,7 @@ class _SignupInputWidget extends StatelessWidget {
             padding: EdgeInsets.only(left: 30.0, right: 35.0),
             child: TextField(
               style: TextStyle(
-                color: Color(0xFF0B0B5A), // Change text color to black
+                color: Color(0xFF0B0B5A),
               ),
               decoration: InputDecoration(
                 filled: true,
@@ -75,7 +78,7 @@ class _SignupInputWidget extends StatelessWidget {
             padding: EdgeInsets.only(left: 30.0, right: 35.0),
             child: TextField(
               style: TextStyle(
-                color: Color(0xFF0B0B5A), // Change text color to black
+                color: Color(0xFF0B0B5A),
               ),
               decoration: InputDecoration(
                 filled: true,

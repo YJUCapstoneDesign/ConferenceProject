@@ -482,10 +482,10 @@ const VideoComponent = (props) => {
             "Remote feed #" + remoteFeed.rfindex +
             ", remote track (mid=" + mid + ") " +
             (on ? "added" : "removed") +
-            (metadata? " (" + metadata.reason + ") ": "") + ":", track
+            (metadata ? " (" + metadata.reason + ") " : "") + ":", track
           );
 
-          if(!on) {
+          if (!on) {
             delete remoteFeed.remoteTracks[mid];
             return;
           }
@@ -494,7 +494,7 @@ const VideoComponent = (props) => {
 
           Janus.debug("Remote feed #" + remoteFeed.rfid + ", stream:", stream);
 
-          
+
           setFeeds((prev) => {
             let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
             let newFeed = [...prev];
@@ -510,9 +510,9 @@ const VideoComponent = (props) => {
           //   // 있는 경우 뭐 별도 버튼처리
           // }
 
-          
+
         },
-      
+
         oncleanup: function () {
           Janus.log(
             " ::: Got a cleanup notification (remote feed " + id + ") :::"
@@ -696,61 +696,48 @@ const VideoComponent = (props) => {
 
   return (
     <>
-      <div>
-        <div
-          style={{
-            width: "100%",
-          }}
-        >
-          <Sidebar/>
-          <div style={{ width: "50%", float: "right" }}> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
-            <Video
-              stream={mainStream.stream}
-              username={mainStream.username}
-              muted={true}
-            />
+      <div className="wrap">
+        <div className="side-box">
+          <Sidebar />
+        </div>
+        <div className="main-box">
+        <div className="info">
+            <div className="small-screen">
+              {myFeed && (
+                <Video
+                  stream={myFeed.stream}
+                  onClick={handleMainStream}
+                  username={username}
+                  muted={false}
+                // activeSpeaker={activeSpeaker}
+                />
+              )}
+            </div>
+            {renderRemoteVideos}
           </div>
-        </div>
-        <div className="button-group">
-          <button onClick={handleAudioActiveClick} className="other_button">
-          {activeAudio ? "o" : "x"}
-          </button>
-          <button onClick={handleVideoActiveClick} className="other_button">
-            {activeVideo ? "o" : "x"}
-          </button>
-          <button onClick={handleSpeakerActiveClick} className="other_button">
-            {activeSpeaker ? "o" : "x"}
-          </button>
-          <button onClick={handleSharingActiveClick} className="red-button">
-            {activeSharing ? "o" : "x"}
-          </button>
-        </div>
-        <div
-          style={{
-            width: "100%",
-            overflowX: "hidden",
-            whiteSpace: "nowrap",
-            float: "right",
-          }}>
-          <div
-            style={{
-              width: "100px",
-              height: "100px",
-              float: "right",
-              margin: "3px",
-            }}
-          >
-            {myFeed && (
+          <div className="box">
+            <div className="big-screen"> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
               <Video
-                stream={myFeed.stream}
-                onClick={handleMainStream}
-                username={username}
-                muted={false}
-              // activeSpeaker={activeSpeaker}
+                stream={mainStream.stream}
+                username={mainStream.username}
+                muted={true}
               />
-            )}
+            </div>
           </div>
-          {renderRemoteVideos}
+          <div className="button-group">
+            <button onClick={handleAudioActiveClick} className="other_button">
+              {activeAudio ? "o" : "x"}
+            </button>
+            <button onClick={handleVideoActiveClick} className="other_button">
+              {activeVideo ? "o" : "x"}
+            </button>
+            <button onClick={handleSpeakerActiveClick} className="other_button">
+              {activeSpeaker ? "o" : "x"}
+            </button>
+            <button onClick={handleSharingActiveClick} className="red-button">
+              {activeSharing ? "o" : "x"}
+            </button>
+          </div>
         </div>
       </div>
     </>

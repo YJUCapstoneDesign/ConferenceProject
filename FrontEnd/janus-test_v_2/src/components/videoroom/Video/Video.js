@@ -11,16 +11,14 @@ const Video = (props) => {
   const onClick = (e) => {
     e.preventDefault();
     if (!props.onClick) return;
-    props.onClick(videoRef.current.srcObject, props.username);
+    props.onClick(videoRef.current.srcObject); // props.username 제거 
   };
-// 가장 큰 화면 부분 
   return (
     <>
-      <div>
+      <div className="sub-box">
         <video
           id="video"
           className="video"
-          style={{ width: "100%", height: "100%" }}
           autoPlay
           playsInline
           ref={videoRef}

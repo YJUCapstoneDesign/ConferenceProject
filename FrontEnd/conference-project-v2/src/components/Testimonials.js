@@ -8,7 +8,7 @@ const Testimonials = () => {
     return (
         <div className='testimonials' id='notice'>
             <div className='container'>
-                <h2>Notice</h2>
+                <h2>Developer Note</h2>
                 <span className='line'></span>
                 <div className='content'>
                     <div className='card'>

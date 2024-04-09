@@ -16,10 +16,10 @@ import team.broadcast.domain.user.entity.User;
 public class AttenderDTO {
     private Long userId;
     private Long meetingId;
-    private MeetingRole host; // 그 사람의 역할을 나타내는 것
+    private MeetingRole role; // 그 사람의 역할을 나타내는 것
 
     public boolean isHost() {
-        return host == MeetingRole.HOST;
+        return role == MeetingRole.HOST;
     }
 
     // dto -> entity로 변환화는 메서드
@@ -27,7 +27,15 @@ public class AttenderDTO {
         return Attender.builder()
                 .user(user)
                 .meeting(meeting)
-                .role(host)
+                .role(role)
+                .build();
+    }
+
+    public static AttenderDTO from(Attender attender) {
+        return builder()
+                .userId(attender.getUser().getId())
+                .meetingId(attender.getMeeting().getId())
+                .role(attender.getRole())
                 .build();
     }
 }

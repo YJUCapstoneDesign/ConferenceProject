@@ -31,9 +31,6 @@ public class Meeting {
     @Column(name = "MGT_NAME", length = 20)
     private String name;
 
-    @Column(name = "MTG_SECRET")
-    private String secret; // 화상회의 방 비밀번호(exist? 고민을 해야 한다.)
-
     @Column(name = "MGT_BIRTH")
     @CreatedDate
     private LocalDateTime createTime;
@@ -44,4 +41,16 @@ public class Meeting {
     @OneToMany
     @JoinColumn(name = "MTG_ID")
     private List<Attender> attenders = new ArrayList<>();
+
+    public void updateName(String name) {
+        this.name = name;
+    }
+
+    public void updateStartTime(LocalDateTime startTime) {
+        this.createTime = startTime;
+    }
+
+    public void updateEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
+    }
 }

@@ -696,12 +696,21 @@ const VideoComponent = (props) => {
 
   return (
     <>
-      <div className="wrap">
+      <div id="wrap">
         <div className="side-box">
           <Sidebar />
         </div>
         <div className="main-box">
-        <div className="info">
+          <div className="box">
+            <div className="big-screen"> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
+              <Video
+                stream={mainStream.stream}
+                username={mainStream.username}
+                muted={true}
+              />
+            </div>
+          </div>
+          <div className="info">
             <div className="small-screen">
               {myFeed && (
                 <Video
@@ -715,28 +724,21 @@ const VideoComponent = (props) => {
             </div>
             {renderRemoteVideos}
           </div>
-          <div className="box">
-            <div className="big-screen"> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
-              <Video
-                stream={mainStream.stream}
-                username={mainStream.username}
-                muted={true}
-              />
+          <div className="button-box">
+            <div className="button-group">
+              <button onClick={handleAudioActiveClick} className="other_button">
+                {activeAudio ? "o" : "x"}
+              </button>
+              <button onClick={handleVideoActiveClick} className="other_button">
+                {activeVideo ? "o" : "x"}
+              </button>
+              <button onClick={handleSpeakerActiveClick} className="other_button">
+                {activeSpeaker ? "o" : "x"}
+              </button>
+              <button onClick={handleSharingActiveClick} className="red-button">
+                {activeSharing ? "o" : "x"}
+              </button>
             </div>
-          </div>
-          <div className="button-group">
-            <button onClick={handleAudioActiveClick} className="other_button">
-              {activeAudio ? "o" : "x"}
-            </button>
-            <button onClick={handleVideoActiveClick} className="other_button">
-              {activeVideo ? "o" : "x"}
-            </button>
-            <button onClick={handleSpeakerActiveClick} className="other_button">
-              {activeSpeaker ? "o" : "x"}
-            </button>
-            <button onClick={handleSharingActiveClick} className="red-button">
-              {activeSharing ? "o" : "x"}
-            </button>
           </div>
         </div>
       </div>

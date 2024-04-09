@@ -1,14 +1,11 @@
 .sidebar{
-  position: fixed;
   background-color: #0C0C59;
   color: #fff;
-  top: 0;
-  left: 0;
-  height: 833px;
-  width: 280px;
   padding-top:40px;
   overflow: hidden;
   justify-content: center;
+  height: 100%;
+  width: 100%;
 }
 
 .sidebar li {

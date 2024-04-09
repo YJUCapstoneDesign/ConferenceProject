@@ -1,7 +1,10 @@
 package team.broadcast.domain.user.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.enumstore.enums.UserRole;
@@ -15,7 +18,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@ToString
 public class User {
 
     @Id
@@ -51,7 +53,7 @@ public class User {
 
     @OneToMany
     @JoinColumn(name = "USER_ID_SEQ")
-    private List<Attender> attenders = new ArrayList<>(); // 양방향 연결
+    private final List<Attender> attenders = new ArrayList<>(); // 양방향 연결
 
     public User(String username) {
         this.name = username;

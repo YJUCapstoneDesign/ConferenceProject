@@ -6,6 +6,7 @@ import lombok.*;
 import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.user.entity.User;
+
 /*
 회의 참석자 테이블이다.
  */
@@ -14,6 +15,7 @@ import team.broadcast.domain.user.entity.User;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@ToString
 @Table(name = "TB_ATTENDER")
 public class Attender {
     @Id
@@ -22,7 +24,7 @@ public class Attender {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "MGT_ID", insertable = false, updatable = false)
+    @JoinColumn(name = "MGT_ID", updatable = false)
     private Meeting meeting;
 
     @ManyToOne

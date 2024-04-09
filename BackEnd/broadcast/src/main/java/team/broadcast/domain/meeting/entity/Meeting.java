@@ -39,8 +39,8 @@ public class Meeting {
     private LocalDateTime endTime;
 
     @OneToMany
-    @JoinColumn(name = "MTG_ID")
-    private List<Attender> attenders = new ArrayList<>();
+    @JoinColumn(name = "MGT_ID")
+    private final List<Attender> attenders = new ArrayList<>();
 
     public void updateName(String name) {
         this.name = name;

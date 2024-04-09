@@ -4,18 +4,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.attender.entity.Attender;
+import team.broadcast.domain.attender.exception.AttenderErrorCode;
 import team.broadcast.domain.attender.mysql.repository.AttenderRepository;
+import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.meeting.dto.MeetingCreateRequest;
 import team.broadcast.domain.meeting.dto.MeetingDTO;
 import team.broadcast.domain.meeting.dto.MeetingUpdateRequest;
 import team.broadcast.domain.meeting.entity.Meeting;
+import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
+import team.broadcast.domain.user.dto.UserResponse;
+import team.broadcast.domain.user.entity.User;
+import team.broadcast.global.exception.CustomException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -42,7 +46,7 @@ public class MeetingService {
     @Transactional
     public MeetingDTO updateMeeting(Long id, MeetingUpdateRequest meetingUpdateRequest) {
         Meeting meeting = meetingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Not found meeting"));
+                .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
 
         meeting.updateName(meetingUpdateRequest.getName());
         meeting.updateStartTime(meetingUpdateRequest.getStartTime());
@@ -70,19 +74,40 @@ public class MeetingService {
     @Transactional
     public void deleteMeeting(Long meetingId) {
         Meeting meeting = meetingRepository.findById(meetingId)
-                .orElseThrow(() -> new RuntimeException("Not found meeting"));
+                .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
 
         meetingRepository.delete(meeting);
     }
 
+    // 회의 참석자 추가
+    @Transactional
+    public Attender addAttender(Long meetingId, User user) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        Attender existAttender = attenderRepository.findByUserIdAndMeetingId(meeting.getId(), user.getId())
+                .orElse(null);
+
+        if (existAttender != null) {
+            throw new CustomException(AttenderErrorCode.DUPLICATED_ATTENDER);
+        }
+
+        Attender attender = Attender.builder()
+                .user(user)
+                .meeting(meeting)
+                .role(MeetingRole.PARTICIPANT)
+                .build();
+
+        return attenderRepository.save(attender);
+    }
+
     // 회의에 있는 참여자 가져오기
     @Transactional
-    public List<AttenderDTO> findAttenders(Long meetingId) {
+    public List<UserResponse> findAttenders(Long meetingId) {
         List<Attender> attenders = attenderRepository.findByMeetingId(meetingId);
 
         return attenders.stream()
-                .map(AttenderDTO::from)
-                .collect(Collectors.toList());
+                .map(attender -> UserResponse.from(attender.getUser()))
+                .toList();
     }
-
 }

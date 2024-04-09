@@ -722,6 +722,50 @@ const VideoComponent = (props) => {
                 />
               )}
             </div>
+            <div className="small-screen">
+              {myFeed && (
+                <Video
+                  stream={myFeed.stream}
+                  onClick={handleMainStream}
+                  username={username}
+                  muted={false}
+                // activeSpeaker={activeSpeaker}
+                />
+              )}
+            </div>
+            <div className="small-screen">
+              {myFeed && (
+                <Video
+                  stream={myFeed.stream}
+                  onClick={handleMainStream}
+                  username={username}
+                  muted={false}
+                // activeSpeaker={activeSpeaker}
+                />
+              )}
+            </div>
+            <div className="small-screen">
+              {myFeed && (
+                <Video
+                  stream={myFeed.stream}
+                  onClick={handleMainStream}
+                  username={username}
+                  muted={false}
+                // activeSpeaker={activeSpeaker}
+                />
+              )}
+            </div>
+            <div className="small-screen">
+              {myFeed && (
+                <Video
+                  stream={myFeed.stream}
+                  onClick={handleMainStream}
+                  username={username}
+                  muted={false}
+                // activeSpeaker={activeSpeaker}
+                />
+              )}
+            </div>
             {renderRemoteVideos}
           </div>
           <div className="button-box">

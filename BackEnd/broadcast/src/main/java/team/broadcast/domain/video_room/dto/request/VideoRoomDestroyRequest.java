@@ -12,6 +12,6 @@ import lombok.*;
 public class VideoRoomDestroyRequest {
     private Long room;
     private String secret;
-    private String request = "destroy";
+    private final String request = "destroy";
 
 }

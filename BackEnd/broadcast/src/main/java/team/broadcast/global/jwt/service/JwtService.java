@@ -1,5 +1,7 @@
 package team.broadcast.global.jwt.service;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -11,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import team.broadcast.global.jwt.refresh.RefreshToken;
-import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.global.exception.CustomException;
 
 import java.security.Key;
 import java.util.Base64;
@@ -32,7 +34,6 @@ public class JwtService {
     private static final String BEARER = "Bearer ";
 
     private final UserRepository userRepository;
-    private final RefreshTokenRepository refreshTokenRepository;
 
     @Value("${jwt.secretKey}")
     private String secretKey;
@@ -105,17 +106,14 @@ public class JwtService {
 
     /**
      * @param email        user email address
-     * @param refreshToken old refreshToken
+     * @param refreshToken refreshToken 업데이트 토큰
      */
-    public RefreshToken updateRefreshToken(String email, String refreshToken) {
-        User findUser = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-        RefreshToken findRefreshToken = refreshTokenRepository.findByUserId(findUser.getId())
-                .orElse(new RefreshToken(findUser.getId(), refreshToken)); // RefreshToken 없는 경우 새로 발급할 수 있도록 해야 한다.
-
-        findRefreshToken.setToken(refreshToken);
-        refreshTokenRepository.save(findRefreshToken); // RefreshToken DB에 저장
-        return findRefreshToken;
+    public void updateRefreshToken(String email, String refreshToken) {
+        userRepository.findByEmail(email)
+                .ifPresentOrElse(
+                        user -> user.updateRefreshToken(refreshToken),
+                        () -> new CustomException(UserErrorCode.USER_NOT_FOUND)
+                );
     }
 
     /**
@@ -146,11 +144,11 @@ public class JwtService {
 
     public Optional<String> extractEmail(String accessToken) {
         try {
-            return Optional.ofNullable(Jwts.parserBuilder().setSigningKey(key)
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(key)
                     .build()
-                    .parseClaimsJws("email")
-                    .toString()
-            );
+                    .parseClaimsJws(accessToken);
+            return Optional.ofNullable(claims.getBody().get("email", String.class));
         } catch (Exception e) {
             log.error("엑세스 토큰이 유효하지 않습니다.");
             return Optional.empty();
@@ -163,11 +161,9 @@ public class JwtService {
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));
     }
 
-    public RefreshToken getRefreshToken(String email) {
+    public String getRefreshToken(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("회원이 존재하지 않습니다."));
-        return refreshTokenRepository.findByUserId(user.getId())
-                .orElse(null);
-
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+        return user.getToken();
     }
 }

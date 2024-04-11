@@ -18,7 +18,5 @@ public class VideoRoomEditRequest {
     private String newDescription;
     @SerializedName("new_secret")
     private String newSecret;
-    @SerializedName("new_pin")
-    private String newPin;
-    private String request = "edit";
+    private final String request = "edit";
 }

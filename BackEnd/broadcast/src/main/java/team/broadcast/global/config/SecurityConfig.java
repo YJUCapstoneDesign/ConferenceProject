@@ -21,7 +21,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.jwt.filter.JwtAuthenticationProcessingFilter;
-import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.filter.CustomJsonLoginFilter;
 import team.broadcast.global.login.handler.LoginFailureHandler;
@@ -41,7 +40,6 @@ public class SecurityConfig {
     private final JwtService jwtService;
     private final LoginService loginService;
     private final ObjectMapper objectMapper;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
     private final LoginSuccessHandler loginSuccessHandler;
@@ -85,7 +83,7 @@ public class SecurityConfig {
 
     @Bean
     public JwtAuthenticationProcessingFilter jwtAuthenticationProcessingFilter() {
-        return new JwtAuthenticationProcessingFilter(jwtService, refreshTokenRepository, userRepository);
+        return new JwtAuthenticationProcessingFilter(jwtService, userRepository);
     }
 
     @Bean
@@ -108,10 +106,13 @@ public class SecurityConfig {
                 httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // 모든 접근에 대해 허용 <수정 필요>
+        // TODO: 권한 설정 생각 필요
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
-                        .requestMatchers("/ws/**", "/topic/**", "/app/**", "/api/signup", "/").permitAll()
-                        .anyRequest().permitAll()); // 임시 작성
+                        .requestMatchers("/ws/**", "/topic/**",
+                                "/app/**", "/api/signup", "/", "/logout",
+                                "/favicon.ico").permitAll()
+                        .anyRequest().authenticated()); // 다른 곳에는 권한이 필요하다.
 
         // filter 적용
         http.addFilterAfter(customJsonLoginFilter(), LogoutFilter.class);

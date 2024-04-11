@@ -44,14 +44,11 @@ class VideoRoomServiceTest {
     @DisplayName("방 생성")
     void createRoom() throws Exception {
         Long roomId = 12341234L;
-        String secret = "12341234";
         String email = this.name + "@gmail.com";
         // 방 생성
         VideoRoomCreate testRoom = VideoRoomCreate.builder()
                 .room(roomId)
                 .display("임시 테스트 방")
-                .secret(secret)
-                .request("create")
                 .build();
 
         VideoRoom room = videoRoomService.createRoom(email, testRoom);
@@ -60,20 +57,19 @@ class VideoRoomServiceTest {
         assertThat(room).isNotNull();
 
         // 방 삭제
-        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
-                .room(room.getRoomId())
-                .secret(secret)
-                .request("destroy")
-                .build();
-
-        videoRoomService.destroyRoom(destroy);
+//        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
+//                .room(room.getRoomId())
+//                .secret(secret)
+//                .request("destroy")
+//                .build();
+//
+//        videoRoomService.destroyRoom(destroy);
     }
 
     @Test
     @DisplayName("방 수정")
     void updateRoom() throws Exception {
         Long roomId = 5678L;
-        String secret = "5678";
         String newSecret = "1234";
         String email = this.name + "@gmail.com";
 
@@ -81,8 +77,6 @@ class VideoRoomServiceTest {
         VideoRoomCreate testRoom = VideoRoomCreate.builder()
                 .room(roomId)
                 .display("임시 테스트 방")
-                .secret(secret)
-                .request("create")
                 .build();
 
         VideoRoom room = videoRoomService.createRoom(email, testRoom);
@@ -92,7 +86,6 @@ class VideoRoomServiceTest {
         // 방 수정
         VideoRoomEditRequest editRequest = VideoRoomEditRequest.builder()
                 .room(room.getRoomId())
-                .secret(secret)
                 .newDescription("안녕하세요")
                 .newSecret(newSecret)
                 .build();
@@ -106,7 +99,6 @@ class VideoRoomServiceTest {
         VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
                 .room(room.getRoomId())
                 .secret(newSecret)
-                .request("destroy")
                 .build();
 
         videoRoomService.destroyRoom(destroy);

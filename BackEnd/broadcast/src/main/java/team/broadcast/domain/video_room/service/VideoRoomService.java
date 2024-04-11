@@ -74,7 +74,6 @@ public class VideoRoomService {
         VideoRoom room = VideoRoom.builder()
                 .roomId(response.getRoom())
                 .roomName(request.getDisplay())
-                .roomPwd(request.getPin())
                 .publisherId(user.getId())
                 .participants(arr)
                 .build();
@@ -101,7 +100,6 @@ public class VideoRoomService {
         VideoRoom updateRoom = VideoRoom.builder()
                 .roomId(response.getRoom())
                 .roomName(request.getNewDescription())
-                .roomPwd(request.getNewPin())
                 .build();
 
         videoRoomRepository.update(updateRoom);
@@ -129,13 +127,17 @@ public class VideoRoomService {
         videoRoomRepository.delete(room.getRoomId());
     }
 
+    public VideoRoom findByRoomId(Long roomId) {
+        return videoRoomRepository.findById(roomId);
+    }
+
     @Async
     public void scheduleRoomDestruction(Long roomId, String secret) {
         try {
             TimeUnit.SECONDS.sleep(LIMIT_ROOM_SECOND); // 5초 뒤에 자동 삭제
             log.info("Recording Time Second ={}", LIMIT_ROOM_SECOND);
 
-            VideoRoomDestroyRequest request = new VideoRoomDestroyRequest(roomId, secret, "destroy");
+            VideoRoomDestroyRequest request = new VideoRoomDestroyRequest(roomId, secret);
             destroyRoom(request);
         } catch (InterruptedException e) {
             log.error("Error in scheduleRoomDestruction: {}", e.getMessage());

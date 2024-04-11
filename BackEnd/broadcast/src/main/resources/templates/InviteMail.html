@@ -27,32 +27,7 @@
         p {
             line-height: 1.5;
         }
-
-        a {
-            display: inline-block;
-            background-color: #0056b3;
-            color: #ffffff;
-            padding: 10px 20px;
-            border-radius: 5px;
-            text-decoration: none;
-            margin-top: 20px;
-        }
-
-        a:hover {
-            cursor: pointer;
-            background-color: #004494;
-        }
-
-        .invitation-code {
-            background-color: #e8f0fe;
-            color: #0056b3;
-            padding: 10px;
-            font-size: 2em;
-            border-radius: 4px;
-            font-weight: bold;
-            display: inline-block;
-            margin: 5px 0;
-        }
+        
     </style>
 </head>
 <body>
@@ -60,7 +35,7 @@
     <h1>Unmute 회의 초대</h1>
     <p>안녕하세요 <span th:text="${name}">Name</span></p>
     <p>회의 초대 코드를 통해 화상회의에 접속해주세요.</p>
-    <span class="invitation-code" th:text="${invitationCode}">123456</span>
+    <a th:href="${invitationCode}" th:text="${invitationCode}">123456</a>
     <p>회의 시간에 맞춰 접속해 주시기 바랍니다.</p>
 </div>
 </body>

@@ -14,15 +14,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.web.filter.OncePerRequestFilter;
-import team.broadcast.global.jwt.refresh.RefreshToken;
-import team.broadcast.global.jwt.refresh.RefreshTokenRepository;
-import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.global.jwt.service.JwtService;
 
 import java.io.IOException;
 
-import static org.springframework.security.core.userdetails.User.*;
+import static org.springframework.security.core.userdetails.User.builder;
 
 @RequiredArgsConstructor
 @Slf4j
@@ -30,7 +28,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private static final String NO_CHECK_URL = "/api/login";
 
     private final JwtService jwtService;
-    private final RefreshTokenRepository refreshTokenRepository;
     private final UserRepository userRepository;
 
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
@@ -57,19 +54,19 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     }
 
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
-        refreshTokenRepository.findByToken(refreshToken)
-                .ifPresent(token -> {
-                    String reIssuedRefreshToken = reIssueRefreshToken(token);
-                    User user = userRepository.findById(token.getId()).orElse(null);
-                    jwtService.sendAccessTokenAndRefreshToken(response, jwtService.generateAccessToken(user.getEmail()), reIssuedRefreshToken);
+        userRepository.findByToken(refreshToken)
+                .ifPresent(user -> {
+                    String reIssuedRefreshToken = reIssueRefreshToken(user);
+                    jwtService.sendAccessTokenAndRefreshToken(response, jwtService.generateAccessToken(user.getEmail()),
+                            reIssuedRefreshToken);
                 });
     }
 
     // 리프레시 토큰 재발급 & DB에 리프레시 토큰 업데이트 메소드
-    private String reIssueRefreshToken(RefreshToken token) {
+    private String reIssueRefreshToken(User user) {
         String reIssuedRefreshToken = jwtService.generateRefreshToken();
-        token.setToken(reIssuedRefreshToken);
-        refreshTokenRepository.saveAndFlush(token);
+        user.updateRefreshToken(reIssuedRefreshToken);
+        userRepository.saveAndFlush(user);
         return reIssuedRefreshToken;
     }
 

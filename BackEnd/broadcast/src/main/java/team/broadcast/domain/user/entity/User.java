@@ -51,6 +51,9 @@ public class User {
     @Column(name = "USER_PLATFORM", length = 10)
     private String platform;
 
+    @Column(name = "USER_TOKEN")
+    private String token;
+
     @OneToMany
     @JoinColumn(name = "USER_ID_SEQ")
     private final List<Attender> attenders = new ArrayList<>(); // 양방향 연결
@@ -64,5 +67,9 @@ public class User {
         this.pwd = password;
         this.nickname = nickname;
         this.phone = phone;
+    }
+
+    public void updateRefreshToken(String updateRefreshToken) {
+        this.token = updateRefreshToken;
     }
 }

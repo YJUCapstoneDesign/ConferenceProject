@@ -5,9 +5,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.dto.UserResponse;
-import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.service.UserService;
 
 import java.util.List;
@@ -42,15 +40,16 @@ class MeetingServiceTest {
 //        userService.join(test1);
 //        userService.join(test2);
 
-        User user1 = userService.findUser(1L);
-        User user2 = userService.findUser(2L);
+//        User user1 = userService.findUser(1L);
+//        User user2 = userService.findUser(2L);
         // 참석자 추가
-        meetingService.addAttender(1L, user1);
-        meetingService.addAttender(1L, user2);
+//        meetingService.addAttender(1L, user1);
+//        meetingService.addAttender(1L, user2);
 
         // 현재 참석되어 있는 유저 확인
         List<UserResponse> attenders = meetingService.findAttenders(meetingId);
 
-        Assertions.assertThat(attenders).isNotEmpty(); // 비어 있지 않음
+        Assertions.assertThat(attenders)
+                .hasSize(2); // 현재 2명에 대한 정보가 있음
     }
 }

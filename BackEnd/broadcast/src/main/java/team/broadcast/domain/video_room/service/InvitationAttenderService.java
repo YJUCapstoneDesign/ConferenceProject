@@ -4,11 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
-import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
-import team.broadcast.global.exception.CustomException;
 import team.broadcast.global.mail.MailUtil;
 import team.broadcast.global.mail.dto.EmailMessage;
 
@@ -20,10 +17,7 @@ public class InvitationAttenderService {
     private final UserRepository userRepository;
 
 
-    public void sendInviteMail(AttenderDTO attender, String invitationCode) {
-
-        User user = userRepository.findById(attender.getUserId())
-                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+    public void sendInviteMail(User user, String invitationCode) {
 
         Context context = new Context();
         context.setVariable("name", user.getName());

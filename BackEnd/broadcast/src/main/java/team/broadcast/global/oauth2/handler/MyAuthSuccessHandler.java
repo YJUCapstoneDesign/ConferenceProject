@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import team.broadcast.global.jwt.refresh.RefreshToken;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.oauth2.CustomOAuth2User;
 
@@ -36,7 +35,7 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
     // RefreshToken 유/무에 따라 accessToken 만 보내거나 RefreshToken 과 같이 보내게 된디.
     private void sendToken(HttpServletResponse response, CustomOAuth2User oAuth2User) {
         String email = oAuth2User.getEmail();
-        RefreshToken userRefreshToken = jwtService.getRefreshToken(email);
+        String userRefreshToken = jwtService.getRefreshToken(email);
         String accessToken = jwtService.generateAccessToken(email);
         response.addHeader(jwtService.getAccessTokenHeader(), "Bearer " + accessToken);
 

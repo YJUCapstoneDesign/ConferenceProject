@@ -5,6 +5,7 @@ import PassWord from './components/page-in/password';
 import OurService from './components/page-in/OurService';
 import Signin from './components/page-in/signin';
 import Signup from './components/page-in/signup';
+import RoomService from './components/page-in/RoomService';
 // App
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
                     <Route path="/OurService" element={<OurService />} />
                     <Route path="Login" element={<Signin/>} />
                     <Route path='signup' element={<Signup />} />
+                    <Route path='Room' element={<RoomService/>} />
                 </Routes>
             </div>
     </BrowserRouter>

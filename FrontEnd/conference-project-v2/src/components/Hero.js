@@ -1,18 +1,18 @@
-import React from 'react'
-import './css/Hero.css'
+import React from 'react';
+import { Link } from 'react-router-dom';
+import './css/Hero.css';
 
 const Hero = () => {
     return (
         <div className='hero'>
             <div className='content'>
-                {/* <p>UNMUTE</p> */}
                 <p><br/>The <span>UNMUTE</span>
                 <br />project is a video conference
                 <br />program with various functions.</p><br/>
-                <button href='/' className='button'>Try it now</button>
+                <Link to='/Room' className='button'>Try it now</Link>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default Hero
+export default Hero;

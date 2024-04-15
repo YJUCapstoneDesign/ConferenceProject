@@ -105,8 +105,7 @@ public class SecurityConfig {
         http.sessionManagement(httpSecuritySessionManagementConfigurer ->
                 httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
-        // 모든 접근에 대해 허용 <수정 필요>
-        // TODO: 권한 설정 생각 필요
+        // 일부 경로 허용 나머지는 전부 인증이 필요하다.
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
                         .requestMatchers("/ws/**", "/topic/**",

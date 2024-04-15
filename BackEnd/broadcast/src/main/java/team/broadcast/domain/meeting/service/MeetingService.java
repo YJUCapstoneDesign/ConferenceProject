@@ -19,7 +19,6 @@ import team.broadcast.domain.user.entity.User;
 import team.broadcast.global.exception.CustomException;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -35,11 +34,7 @@ public class MeetingService {
 
         Meeting saved = meetingRepository.save(meeting);
 
-        return MeetingDTO.builder()
-                .name(saved.getName())
-                .createTime(saved.getCreateTime())
-                .endTime(saved.getEndTime())
-                .build();
+        return MeetingDTO.from(saved);
     }
 
     // 회의 수정
@@ -54,16 +49,15 @@ public class MeetingService {
 
         meetingRepository.save(meeting);
 
-        return MeetingDTO.builder()
-                .name(meeting.getName())
-                .createTime(meeting.getCreateTime())
-                .endTime(meeting.getEndTime())
-                .build();
+        return MeetingDTO.from(meeting);
 
     }
 
-    public Optional<Meeting> getMeetingById(Long id) {
-        return meetingRepository.findById(id);
+    public MeetingDTO findMeetingById(Long id) {
+        Meeting meeting = meetingRepository.findById(id)
+                .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        return MeetingDTO.from(meeting);
     }
 
     public List<Meeting> findAll() {
@@ -108,6 +102,28 @@ public class MeetingService {
 
         return attenders.stream()
                 .map(attender -> UserResponse.from(attender.getUser()))
+                .toList();
+    }
+
+    // 현재 참석되어 있는 모든 회의 불러오기
+    @Transactional
+    public List<MeetingDTO> findAllMeetings(Long userId) {
+        List<Attender> attenders = attenderRepository.findByUserId(userId);
+
+        List<Meeting> meetings = attenders.stream()
+                .map(attender -> meetingRepository.findById(attender.getMeeting().getId())
+                        .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND)))
+                .toList();
+        return fromMeetings(meetings);
+    }
+
+    private List<MeetingDTO> fromMeetings(List<Meeting> meetingList) {
+        return meetingList.stream()
+                .map(meeting -> MeetingDTO.builder()
+                        .name(meeting.getName())
+                        .createTime(meeting.getCreateTime())
+                        .endTime(meeting.getEndTime())
+                        .build())
                 .toList();
     }
 }

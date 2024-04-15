@@ -69,6 +69,10 @@ public class User {
         this.phone = phone;
     }
 
+    public void updatePassword(String password) {
+        this.pwd = password;
+    }
+
     public void updateRefreshToken(String updateRefreshToken) {
         this.token = updateRefreshToken;
     }

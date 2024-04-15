@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 import team.broadcast.domain.user.dto.UserResponse;
@@ -17,6 +16,7 @@ import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
 import team.broadcast.global.jwt.service.JwtService;
+import team.broadcast.global.login.user.CustomUserDetails;
 
 import java.io.IOException;
 
@@ -31,14 +31,14 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
     private String accessTokenExpiration;
     private final ObjectMapper objectMapper;
 
-    private String extractUsername(Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        return userDetails.getUsername();
+    private String extractEmail(Authentication authentication) {
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+        return userDetails.getEmail();
     }
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-        String email = extractUsername(authentication);
+        String email = extractEmail(authentication);
         String accessToken = jwtService.generateAccessToken(email);
         String refreshToken = jwtService.generateRefreshToken();
 

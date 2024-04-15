@@ -2,11 +2,13 @@ package team.broadcast.domain.user.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.dto.UpdateUser;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.service.UserService;
+import team.broadcast.global.login.user.CustomUserDetails;
 
 @RestController
 @RequiredArgsConstructor
@@ -20,14 +22,19 @@ public class UserController {
         return "success";
     }
 
-    @GetMapping("/{userId}")
-    public UserResponse getUser(@PathVariable Long userId) {
-        return userService.getUserProfile(userId);
+    @GetMapping("/profile")
+    public UserResponse getUser(@AuthenticationPrincipal CustomUserDetails user) {
+        return userService.getUserProfile(user.getId());
     }
 
-    @PostMapping("/{userId}/edit")
-    public Long update(@PathVariable Long userId, @RequestBody @Valid UpdateUser user) {
-        return userService.update(userId, user);
+    @PutMapping("/edit")
+    public Long update(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody @Valid UpdateUser user) {
+        return userService.update(userDetails.getEmail(), user);
+    }
+
+    @DeleteMapping("/delete")
+    public void deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.deleteUser(userDetails.getEmail());
     }
 
 }

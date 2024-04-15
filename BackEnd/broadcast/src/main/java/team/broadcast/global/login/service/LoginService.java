@@ -7,6 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.global.login.user.CustomUserDetails;
 
 @Service
 @RequiredArgsConstructor
@@ -16,12 +17,8 @@ public class LoginService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("해당 이메일이 존재하지 않습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("해당 유저가 존재하지 않습니다."));
 
-        return org.springframework.security.core.userdetails.User.builder()
-                .username(user.getEmail())
-                .password(user.getPwd())
-                .roles(user.getAdmin().name(), user.getMembership().name())
-                .build();
+        return new CustomUserDetails(user);
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.jwt.service.JwtService;
+import team.broadcast.global.login.user.CustomUserDetails;
 
 import java.io.IOException;
 
@@ -86,13 +87,10 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정
         if (password == null) {
             password = KeyGenerators.string().generateKey();
+            myUser.updatePassword(password);
         }
 
-        UserDetails userDetails = builder()
-                .username(myUser.getEmail())
-                .password(password)
-                .roles(myUser.getAdmin().name())
-                .build();
+        CustomUserDetails userDetails = new CustomUserDetails(myUser);
 
         Authentication authentication =
                 new UsernamePasswordAuthenticationToken(userDetails, null,

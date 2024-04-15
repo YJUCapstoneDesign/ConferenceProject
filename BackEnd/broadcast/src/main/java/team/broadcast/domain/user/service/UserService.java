@@ -48,13 +48,15 @@ public class UserService {
         return newUser.getId();
     }
 
-    public Long update(Long userId, UpdateUser userDto) {
-        User user = userRepository.findById(userId)
+    @Transactional
+    public Long update(String email, UpdateUser userDto) {
+        User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
         user.changeUserInfo(userDto.getUsername(),
                 userDto.getNickname(),
-                userDto.getPassword(),
+                // 업데이트 할 때 암호화할 수 있도록 한다.
+                passwordEncoder.encode(userDto.getPassword()),
                 userDto.getPhone());
 
         userRepository.save(user);
@@ -87,5 +89,10 @@ public class UserService {
     // 지정한 수 만큼의 길이를 가지는 문자와 숫자로 구성된 랜덤한 이름을 생성
     public String generateRandomName(int nameLength) {
         return RandomStringUtils.random(nameLength, true, true);
+    }
+
+    @Transactional
+    public void deleteUser(String email) {
+        userRepository.deleteByEmail(email);
     }
 }

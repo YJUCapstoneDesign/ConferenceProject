@@ -1,5 +1,7 @@
 package team.broadcast.domain.video_room.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import team.broadcast.global.exception.CustomException;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/room")
+@Tag(name = "화상회의 API")
 public class VideoRoomController {
     private final VideoRoomService videoRoomService;
     private final UserService userService;
@@ -26,6 +29,8 @@ public class VideoRoomController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
+    @Operation(summary = "방 생성",
+            description = "방 생성 후 자동으로 입장이 된다. 입장된 사람은 host가 된다.")
     public VideoRoom createRoom(@RequestBody VideoRoomCreate createRequest) {
         try {
             Long randomRoomId = VideoRoom.generateRandomRoomId();
@@ -39,6 +44,8 @@ public class VideoRoomController {
 
     @DeleteMapping("/{videoRoomId}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "방 삭제",
+            description = "host 만 방을 삭제 할 수 있다.")
     public String deleteRoom(@PathVariable Long videoRoomId) {
         try {
             VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest();
@@ -56,6 +63,8 @@ public class VideoRoomController {
 
     @PostMapping("/{videoRoomId}/invite")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "방 초대 코드 발송",
+            description = "참석자에 소속되어 있는 사람에게 이메일로 초대 링크를 보낸다.")
     public String inviteAttender(@PathVariable Long videoRoomId, @RequestBody InviteRequest request) {
         log.info("user email={}", request.getEmail());
         User user = userService.findUserByEmail(request.getEmail());

@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.web.filter.OncePerRequestFilter;
 import team.broadcast.domain.user.entity.User;
@@ -20,8 +19,6 @@ import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.user.CustomUserDetails;
 
 import java.io.IOException;
-
-import static org.springframework.security.core.userdetails.User.builder;
 
 @RequiredArgsConstructor
 @Slf4j

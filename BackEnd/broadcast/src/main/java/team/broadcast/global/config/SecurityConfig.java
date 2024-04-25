@@ -1,6 +1,11 @@
 package team.broadcast.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -46,6 +51,31 @@ public class SecurityConfig {
     private final LoginFailureHandler loginFailureHandler;
     private final MyAuthSuccessHandler oauthLoginSuccessHandler;
     private final MyAuthFailureHandler oauthLoginFailHandler;
+
+    // spring api documentation
+    @Bean
+    public OpenAPI openAPI() {
+        String jwt = "JWT";
+        SecurityRequirement securityRequirement = new SecurityRequirement().addList(jwt);
+        Components components = new Components().addSecuritySchemes(jwt, new SecurityScheme()
+                .name(jwt)
+                .type(SecurityScheme.Type.HTTP)
+                .scheme("bearer")
+                .bearerFormat("JWT")
+        );
+        return new OpenAPI()
+                .components(new Components())
+                .info(apiInfo())
+                .addSecurityItem(securityRequirement)
+                .components(components);
+    }
+
+    private Info apiInfo() {
+        return new Info()
+                .title("UNMUTE API") // API의 제목
+                .description("Project API Documentation") // API에 대한 설명
+                .version("1.0.0"); // API의 버전
+    }
 
     /*
      * Cors 관련 설정
@@ -110,6 +140,7 @@ public class SecurityConfig {
                 authorizationManagerRequestMatcherRegistry
                         .requestMatchers("/ws/**", "/topic/**",
                                 "/app/**", "/api/signup", "/", "/logout",
+                                "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()
                         .anyRequest().authenticated()); // 다른 곳에는 권한이 필요하다.
 

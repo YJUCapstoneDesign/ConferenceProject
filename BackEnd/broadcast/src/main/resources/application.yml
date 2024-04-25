@@ -16,3 +16,10 @@ server:
       min-spare: 10 # 항상 활성화 되어있는(idle) thread의 개수
     accept-count: 100
     connection-timeout: 10000
+springdoc:
+  swagger-ui:
+    path: /api-docs # swagger-ui 접근 경로에 대한 별칭
+  paths-to-match:
+    - /api/** # swagger-ui에 표시할 api의 엔드포인트 패턴
+  show-login-endpoint: true
+

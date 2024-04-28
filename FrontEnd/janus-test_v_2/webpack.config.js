@@ -1,6 +1,5 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const webpack = require('webpack');
 const Dotenv = require('dotenv-webpack');
 const fs = require('fs');
@@ -20,10 +19,8 @@ module.exports = {
         }
       },
       {
-        test: /\.(css|scss)$/,
-        // use: ['style-loader', 'css-loader'],
-        use: [MiniCssExtractPlugin.loader, 'css-loader'],
-        exclude: /node_modules/,
+        test: /\.css$/,
+        use: ["style-loader", "css-loader", "postcss-loader"],
       },
       {
         test: require.resolve('janus-gateway'),
@@ -45,9 +42,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './index.html'
     }),
-    new MiniCssExtractPlugin({
-      filename: 'app.css'
-    }),
+    // new MiniCssExtractPlugin({
+    //   filename: 'app.css'
+    // }),
     new webpack.ProvidePlugin({
       adapter: ['webrtc-adapter', 'default']
     }),

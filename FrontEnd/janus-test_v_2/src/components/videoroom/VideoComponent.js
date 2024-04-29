@@ -4,6 +4,7 @@ import Video from "./Video/Video";
 import hark from "hark";
 import './VideoComponent.css';
 import Sidebar from "../Sidebar";
+import Janusbutton from "../janusbutton";
 
 const useReference = () => {
   const [reference, setReference] = useState(() => createRef());
@@ -726,18 +727,7 @@ const VideoComponent = (props) => {
           </div>
           <div className="button-box">
             <div className="button-group">
-              <button onClick={handleAudioActiveClick} className="other_button">
-                {activeAudio ? "o" : "x"}
-              </button>
-              <button onClick={handleVideoActiveClick} className="other_button">
-                {activeVideo ? "o" : "x"}
-              </button>
-              <button onClick={handleSpeakerActiveClick} className="other_button">
-                {activeSpeaker ? "o" : "x"}
-              </button>
-              <button onClick={handleSharingActiveClick} className="red-button">
-                {activeSharing ? "o" : "x"}
-              </button>
+              <Janusbutton/>
             </div>
           </div>
         </div>

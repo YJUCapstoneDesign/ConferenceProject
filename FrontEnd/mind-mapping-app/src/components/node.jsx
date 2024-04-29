@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import ReactFlow, {
     MiniMap,
     Controls,
@@ -10,8 +10,46 @@ import ReactFlow, {
 import { saveMindMap, loadMindMap } from "./storage";
 import "reactflow/dist/style.css";
 import "../index.css";
-import WebSocket from "ws";
 import { useBeforeunload } from "react-beforeunload";
+import { CompatClient } from "@stomp/stompjs";
+
+const client = useRef = useRef<CompatClient>();
+
+// const connectHaner = () => {
+//     client.current = Stromp.over(() => {
+//         const sock = new SockJS("엔드포인트")
+//     });
+//     client.current.connect(
+//         {
+//             // 여기에서 유효성 검증을 위해 header를 넣어줄 수 있음.
+//             // ex) Authorization: token
+//         },
+//         () => {
+//             client.current.subscribe(
+//                 `/백엔드와 협의한 api주소/{구독하고 싶은 방의 id}`,
+//                 (message) => {
+//                     setMessage(JSON.parse(message.body));
+//                 }
+//             )
+//         },
+//         {
+//             // 여기에도 유효성 검증을 위한 header 넣어 줄 수 있음
+//         }
+//     )
+// }
+
+// const sendHandler = () => {
+// 	client.current.send(
+//       "/백엔드와 협의한 api주소",
+//       {헤더},
+//       JSON.stringify({
+//         type: "TALK",
+//         roomId: roomId,
+//         sender: user.name,
+//         message: inputMessage
+//       })
+//     );
+// };
 
 // 초기 노드 설정
 const initialNodes = [
@@ -108,26 +146,6 @@ export default function MindNode() {
         // 로컬 스토리지에 저장
         saveMindMap(nodes, edges);
         console.log("Mind Map saved successfully.");
-
-        // 서버에 저장
-        // try {
-        //     const data = JSON.stringify({data: { nodes: nodes, edges: edges }});
-        //     saveMindMap(nodes, edges);
-        //     const response = await fetch('/api/mind-map/save', {
-        //         method: 'POST',
-        //         headers: {
-        //             'Content-Type': 'application/json',
-        //         },
-        //         body: data,
-        //     });
-        //     if (response.ok) {
-        //         console.log('Mind Map saved successfully.');
-        //     } else {
-        //         console.error('Failed to save Mind Map.');
-        //     }
-        // } catch (error) {
-        //     console.error('Error saving Mind Map:', error);
-        // }
     };
 
     // 불러오기 버튼
@@ -139,22 +157,6 @@ export default function MindNode() {
             setEdges(loadedData.edges);
             console.log(loadedData);
         }
-
-        // 서버에서 불러오기
-        // try {
-        //     const response = await fetch('/api/mind-map/load');
-
-        //     if (response.ok) {
-        //         const loadedData = await response.text();
-        //         setNodes(loadedData.nodes);
-        //         setEdges(loadedData.edges);
-        //         console.log(loadedData);
-        //     } else {
-        //         console.error('Failed to load Mind Map data.');
-        //     }
-        // } catch (error) {
-        //     console.error('Error loading Mind Map data:', error);
-        // }
     };
 
     // 선택해서 버튼으로 노드 삭제
@@ -232,16 +234,6 @@ export default function MindNode() {
                             노드 이름 변경
                         </button>
                     </li>
-                    {/* <li>
-                        <button id="two" type="button" onClick={deleteNode}>
-                            노드 삭제
-                        </button>
-                    </li>
-                    <li>
-                        <button id="four" type="button" onClick={deleteEdge}>
-                            연결 삭제
-                        </button>
-                    </li> */}
                     <li>
                         <button id="five" onClick={handleSaveClick}>
                             마인드맵 저장

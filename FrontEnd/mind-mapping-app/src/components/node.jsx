@@ -9,7 +9,7 @@ import ReactFlow, {
 } from "reactflow";
 import { saveMindMap, loadMindMap } from "./storage";
 import "reactflow/dist/style.css";
-import "../index.css"
+import "../index.css";
 import WebSocket from "ws";
 import { useBeforeunload } from "react-beforeunload";
 
@@ -18,15 +18,11 @@ const initialNodes = [
     {
         id: "1",
         type: "input",
-        data: { label: "Mind Map" },
+        data: { label: "UNMUTE" },
         position: { x: window.innerWidth / 2, y: window.innerHeight / 2 },
         style: { border: "3px solid #9999" },
     },
 ];
-
-// const ws = new WebSocket("ws://localhost:8080", {
-//     perMessageDeflate: false
-// });
 
 const initialEdges = [];
 const onLoad = (reactFlowInstance) => {
@@ -39,6 +35,7 @@ export default function MindNode() {
     const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
     const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
     const [selectedNode, setSelectedNode] = useState(null);
+    const [selectedNodeId, setSelectedNodeId] = useState(null);
 
     // 노드 추가
     const addNode = () => {
@@ -46,7 +43,7 @@ export default function MindNode() {
         if (!name) return alert("이름을 입력해주세요.");
 
         // 중복 노드 검사
-        if (nodes.some(node => node.data.label === name)) {
+        if (nodes.some((node) => node.data.label === name)) {
             alert("이미 존재하는 노드입니다.");
             return;
         }
@@ -59,19 +56,30 @@ export default function MindNode() {
         const positionY = centerY - 100 + Math.random() * 300; // y 위치
 
         // 새로운 노드 추가
-        setNodes((prevNodes) =>
-            prevNodes.concat({
-                id: `node_${Date.now()}`, // 새로운 ID를 생성하여 사용
-                data: { label: `${name}` },
-                position: {
-                    x: positionX,
-                    y: positionY,
-                },
-                style: { border: "10px solid #9999" },
-            })
-        );
-    };
+        const newNode = {
+            id: `node_${Date.now()}`, // 새로운 ID를 생성하여 사용
+            data: { label: `${name}` },
+            position: {
+                x: positionX,
+                y: positionY,
+            },
+            style: { border: "10px solid #9999" },
+        };
 
+        setNodes((prevNodes) => prevNodes.concat(newNode));
+
+        // 선택한 노드와 연결되도록 엣지 추가
+        if (selectedNodeId) {
+            const newEdge = {
+                id: `edge_${selectedNodeId}_${newNode.id}`, // 새로운 ID를 생성하여 사용
+                source: selectedNodeId,
+                target: newNode.id,
+                type: "default",
+                style: connectionLineStyle,
+            };
+            setEdges((prevEdges) => prevEdges.concat(newEdge));
+        }
+    };
 
     // 노드를 선택해서 노드 이름 변경
     const renameNode = () => {
@@ -99,7 +107,7 @@ export default function MindNode() {
     const handleSaveClick = async () => {
         // 로컬 스토리지에 저장
         saveMindMap(nodes, edges);
-        console.log('Mind Map saved successfully.');
+        console.log("Mind Map saved successfully.");
 
         // 서버에 저장
         // try {
@@ -150,77 +158,65 @@ export default function MindNode() {
     };
 
     // 선택해서 버튼으로 노드 삭제
-    const deleteNode = (e) => {
-        if (!selectedNode) {
-            alert("노드가 선택되지 않았습니다.");
-            return;
-        }
-        if (e) {
-            setNodes((prevNodes) =>
-                prevNodes.filter((node) => node.id !== selectedNode.id)
-            );
-            setEdges((prevEdges) =>
-                prevEdges.filter(
-                    (edge) =>
-                        edge.source !== selectedNode.id &&
-                        edge.target !== selectedNode.id
-                )
-            );
-            setSelectedNode(null);
-            return;
-        }
-    };
+    // const deleteNode = (e) => {
+    //     if (!selectedNode) {
+    //         alert("노드가 선택되지 않았습니다.");
+    //         return;
+    //     }
+    //     if (e) {
+    //         setNodes((prevNodes) =>
+    //             prevNodes.filter((node) => node.id !== selectedNode.id)
+    //         );
+    //         setEdges((prevEdges) =>
+    //             prevEdges.filter(
+    //                 (edge) =>
+    //                     edge.source !== selectedNode.id &&
+    //                     edge.target !== selectedNode.id
+    //             )
+    //         );
+    //         setSelectedNode(null);
+    //         return;
+    //     }
+    // };
 
     // 캔버스 클릭시 선택된 노드 해제
     const handleCanvasClick = () => {
-        // console.log("캔버스 클릭");
-        setSelectedNode(null);
-    }
-
-    // 노드 클릭시 선택된 노드 설정
-    const handleNodeClick = (e, node) => {
-        // console.log("노드 클릭");
-        setSelectedNode(node);
-        e.stopPropagation();
-    }
-
-    // 엣지를 선택해서 버튼으로 연결 삭제
-    const deleteEdge = () => {
-        if (!selectedNode) {
-            alert("연결선이 선택되지 않았습니다.");
-            return;
-        }
-        setEdges((prevEdges) =>
-            prevEdges.filter(
-                (edge) =>
-                    edge.source !== selectedNode.id &&
-                    edge.target !== selectedNode.id
-            )
-        );
         setSelectedNode(null);
     };
 
-    // 웹 소켓 연결
-    // useEffect(() => {
-    //     ws.on("connection", (ws) => {
-    //         ws.on("message", (message) => {
-    //             console.log(`Received message => ${message}`);
-    //         });
-    //         ws.send("Hello! Message From Server!!");
-    //     });
-    //     return () => {
-    //         ws.on('close', function close() {
-    //             console.log('disconnected');
-    //         })
-    //     };
-    // }, [nodes, edges]);
+    // 노드 클릭시 선택된 노드 설정
+    const handleNodeClick = (event, node) => {
+        setSelectedNodeId(node.id);
+        setSelectedNode(node);
+        event.stopPropagation();
+    };
+
+    // 연결 삭제 함수 수정
+    // const deleteEdge = () => {
+    //     if (!selectedNode) {
+    //         alert("연결선이 선택되지 않았습니다.");
+    //         return;
+    //     }
+
+    //     // 선택한 노드와 연결된 모든 엣지를 제거
+    //     setEdges((prevEdges) =>
+    //         prevEdges.filter(
+    //             (edge) =>
+    //                 edge.source !== selectedNode.id &&
+    //                 edge.target !== selectedNode.id
+    //         )
+    //     );
+    //     setSelectedNode(null);
+    // };
 
     const connectionLineStyle = {
         stroke: "#9999",
         strokeWidth: 3,
-
     };
-    const defaultEdgeOptions = { style: connectionLineStyle, type: "mindmap" };
+    const defaultEdgeOptions = {
+        style: connectionLineStyle,
+        type: "default",
+    };
 
     return (
         <div id="container">
@@ -236,7 +232,7 @@ export default function MindNode() {
                             노드 이름 변경
                         </button>
                     </li>
-                    <li>
+                    {/* <li>
                         <button id="two" type="button" onClick={deleteNode}>
                             노드 삭제
                         </button>
@@ -245,7 +241,7 @@ export default function MindNode() {
                         <button id="four" type="button" onClick={deleteEdge}>
                             연결 삭제
                         </button>
-                    </li>
+                    </li> */}
                     <li>
                         <button id="five" onClick={handleSaveClick}>
                             마인드맵 저장
@@ -271,7 +267,12 @@ export default function MindNode() {
                 onClick={handleCanvasClick}
             >
                 <Controls />
-                <Background variant="dots" gap={12} size={1} />
+                <Background
+                    variant="dots"
+                    gap={12}
+                    size={1}
+                    onClick={() => setSelectedNode(null)}
+                />
                 <MiniMap
                     nodeColor={(n) => {
                         if (n.type === "input") return "blue";

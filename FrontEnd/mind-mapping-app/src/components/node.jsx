@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react"; // useCallback 추가
+import React, { useState, useEffect, useCallback } from "react";
 import ReactFlow, {
     MiniMap,
     Controls,

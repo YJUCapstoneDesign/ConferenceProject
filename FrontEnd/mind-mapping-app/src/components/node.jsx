@@ -35,7 +35,7 @@ export default function MindNode() {
     }, []);
 
     function onConnected() {
-        stompClient.subscribe("/topic/update", onMessageReceived);
+        stompClient.subscribe("/topic/update", onMessageReceived)
         stompClient.send(
             "/ws/mind-map",
             {},

@@ -16,7 +16,7 @@ import team.broadcast.domain.mindmap.service.MindMapService;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/mind-map")
-@Tag(name="마인드맵 API", description = "화상회의 중에서 다함께 사용할 수 있는 마인드맵")
+@Tag(name = "마인드맵 API", description = "화상회의 중에서 다함께 사용할 수 있는 마인드맵")
 public class MindMapController {
     private final MindMapService mindMapService;
 
@@ -33,5 +33,12 @@ public class MindMapController {
 
         log.info("MindMap response={}", mindMapId);
         return new ResponseEntity<>(mindMapId, HttpStatus.OK);
+    }
+
+    @GetMapping("/load/{id}")
+    @Operation(summary = "마인드맵 불러오기", description = "아이디를 통해 마인드맵을 불러옵니다.")
+    public ResponseEntity<MindMapDto> load(@PathVariable("id") String id) {
+        MindMapDto dto = mindMapService.get(id);
+        return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }

@@ -4,7 +4,6 @@ package team.broadcast.domain.video_room.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import team.broadcast.domain.attender.dto.AttenderDTO;
@@ -25,7 +24,6 @@ import team.broadcast.global.exception.CustomException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 @Service
 @Slf4j
@@ -80,10 +78,6 @@ public class VideoRoomService {
 
         videoRoomRepository.save(room);
 
-//        if (user.getMembership() == Membership.BASIC) {
-//            scheduleRoomDestruction(request.getRoom(), request.getSecret());
-//        }
-
         return room;
     }
 
@@ -129,21 +123,5 @@ public class VideoRoomService {
 
     public VideoRoom findByRoomId(Long roomId) {
         return videoRoomRepository.findById(roomId);
-    }
-
-    @Async
-    public void scheduleRoomDestruction(Long roomId, String secret) {
-        try {
-            TimeUnit.SECONDS.sleep(LIMIT_ROOM_SECOND); // 5초 뒤에 자동 삭제
-            log.info("Recording Time Second ={}", LIMIT_ROOM_SECOND);
-
-            VideoRoomDestroyRequest request = new VideoRoomDestroyRequest(roomId, secret);
-            destroyRoom(request);
-        } catch (InterruptedException e) {
-            log.error("Error in scheduleRoomDestruction: {}", e.getMessage());
-            Thread.currentThread().interrupt();
-        } catch (Exception e) {
-            log.error("Exception in destroying room: {}", e.getMessage());
-        }
     }
 }

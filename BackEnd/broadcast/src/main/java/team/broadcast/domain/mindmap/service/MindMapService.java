@@ -20,6 +20,21 @@ public class MindMapService {
         return savedMindMap.getId();
     }
 
+    @Transactional
+    public MindMapDto get(String id) {
+        MindMap mindMap = mindMapRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("MindMap not found"));
+
+        return of(mindMap);
+    }
+
+    public MindMapDto of(MindMap mindMap) {
+        return MindMapDto.builder()
+                .data(mindMap.getData())
+                .roomId(mindMap.getRoomId())
+                .build();
+    }
+
     public MindMap from(MindMapDto dto) {
         return MindMap.builder()
                 .data(dto.getData())

@@ -2,13 +2,14 @@ package team.broadcast.global.oauth2;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.enumstore.enums.UserRole;
+import team.broadcast.domain.user.entity.User;
 import team.broadcast.global.oauth2.userinfo.GoogleOAuthUserInfo;
 import team.broadcast.global.oauth2.userinfo.KakaoOauthUserInfo;
 import team.broadcast.global.oauth2.userinfo.NaverOAuthUserInfo;
 import team.broadcast.global.oauth2.userinfo.OAuthUserInfo;
-import team.broadcast.domain.user.entity.User;
 
 import java.util.Map;
 
@@ -63,6 +64,7 @@ public class OAuthAttributes {
                 .platform(socialType.name())
                 .email(oauth2UserInfo.getEmail())
                 .nickname(oauth2UserInfo.getNickname())
+                .imageUrl(oauth2UserInfo.getProfileImageUrl())
                 .admin(UserRole.USER)
                 .membership(Membership.BASIC)
                 .build();

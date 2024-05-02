@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useState } from "react";
 import './video.css';
 const Video = (props) => {
+
+  const sizeUp = props.sizeUp;
   const videoRef = useRef();
   useEffect(() => {
     if (props.stream) {
@@ -11,7 +13,9 @@ const Video = (props) => {
   const onClick = (e) => {
     e.preventDefault();
     if (!props.onClick) return;
-    props.onClick(videoRef.current.srcObject); // props.username 제거 
+    props.onClick(videoRef.current.srcObject, props.username);
+    // props.onClick(videoRef.current.srcObject); // props.username 제거 
+    // props.onClick();
   };
   return (
     <>
@@ -24,6 +28,7 @@ const Video = (props) => {
           ref={videoRef}
           onClick={onClick}
           muted={props.muted}
+          style={{backgroundColor: "black"}}
           controls={props.onClick ? false : true}
         />
       </div>

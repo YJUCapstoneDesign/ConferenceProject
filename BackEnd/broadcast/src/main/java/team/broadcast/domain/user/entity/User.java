@@ -34,6 +34,9 @@ public class User {
     @Column(name = "USER_NICKNAME", length = 20)
     private String nickname;
 
+    @Column(name="USER_IMAGE")
+    private String imageUrl;
+
     @Column(name = "USER_PHONE")
     private String phone;
 
@@ -75,5 +78,9 @@ public class User {
 
     public void updateRefreshToken(String updateRefreshToken) {
         this.token = updateRefreshToken;
+    }
+
+    public void updateImageUrl(String updateImageUrl) {
+        this.imageUrl = updateImageUrl;
     }
 }

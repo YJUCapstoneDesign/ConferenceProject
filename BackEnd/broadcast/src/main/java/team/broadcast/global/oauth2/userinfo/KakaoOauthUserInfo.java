@@ -26,4 +26,9 @@ public class KakaoOauthUserInfo extends OAuthUserInfo {
   public String getEmail() {
     return String.valueOf(account.get("email"));
   }
+
+  @Override
+  public String getProfileImageUrl() {
+    return String.valueOf(profile.get("profile_image_url"));
+  }
 }

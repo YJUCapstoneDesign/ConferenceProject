@@ -4,8 +4,10 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.user.dto.SignupUser;
@@ -16,12 +18,19 @@ import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.UUID;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+
+    @Value("${default.image.address}")
+    private String defaultImageAddress;
 
     @Transactional
     public Long join(SignupUser userDto) {
@@ -36,6 +45,7 @@ public class UserService {
                 .nickname(generateRandomName(15))
                 // 비밀번호를 암호화해서 저장
                 .pwd(passwordEncoder.encode(userDto.getPassword()))
+                .imageUrl(defaultImageAddress)
                 .email(userDto.getEmail())
                 .phone(userDto.getPhone())
                 .admin(UserRole.USER)
@@ -67,13 +77,27 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
-        return UserResponse.builder()
-                .username(user.getName())
-                .nickname(user.getNickname())
-                .email(user.getEmail())
-                .phone(user.getPhone())
-                .membership(user.getMembership())
-                .build();
+        return UserResponse.from(user);
+    }
+
+    @Transactional
+    public Long updateProfileImage(Long userId, MultipartFile file) {
+        // 파일 이름을 랜덤으로 지은다.
+        String imageFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        File destinationFile = new File("/images/profile" + imageFileName);
+
+        try {
+            file.transferTo(destinationFile);
+
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+
+            user.updateImageUrl("/images/profile" + imageFileName);
+            userRepository.save(user);
+            return user.getId();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public User findUser(Long userId) {

@@ -52,10 +52,19 @@ const VideoComponent = (props) => {
     });
   };
 
+
   useEffect(() => {
+    // 윈도우 새로고침 방지
+    // TODO: 에러 방지 필요
+    window.addEventListener("beforeunload", function (e) {
+      e.preventDefault();
+      e.returnValue = "";
+    });
+
+
     let servers = [
-      process.env.REACT_APP_JANUS_GATEWAY_1,
-      process.env.REACT_APP_JANUS_GATEWAY_2,
+      // process.env.REACT_APP_JANUS_GATEWAY_HTTP,
+      process.env.REACT_APP_JANUS_GATEWAY_HTTPS,
     ];
     let opaqueId = "videoroomtest-" + Janus.randomString(12); // 개인 식별
     let janus = null;
@@ -69,7 +78,7 @@ const VideoComponent = (props) => {
 
     Janus.init({
       debug: "all",
-      //   dependencies: Janus.useDefaultDependencies(),
+        // dependencies: Janus.useDefaultDependencies(),
       callback: function () {
         janus = new Janus({
           server: servers,
@@ -304,12 +313,12 @@ const VideoComponent = (props) => {
                   // 아직 연결 중인 상태
                 }
 
-                var videoTracks = stream.getVideoTracks();
-                if (!videoTracks || videoTracks.length === 0) {
-                  // 웹캠 없는 경우 비디오 숨김처리
-                } else {
-                  // 비디오 보여줌
-                }
+                // var videoTracks = stream.getVideoTracks();
+                // if (!videoTracks || videoTracks.length === 0) {
+                //   // 웹캠 없는 경우 비디오 숨김처리
+                // } else {
+                //   // 비디오 보여줌
+                // }
               },
 
               onremotetrack: function (track, mid, on, metadata) {
@@ -354,6 +363,7 @@ const VideoComponent = (props) => {
         }, // Publishers are sendonly
         simulcast: doSimulcast,
         simulcast2: doSimulcast2,
+
         success: function (jsep) {
           Janus.debug("Got publisher SDP!", jsep);
           var publish = {
@@ -487,7 +497,7 @@ const VideoComponent = (props) => {
           );
 
           if (!on) {
-            delete remoteFeed.remoteTracks[mid];
+            delete remoteFeed['remoteTracks'][mid];
             return;
           }
 
@@ -676,21 +686,15 @@ const VideoComponent = (props) => {
 
   const renderRemoteVideos = feeds.map((feed) => {
     return (
-      <div
-        key={feed.rfid}
-        style={{
-          width: "100px",
-          height: "100px",
-          float: "left",
-          margin: "3px",
-        }}
-      >
-        <Video
-          stream={feed.stream}
-          onClick={handleMainStream}
-          username={feed.rfdisplay}
-          muted={false}
-        />
+      <div key={feed.rfid} className="info">
+        <div className="small-screen" >
+          <Video
+            stream={feed.stream}
+            onClick={handleMainStream}
+            username={feed.rfdisplay}
+            muted={false}
+          />
+        </div>
       </div>
     );
   });
@@ -711,13 +715,14 @@ const VideoComponent = (props) => {
               />
             </div>
           </div>
-          <div className="info" onClick={handleMainStream}> {/* 일단 onClick 옮김 서버 연 상태에서만 확인가능 */}
+          <div className="info"> {/* 일단 onClick 옮김 서버 연 상태에서만 확인가능 */}
             <div className="small-screen">
               {myFeed && (
                 <Video
                   stream={myFeed.stream}
                   username={username}
                   muted={false}
+                  onClick={handleMainStream}
                 // activeSpeaker={activeSpeaker}
                 />
               )}
@@ -726,7 +731,7 @@ const VideoComponent = (props) => {
           </div>
           <div className="button-box">
             <div className="button-group">
-              <Janusbutton/>
+              <Janusbutton />
             </div>
           </div>
         </div>

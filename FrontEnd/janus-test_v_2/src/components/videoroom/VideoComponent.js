@@ -711,12 +711,11 @@ const VideoComponent = (props) => {
               />
             </div>
           </div>
-          <div className="info">
+          <div className="info" onClick={handleMainStream}> {/* 일단 onClick 옮김 서버 연 상태에서만 확인가능 */}
             <div className="small-screen">
               {myFeed && (
                 <Video
                   stream={myFeed.stream}
-                  onClick={handleMainStream}
                   username={username}
                   muted={false}
                 // activeSpeaker={activeSpeaker}

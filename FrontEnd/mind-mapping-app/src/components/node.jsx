@@ -18,8 +18,8 @@ export default function MindNode() {
     const [stompClient, setStompClient] = useState(null);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-    const [selectedNodeId, setSelectedNodeId] = useState(null); // 선택된 노드의 ID 상태 추가
-    const [selectedNode, setSelectedNode] = useState(null); // 선택된 노드 상태 추가
+    const [selectedNodeId, setSelectedNodeId] = useState(null);
+    const [selectedNode, setSelectedNode] = useState(null);
 
     useEffect(() => {
         const socket = new SockJS("http://localhost:8080/ws/mind-map");
@@ -61,9 +61,8 @@ export default function MindNode() {
 
     const handleSaveClick = async () => {
         const mindMapData = { nodes, edges };
-
         try {
-            const response = await fetch("엔드포인트", {
+            const response = await fetch("/api/data", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -85,8 +84,8 @@ export default function MindNode() {
 
     const handleLoadClick = async () => {
         try {
-            const response = await fetch("서버 엔드포인트");
-            if (response.ok) {
+            const response = await fetch("/api/data");
+            if (response.ok) { 
                 const responseData = await response.json();
                 setNodes(responseData.nodes);
                 setEdges(responseData.edges);

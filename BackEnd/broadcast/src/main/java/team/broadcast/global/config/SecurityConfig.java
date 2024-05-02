@@ -139,6 +139,7 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
                         .requestMatchers("/ws/**", "/topic/**","/images/**",
+                                "/api/mind-map/**",
                                 "/app/**", "/api/signup", "/", "/logout",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()

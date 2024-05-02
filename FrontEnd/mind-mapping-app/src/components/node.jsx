@@ -60,7 +60,7 @@ export default function MindNode() {
     });
 
     const handleSaveClick = async () => {
-        const mindMapData = { nodes, edges };
+        const mindMapData = {data: { nodes, edges }};
         try {
             const response = await fetch("/api/mind-map/save", {
                 method: "POST",

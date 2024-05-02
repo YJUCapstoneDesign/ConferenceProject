@@ -62,7 +62,7 @@ export default function MindNode() {
     const handleSaveClick = async () => {
         const mindMapData = { nodes, edges };
         try {
-            const response = await fetch("/api/data", {
+            const response = await fetch("/api/mind-map/save", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -84,7 +84,7 @@ export default function MindNode() {
 
     const handleLoadClick = async () => {
         try {
-            const response = await fetch("/api/data");
+            const response = await fetch(`/api/mind-map/load/{id}`);
             if (response.ok) { 
                 const responseData = await response.json();
                 setNodes(responseData.nodes);

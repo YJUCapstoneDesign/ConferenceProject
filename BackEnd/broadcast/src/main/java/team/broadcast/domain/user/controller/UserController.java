@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.dto.UpdateUser;
 import team.broadcast.domain.user.dto.UserResponse;
@@ -38,6 +39,11 @@ public class UserController {
     @Operation(summary = "회원 정보 수정", description = "회원 정보를 수정에 사용하는 API")
     public Long update(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestBody @Valid UpdateUser user) {
         return userService.update(userDetails.getEmail(), user);
+    }
+
+    @PutMapping("/update/profileImage")
+    public Long updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, MultipartFile profileImage) {
+        return userService.updateProfileImage(userDetails.getId(), profileImage);
     }
 
     @DeleteMapping("/delete")

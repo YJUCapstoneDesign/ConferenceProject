@@ -22,4 +22,7 @@ springdoc:
   paths-to-match:
     - /api/** # swagger-ui에 표시할 api의 엔드포인트 패턴
   show-login-endpoint: true
+default:
+  image:
+    address: "/images/profile/anonymous.png"
 

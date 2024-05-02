@@ -138,7 +138,7 @@ public class SecurityConfig {
         // 일부 경로 허용 나머지는 전부 인증이 필요하다.
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
-                        .requestMatchers("/ws/**", "/topic/**",
+                        .requestMatchers("/ws/**", "/topic/**","/images/**",
                                 "/app/**", "/api/signup", "/", "/logout",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()

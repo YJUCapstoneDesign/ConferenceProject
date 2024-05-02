@@ -14,6 +14,8 @@ import { useBeforeunload } from "react-beforeunload";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
+const END_POINT = import.meta.env.VITE_REACT_APP_AWS_MDB_ENDPOINT;
+
 export default function MindNode() {
     const [stompClient, setStompClient] = useState(null);
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
@@ -60,10 +62,11 @@ export default function MindNode() {
     });
 
     const handleSaveClick = async () => {
+        console.log("Save button clicked.");
         const mindMapData = { nodes, edges };
 
         try {
-            const response = await fetch("엔드포인트", {
+            const response = await fetch(END_POINT, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -85,7 +88,7 @@ export default function MindNode() {
 
     const handleLoadClick = async () => {
         try {
-            const response = await fetch("서버 엔드포인트");
+            const response = await fetch(END_POINT);
             if (response.ok) {
                 const responseData = await response.json();
                 setNodes(responseData.nodes);

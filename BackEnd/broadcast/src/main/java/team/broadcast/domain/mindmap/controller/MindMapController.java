@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.mindmap.dto.MindMapDto;
 import team.broadcast.domain.mindmap.service.MindMapService;
@@ -38,7 +36,7 @@ public class MindMapController {
     @GetMapping("/load/{id}")
     @Operation(summary = "마인드맵 불러오기", description = "아이디를 통해 마인드맵을 불러옵니다.")
     public ResponseEntity<MindMapDto> load(@PathVariable("id") String id) {
-        MindMapDto dto = mindMapService.get(id);
+        MindMapDto dto = mindMapService.findById(id);
         return new ResponseEntity<>(dto, HttpStatus.OK);
     }
 }

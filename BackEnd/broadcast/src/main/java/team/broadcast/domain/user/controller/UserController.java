@@ -42,6 +42,7 @@ public class UserController {
     }
 
     @PutMapping("/update/profileImage")
+    @Operation(summary = "프로필 이미지 수정", description = "이미지 경로를 통해 프로필 이미지 수정")
     public Long updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, MultipartFile profileImage) {
         return userService.updateProfileImage(userDetails.getId(), profileImage);
     }

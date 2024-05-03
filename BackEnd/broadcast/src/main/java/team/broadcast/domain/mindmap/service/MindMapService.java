@@ -21,7 +21,7 @@ public class MindMapService {
     }
 
     @Transactional
-    public MindMapDto get(String id) {
+    public MindMapDto findById(String id) {
         MindMap mindMap = mindMapRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("MindMap not found"));
 

@@ -1,15 +1,10 @@
 package team.broadcast.global.oauth2.userinfo;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import java.util.Map;
 
 public class NaverOAuthUserInfo extends OAuthUserInfo {
 
     private final Map<String, Object> response;
-
-    @Value("${default.image.address}")
-    private String defaultImageUrl;
 
     public NaverOAuthUserInfo(Map<String, Object> attributes) {
         super(attributes);
@@ -34,8 +29,10 @@ public class NaverOAuthUserInfo extends OAuthUserInfo {
     @Override
     public String getProfileImageUrl() {
         String profileImageUrl = String.valueOf(response.get("profile_image_url"));
+
+        // 프로필 이미지가 없는 경우 기본 이미지 주소를 가져온다.
         if (profileImageUrl == null || profileImageUrl.isEmpty()) {
-            return defaultImageUrl;
+            return getDefaultImageUrl();
         }
         return profileImageUrl;
     }

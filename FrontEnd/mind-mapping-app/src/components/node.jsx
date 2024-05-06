@@ -82,9 +82,10 @@ export default function MindNode() {
         }
     };
 
-    const handleLoadClick = async () => {
+    const handleLoadClick = async (id) => {
+        console.log("id = ", id)
         try {
-            const response = await fetch(`/api/mind-map/load/{id}`);
+            const response = await fetch(`/api/mind-map/load/${id}`);
             if (response.ok) { 
                 const responseData = await response.json();
                 setNodes(responseData.nodes);
@@ -200,7 +201,15 @@ export default function MindNode() {
                         </button>
                     </li>
                     <li>
-                        <button id="six" onClick={handleLoadClick}>
+                        <input
+                            type="text"
+                            placeholder="Enter ID"
+                            onChange={(e) => setSelectedNodeId(e.target.value)}
+                        />
+                        <button
+                            id="six"
+                            onClick={() => handleLoadClick(selectedNodeId)}
+                        >
                             Load Mind Map
                         </button>
                     </li>
@@ -232,6 +241,6 @@ export default function MindNode() {
                     }}
                 />
             </ReactFlow>
-            </div>
+        </div>
     );
 }

@@ -3,6 +3,9 @@ plugins {
     id 'org.springframework.boot' version '3.2.4'
     id 'io.spring.dependency-management' version '1.1.4'
 }
+dependencies {
+    implementation 'com.google.code.gson:gson:2.8.8' // 라이브러리의 최신 버전을 사용하고 싶으면 버전을 업데이트하세요.
+}
 
 group = 'org.example'
 version = '0.0.1-SNAPSHOT'

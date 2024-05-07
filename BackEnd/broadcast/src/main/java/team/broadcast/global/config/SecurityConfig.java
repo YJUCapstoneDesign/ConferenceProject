@@ -85,8 +85,8 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
-        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "X-Requested-With", "Cache-Control", "Content-Type", "Accept"));
         corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
@@ -139,8 +139,10 @@ public class SecurityConfig {
         // 일부 경로 허용 나머지는 전부 인증이 필요하다.
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
-                        .requestMatchers("/ws/**", "/topic/**", "/images/**",
+                        .requestMatchers("/ws/**", "/ws/info/**").permitAll()
+                        .requestMatchers("/images/**",
                                 "/api/mind-map/**",
+                                "/oauth2/**",
                                 "/app/**", "/api/signup", "/", "/logout",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()

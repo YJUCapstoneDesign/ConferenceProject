@@ -10,7 +10,6 @@ import ReactFlow, {
 import { saveMindMap, loadMindMap } from "./storage";
 import "reactflow/dist/style.css";
 import "../index.css";
-import { useBeforeunload } from "react-beforeunload";
 import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
@@ -22,42 +21,49 @@ export default function MindNode() {
     const [selectedNode, setSelectedNode] = useState(null);
 
     useEffect(() => {
-        const socket = new SockJS("http://localhost:8080/ws/mind-map");
+        const socket = new SockJS("http://localhost:8080/ws");
+        console.log("socket : "+socket)
         const stomp = Stomp.over(socket);
         stomp.connect({}, onConnected, onError);
         setStompClient(stomp);
-
+    
         return () => {
             if (stompClient) {
                 stompClient.disconnect();
             }
         };
     }, []);
-
+    
     function onConnected() {
-        stompClient.subscribe("/topic/update", onMessageReceived)
+        stompClient.subscribe("/topic/update/1", onMessageReceived)
         stompClient.send(
-            "/ws/mind-map",
+            "/app/ws/mind-map/1",
             {},
             JSON.stringify({ sender: "username", type: "JOIN" })
         );
     }
-
+    
     function onError(error) {
         console.error("WebSocket error:", error);
     }
-
+    
     useEffect(() => {
         const loadedData = loadMindMap();
         if (loadedData) {
             setNodes(loadedData.nodes);
             setEdges(loadedData.edges);
         }
-    }, []);
-
-    useBeforeunload(() => {
-        saveMindMap(nodes, edges);
-    });
+    }, [loadMindMap]);
+    
+    useEffect(() => {
+        const handleUnload = () => {
+            saveMindMap(nodes, edges);
+        };
+        window.addEventListener("beforeunload", handleUnload);
+        return () => {
+            window.removeEventListener("beforeunload", handleUnload);
+        };
+    }, [nodes, edges]);
 
     const handleSaveClick = async () => {
         const mindMapData = {data: { nodes, edges }};

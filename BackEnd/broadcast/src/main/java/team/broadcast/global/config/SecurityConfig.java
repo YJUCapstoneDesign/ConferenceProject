@@ -72,9 +72,9 @@ public class SecurityConfig {
 
     private Info apiInfo() {
         return new Info()
-                .title("UNMUTE API") // API의 제목
-                .description("Project API Documentation") // API에 대한 설명
-                .version("1.0.0"); // API의 버전
+                .title("UNMUTE API")
+                .description("Project API Documentation")
+                .version("1.0.0");
     }
 
     /*
@@ -87,6 +87,7 @@ public class SecurityConfig {
         corsConfiguration.setAllowedOriginPatterns(List.of("*"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+        corsConfiguration.setAllowCredentials(true);
         corsConfiguration.setMaxAge(3600L);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", corsConfiguration); // 모든 경로에 대해서 CORS 설정을 적용
@@ -138,7 +139,7 @@ public class SecurityConfig {
         // 일부 경로 허용 나머지는 전부 인증이 필요하다.
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
-                        .requestMatchers("/ws/**", "/topic/**","/images/**",
+                        .requestMatchers("/ws/**", "/topic/**", "/images/**",
                                 "/api/mind-map/**",
                                 "/app/**", "/api/signup", "/", "/logout",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",

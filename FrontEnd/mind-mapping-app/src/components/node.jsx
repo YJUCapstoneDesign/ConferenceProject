@@ -22,9 +22,8 @@ export default function MindNode() {
 
     useEffect(() => {
         const socket = new SockJS("http://localhost:8080/ws");
-        console.log("socket : "+socket)
         const stomp = Stomp.over(socket);
-        stomp.connect({}, onConnected, onError);
+        stomp.connect({}, () => onConnected(stomp), onError);
         setStompClient(stomp);
     
         return () => {
@@ -34,8 +33,8 @@ export default function MindNode() {
         };
     }, []);
     
-    function onConnected() {
-        stompClient.subscribe("/topic/update/1", onMessageReceived)
+    function onConnected(stompClient) {
+        stompClient.subscribe("/topic/update/1", onMessageReceived);
         stompClient.send(
             "/app/ws/mind-map/1",
             {},
@@ -45,6 +44,16 @@ export default function MindNode() {
     
     function onError(error) {
         console.error("WebSocket error:", error);
+    }
+    
+    function onMessageReceived(payload) {
+        const message = JSON.parse(payload.body);
+        console.log("Message received:", message);
+        if (message.type === "JOIN") {
+            console.log("User joined:", message.sender);
+        } else if (message.type === "LEAVE") {
+            console.log("User left:", message.sender);
+        }
     }
     
     useEffect(() => {
@@ -64,6 +73,7 @@ export default function MindNode() {
             window.removeEventListener("beforeunload", handleUnload);
         };
     }, [nodes, edges]);
+    
 
     const handleSaveClick = async () => {
         const mindMapData = {data: { nodes, edges }};

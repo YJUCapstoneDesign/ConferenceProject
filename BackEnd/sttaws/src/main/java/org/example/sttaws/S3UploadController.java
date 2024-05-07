@@ -1,33 +1,38 @@
 package org.example.sttaws;
 
-import org.example.sttaws.S3Uploader;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.google.gson.JsonObject;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 @RestController
-@CrossOrigin
 public class S3UploadController {
 
-    @Autowired
-    private S3Uploader s3Uploader;
+    private final S3Uploader s3Uploader;
+    private final AtomicInteger fileNumber = new AtomicInteger(1); // 파일 번호 추적 변수
+
+    public S3UploadController(S3Uploader s3Uploader) {
+        this.s3Uploader = s3Uploader;
+    }
 
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestBody byte[] audioBlob) {
-        String objectKey = "recorded_audio.wav"; // S3에 저장될 파일 이름
+        String objectKey = generateUniqueFileName(); // 고유한 파일 이름 생성
 
-        try {// 클라이언트에서 전송된 바이트 배열을 S3에 업로드
+        try {
             s3Uploader.uploadFile(audioBlob, objectKey);
             return ResponseEntity.ok("File uploaded successfully.");
         } catch (Exception e) {
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error occurred while uploading file: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred while uploading file: " + e.getMessage());
         }
     }
-}
 
+    private String generateUniqueFileName() {
+        return "recorded_audio" + fileNumber.getAndIncrement() + ".wav"; // 파일 번호 증가 후 파일 이름 생성
+    }
+}

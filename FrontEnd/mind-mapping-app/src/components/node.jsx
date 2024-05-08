@@ -34,11 +34,12 @@ export default function MindNode() {
     }, []);
     
     function onConnected(stompClient) {
+        const mindMapData = {data: { nodes, edges }};
         stompClient.subscribe("/topic/update/1", onMessageReceived);
         stompClient.send(
             "/app/ws/mind-map/1",
             {},
-            JSON.stringify({ sender: "username", type: "JOIN" })
+            JSON.stringify(mindMapData)
         );
     }
     
@@ -53,8 +54,23 @@ export default function MindNode() {
             console.log("User joined:", message.sender);
         } else if (message.type === "LEAVE") {
             console.log("User left:", message.sender);
+        } else if (message.type === "NODE_ADDED") {
+            const newNode = message.node;
+            setNodes((prevNodes) => [...prevNodes, newNode]);
+        } else if (message.type === "NODE_REMOVED") {
+            const nodeId = message.nodeId;
+            setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
+            setEdges((prevEdges) =>
+                prevEdges.filter(
+                    (edge) => edge.source !== nodeId && edge.target !== nodeId
+                )
+            );
+        } else if (message.type === "EDGE_ADDED") {
+            const newEdge = message.edge;
+            setEdges((prevEdges) => [...prevEdges, newEdge]);
         }
     }
+    
     
     useEffect(() => {
         const loadedData = loadMindMap();
@@ -99,7 +115,6 @@ export default function MindNode() {
     };
 
     const handleLoadClick = async (id) => {
-        console.log("id = ", id)
         try {
             const response = await fetch(`/api/mind-map/load/${id}`);
             if (response.ok) { 
@@ -118,59 +133,64 @@ export default function MindNode() {
         }
     };
 
-    const addNode = () => {
-        const name = prompt("이름을 입력해주세요.");
-        if (!name) return alert("이름을 입력해주세요.");
-
-        if (nodes.some((node) => node.data.label === name)) {
-            alert("이미 존재하는 노드입니다.");
-            return;
-        }
-
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-
-        const positionX = centerX - 100 + Math.random() * 300;
-        const positionY = centerY - 100 + Math.random() * 300;
-
-        const newNode = {
-            id: `node_${Date.now()}`,
-            data: { label: `${name}` },
-            position: {
-                x: positionX,
-                y: positionY,
-            },
-            style: { border: "10px solid #9999" },
-        };
-
-        setNodes((prevNodes) => prevNodes.concat(newNode));
-
-        if (selectedNodeId) {
+    const addNode = (event) => {
+        if (selectedNode) {
+            const offsetX = 150;
+            const offsetY = 100;
+    
+            const newNode = {
+                id: `node_${Date.now()}`,
+                data: { label: "New Node" },
+                position: {
+                    x: selectedNode.position.x + offsetX,
+                    y: selectedNode.position.y + offsetY,
+                },
+                style: { border: "5px solid #9999" },
+            };
+    
+            setNodes((prevNodes) => [...prevNodes, newNode]);
+    
             const newEdge = {
-                id: `edge_${selectedNodeId}_${newNode.id}`,
-                source: selectedNodeId,
+                id: `edge_${selectedNode.id}_${newNode.id}`,
+                source: selectedNode.id,
                 target: newNode.id,
                 type: "default",
                 style: connectionLineStyle,
             };
-            setEdges((prevEdges) => prevEdges.concat(newEdge));
+            setEdges((prevEdges) => [...prevEdges, newEdge]);
+        } else {
+            const offsetX = event.clientX;
+            const offsetY = event.clientY;
+    
+            const newNode = {
+                id: `node_${Date.now()}`,
+                data: { label: "New Node" },
+                position: {
+                    x: offsetX,
+                    y: offsetY,
+                },
+                style: { border: "5px solid #9999" },
+            };
+    
+            setNodes((prevNodes) => [...prevNodes, newNode]);
         }
     };
-
-    const renameNode = () => {
-        if (!selectedNode) {
-            alert("노드가 선택되지 않았습니다.");
-            return;
-        }
-        const name = prompt("이름을 입력해주세요.");
-        if (!name) return alert("이름을 입력해주세요.");
+    
+    const renameNode = (nodeId, newName) => {
         setNodes((prevNodes) =>
             prevNodes.map((node) =>
-                node.id === selectedNode.id
-                    ? { ...node, data: { label: `${name}` } }
+                node.id === nodeId
+                    ? { ...node, data: { label: newName } }
                     : node
             )
         );
+    };
+
+    const handleNodeDoubleClick = (e,node) => {
+        const newName = prompt("Enter a new name for the node:", node.data.label);
+        if (newName !== null) {
+            renameNode(node.id, newName);
+        }
     };
 
     const onConnect = useCallback(
@@ -180,6 +200,7 @@ export default function MindNode() {
 
     const handleCanvasClick = () => {
         setSelectedNode(null);
+        setSelectedNodeId(null);
     };
 
     const handleNodeClick = (event, node) => {
@@ -187,6 +208,11 @@ export default function MindNode() {
         setSelectedNode(node);
         event.stopPropagation();
     };
+
+    const handleClearMindMap = () => {
+        setNodes([]);
+        setEdges([]);
+    }
 
     const connectionLineStyle = {
         stroke: "#9999",
@@ -207,12 +233,7 @@ export default function MindNode() {
                         </button>
                     </li>
                     <li>
-                        <button id="three" type="button" onClick={renameNode}>
-                            Rename Node
-                        </button>
-                    </li>
-                    <li>
-                        <button id="five" onClick={handleSaveClick}>
+                        <button id="three" onClick={handleSaveClick}>
                             Save Mind Map
                         </button>
                     </li>
@@ -223,10 +244,15 @@ export default function MindNode() {
                             onChange={(e) => setSelectedNodeId(e.target.value)}
                         />
                         <button
-                            id="six"
+                            id="four"
                             onClick={() => handleLoadClick(selectedNodeId)}
                         >
                             Load Mind Map
+                        </button>
+                    </li>
+                    <li>
+                        <button id="five" onClick={handleClearMindMap}>
+                            Clear Mind Map
                         </button>
                     </li>
                 </ul>
@@ -241,6 +267,7 @@ export default function MindNode() {
                 onConnect={onConnect}
                 onClick={handleCanvasClick}
                 onNodeClick={handleNodeClick}
+                onNodeDoubleClick={handleNodeDoubleClick}
                 onLoad={() => {}}
             >
                 <Controls />

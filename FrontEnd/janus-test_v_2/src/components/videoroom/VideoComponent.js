@@ -47,7 +47,7 @@ const VideoComponent = (props) => {
     setMainStream(() => {
       return {
         stream: stream,
-        username: username,
+        // username: username,
       };
     });
   };

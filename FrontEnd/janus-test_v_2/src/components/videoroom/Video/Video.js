@@ -32,7 +32,7 @@ const Video = (props) => {
           controls={props.onClick ? false : true}
         />
       </div>
-      <div>{props.username}</div>
+      <div className="text-black text-center">{props.username}</div>
     </>
   );
 };

@@ -49,6 +49,7 @@ export default function MindNode() {
     }
     
     function onMessageReceived(payload) {
+        console.log("메시지 수신:", payload);
         const message = JSON.parse(payload.body);
         setNodes(message.data.nodes);
         setEdges(message.data.edges);
@@ -184,8 +185,6 @@ const addNode = (event) => {
             style: { border: "5px solid #9999" },
         };
 
-        
-
         const mindMapData = {data: { nodes: [...nodes, newNode], edges }};
         stompClient.send(
             "/app/ws/mind-map/1",
@@ -204,13 +203,6 @@ const renameNode = (nodeId, newName) => {
                 ? { ...node, data: { label: newName } }
                 : node
         )
-    );
-
-    const mindMapData = {data: { nodes, edges }};
-    stompClient.send(
-        "/app/ws/mind-map/1",
-        {},
-        JSON.stringify(mindMapData)
     );
 };
 
@@ -262,6 +254,13 @@ const renameNode = (nodeId, newName) => {
     const handleClearMindMap = () => {
         setNodes([]);
         setEdges([]);
+
+        const mindMapData = {data: { nodes: [], edges: [] }};
+        stompClient.send(
+            "/app/ws/mind-map/1",
+            {},
+            JSON.stringify(mindMapData)
+        );
     }
 
     const connectionLineStyle = {

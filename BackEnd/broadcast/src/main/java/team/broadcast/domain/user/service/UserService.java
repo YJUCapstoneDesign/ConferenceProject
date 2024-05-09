@@ -66,7 +66,6 @@ public class UserService {
         user.changeUserInfo(userDto.getUsername(),
                 userDto.getNickname(),
                 // 업데이트 할 때 암호화할 수 있도록 한다.
-                passwordEncoder.encode(userDto.getPassword()),
                 userDto.getPhone());
 
         userRepository.save(user);
@@ -78,6 +77,21 @@ public class UserService {
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
         return UserResponse.from(user);
+    }
+
+    @Transactional
+    public void updatePassword(String email, String oldPassword, String newPassword) {
+        User findUser = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+
+        // 입력한 비밀번호가 같은지 검사를 한다..
+        if (!passwordEncoder.matches(oldPassword, findUser.getPwd())) {
+            throw new CustomException(UserErrorCode.INVALID_PASSWORD);
+        }
+
+        // 새로운 비밀번호로 업데이트 한다.
+        findUser.updatePassword(newPassword);
+        userRepository.save(findUser);
     }
 
     @Transactional

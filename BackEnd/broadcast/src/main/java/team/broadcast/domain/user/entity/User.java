@@ -34,7 +34,7 @@ public class User {
     @Column(name = "USER_NICKNAME", length = 20)
     private String nickname;
 
-    @Column(name="USER_IMAGE")
+    @Column(name = "USER_IMAGE")
     private String imageUrl;
 
     @Column(name = "USER_PHONE")
@@ -65,9 +65,9 @@ public class User {
         this.name = username;
     }
 
-    public void changeUserInfo(String username, String nickname, String password, String phone) {
+    // 비밀번호를 제외한 정보 업데이트
+    public void changeUserInfo(String username, String nickname, String phone) {
         this.name = username;
-        this.pwd = password;
         this.nickname = nickname;
         this.phone = phone;
     }

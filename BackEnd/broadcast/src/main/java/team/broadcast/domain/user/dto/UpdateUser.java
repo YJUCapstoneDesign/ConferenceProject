@@ -15,7 +15,6 @@ public class UpdateUser {
     private String username;
     @NotBlank(message = "닉네임을 입력해주세요.")
     private String nickname;
-    private String password;
     @NotBlank(message = "휴대폰 번호를 입력해주세요.")
     private String phone;
 }

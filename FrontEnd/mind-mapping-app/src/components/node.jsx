@@ -14,14 +14,15 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
 export default function MindNode() {
-    const [stompClient, setStompClient] = useState(null);
+    const [stompClient, setStompClient] = useState(null); 
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [selectedNodeId, setSelectedNodeId] = useState(null);
     const [selectedNode, setSelectedNode] = useState(null);
+    
 
     useEffect(() => {
-        const socket = new SockJS("http://localhost:8080/ws");
+        const socket = new SockJS("http://192.168.219.44:8080/ws");
         const stomp = Stomp.over(socket);
         stomp.connect({}, () => onConnected(stomp), onError);
         setStompClient(stomp);
@@ -32,7 +33,7 @@ export default function MindNode() {
             }
         };
     }, []);
-    
+
     function onConnected(stompClient) {
         const mindMapData = {data: { nodes, edges }};
         stompClient.subscribe("/topic/update/1", onMessageReceived);
@@ -49,17 +50,14 @@ export default function MindNode() {
     
     function onMessageReceived(payload) {
         const message = JSON.parse(payload.body);
+        setNodes(message.data.nodes);
+        setEdges(message.data.edges);
         console.log("메시지 수신:", message);
         switch (message.type) {
-            case "JOIN":
-                console.log("사용자 참여:", message.sender);
-                break;
-            case "LEAVE":
-                console.log("사용자 나감:", message.sender);
-                break;
             case "NODE_ADDED":
                 const newNode = message.node;
                 setNodes((prevNodes) => [...prevNodes, newNode]);
+                setEdges((prevEdges) => [...prevEdges, ...message.edges]);
                 break;
             case "NODE_REMOVED":
                 const nodeId = message.nodeId;
@@ -76,9 +74,9 @@ export default function MindNode() {
                 break;
             default:
                 console.error("알 수 없는 메시지 유형:", message.type);
+                break;
         }
     }
-    
     
     useEffect(() => {
         const loadedData = loadMindMap();
@@ -141,58 +139,102 @@ export default function MindNode() {
         }
     };
 
-    const addNode = (event) => {
-        if (selectedNode) {
-            const offsetX = 150;
-            const offsetY = 100;
-    
-            const newNode = {
-                id: `node_${Date.now()}`,
-                data: { label: "New Node" },
-                position: {
-                    x: selectedNode.position.x + offsetX,
-                    y: selectedNode.position.y + offsetY,
-                },
-                style: { border: "5px solid #9999" },
-            };
-    
-            setNodes((prevNodes) => [...prevNodes, newNode]);
-    
-            const newEdge = {
-                id: `edge_${selectedNode.id}_${newNode.id}`,
-                source: selectedNode.id,
-                target: newNode.id,
-                type: "default",
-                style: connectionLineStyle,
-            };
-            setEdges((prevEdges) => [...prevEdges, newEdge]);
-        } else {
-            const offsetX = event.clientX;
-            const offsetY = event.clientY;
-    
-            const newNode = {
-                id: `node_${Date.now()}`,
-                data: { label: "New Node" },
-                position: {
-                    x: offsetX,
-                    y: offsetY,
-                },
-                style: { border: "5px solid #9999" },
-            };
-    
-            setNodes((prevNodes) => [...prevNodes, newNode]);
-        }
-    };
-    
-    const renameNode = (nodeId, newName) => {
-        setNodes((prevNodes) =>
-            prevNodes.map((node) =>
-                node.id === nodeId
-                    ? { ...node, data: { label: newName } }
-                    : node
-            )
+const addNode = (event) => {
+    if (selectedNode) {
+        const offsetX = 150;
+        const offsetY = 100;
+        const newNode = {
+            id: `node_${Date.now()}`,
+            data: { label: "New Node" },
+            position: {
+                x: selectedNode.position.x + offsetX,
+                y: selectedNode.position.y + offsetY,
+            },
+            style: { border: "5px solid #9999" },
+        };
+
+        setNodes((prevNodes) => [...prevNodes, newNode]);
+
+        const newEdge = {
+            id: `edge_${selectedNode.id}_${newNode.id}`,
+            source: selectedNode.id,
+            target: newNode.id,
+            type: "default",
+            style: connectionLineStyle,
+        };
+
+        setEdges((prevEdges) => [...prevEdges, newEdge]);
+
+        const mindMapData = {data: { nodes: [...nodes, newNode], edges }};
+        stompClient.send(
+            "/app/ws/mind-map/1",
+            {},
+            JSON.stringify(mindMapData)
         );
-    };
+    } else {
+        const offsetX = event.clientX;
+        const offsetY = event.clientY;
+        const newNode = {
+            id: `node_${Date.now()}`,
+            data: { label: "New Node" },
+            position: {
+                x: offsetX,
+                y: offsetY,
+            },
+            style: { border: "5px solid #9999" },
+        };
+
+        
+
+        const mindMapData = {data: { nodes: [...nodes, newNode], edges }};
+        stompClient.send(
+            "/app/ws/mind-map/1",
+            {},
+            JSON.stringify(mindMapData)
+        );
+
+        setNodes((prevNodes) => [...prevNodes, newNode]);
+    }
+};
+    
+const renameNode = (nodeId, newName) => {
+    setNodes((prevNodes) =>
+        prevNodes.map((node) =>
+            node.id === nodeId
+                ? { ...node, data: { label: newName } }
+                : node
+        )
+    );
+
+    const mindMapData = {data: { nodes, edges }};
+    stompClient.send(
+        "/app/ws/mind-map/1",
+        {},
+        JSON.stringify(mindMapData)
+    );
+};
+
+// const handleKeyDown = (event) => {
+//     if (event.keyCode === 8 && selectedNode) {
+//         setNodes((prevNodes) => prevNodes.filter((node) => node.id !== selectedNode.id));
+//         setEdges((prevEdges) =>
+//             prevEdges.filter(
+//                 (edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id
+//             )
+//         );
+
+//         const mindMapData = {data: { nodes, edges }};
+//         stompClient.send(
+//             "/app/ws/mind-map/1",
+//             {},
+//             JSON.stringify(mindMapData)
+//         );
+
+//         setSelectedNode(null);
+//         setSelectedNodeId(null);
+//     }
+// };
+
 
     const handleNodeDoubleClick = (e,node) => {
         const newName = prompt("Enter a new name for the node:", node.data.label);

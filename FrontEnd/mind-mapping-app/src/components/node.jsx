@@ -49,25 +49,33 @@ export default function MindNode() {
     
     function onMessageReceived(payload) {
         const message = JSON.parse(payload.body);
-        console.log("Message received:", message);
-        if (message.type === "JOIN") {
-            console.log("User joined:", message.sender);
-        } else if (message.type === "LEAVE") {
-            console.log("User left:", message.sender);
-        } else if (message.type === "NODE_ADDED") {
-            const newNode = message.node;
-            setNodes((prevNodes) => [...prevNodes, newNode]);
-        } else if (message.type === "NODE_REMOVED") {
-            const nodeId = message.nodeId;
-            setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
-            setEdges((prevEdges) =>
-                prevEdges.filter(
-                    (edge) => edge.source !== nodeId && edge.target !== nodeId
-                )
-            );
-        } else if (message.type === "EDGE_ADDED") {
-            const newEdge = message.edge;
-            setEdges((prevEdges) => [...prevEdges, newEdge]);
+        console.log("메시지 수신:", message);
+        switch (message.type) {
+            case "JOIN":
+                console.log("사용자 참여:", message.sender);
+                break;
+            case "LEAVE":
+                console.log("사용자 나감:", message.sender);
+                break;
+            case "NODE_ADDED":
+                const newNode = message.node;
+                setNodes((prevNodes) => [...prevNodes, newNode]);
+                break;
+            case "NODE_REMOVED":
+                const nodeId = message.nodeId;
+                setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
+                setEdges((prevEdges) =>
+                    prevEdges.filter(
+                        (edge) => edge.source !== nodeId && edge.target !== nodeId
+                    )
+                );
+                break;
+            case "EDGE_ADDED":
+                const newEdge = message.edge;
+                setEdges((prevEdges) => [...prevEdges, newEdge]);
+                break;
+            default:
+                console.error("알 수 없는 메시지 유형:", message.type);
         }
     }
     

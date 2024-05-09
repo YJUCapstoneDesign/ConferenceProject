@@ -33,7 +33,7 @@ public class UserService {
     private String defaultImageAddress;
 
     @Transactional
-    public Long join(SignupUser userDto) {
+    public Long createUser(SignupUser userDto) {
         // 이메일 중복 검사.
         if (userRepository.findByEmail(userDto.getEmail()).isPresent()) {
             throw new CustomException(UserErrorCode.DUPLICATED_EMAIL);
@@ -81,6 +81,7 @@ public class UserService {
 
     @Transactional
     public void updatePassword(String email, String oldPassword, String newPassword) {
+        // email 통해 user 검색
         User findUser = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
@@ -90,7 +91,7 @@ public class UserService {
         }
 
         // 새로운 비밀번호로 업데이트 한다.
-        findUser.updatePassword(newPassword);
+        findUser.updatePassword(passwordEncoder.encode(newPassword));
         userRepository.save(findUser);
     }
 

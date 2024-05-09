@@ -37,7 +37,7 @@ class VideoRoomServiceTest {
                 .phone("01011111111")
                 .build();
 
-        userService.join(test);
+        userService.createUser(test);
     }
 
     @Test

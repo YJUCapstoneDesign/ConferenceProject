@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class PasswordUpdate {
     @NotBlank
-    private String oldPassword;
+    private String currentPassword;
 
     @NotBlank
     @Pattern(regexp = "^(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$",

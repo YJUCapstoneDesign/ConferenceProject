@@ -26,7 +26,7 @@ public class UserController {
             summary = "유저 회원가입",
             description = "회원가입에는 JWT 토큰이 필요하지 않으며 아래와 같은 형식의 데이터를 받는다.")
     public String signup(@RequestBody @Valid SignupUser user) {
-        userService.join(user);
+        userService.createUser(user);
         return "success";
     }
 
@@ -47,7 +47,7 @@ public class UserController {
     public void updatePassword(@AuthenticationPrincipal CustomUserDetails userDetails,
                                @RequestBody @Valid PasswordUpdate passwordUpdate) {
         userService.updatePassword(userDetails.getEmail(),
-                passwordUpdate.getOldPassword(), passwordUpdate.getNewPassword());
+                passwordUpdate.getCurrentPassword(), passwordUpdate.getNewPassword());
     }
 
     @PutMapping("/update/profileImage")

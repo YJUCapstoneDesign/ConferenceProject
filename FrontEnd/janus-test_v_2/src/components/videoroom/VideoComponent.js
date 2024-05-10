@@ -573,8 +573,10 @@ const VideoComponent = (props) => {
     }
   }, []);
 
-  const sendChatData = (data) => {
-    let message = {
+  // 룸 id, 채팅 내용, 사용자 이름등의 정보가 message 객체에 저장, 
+  // sfutest.data를 사용해 WebRTC에 내장되어있는 datachannel을 통해 전송한다.
+  {/*const sendChatData = (data) => {
+    let message = {  
       textroom: "message",
       room: myroom,
       text: data,
@@ -589,7 +591,7 @@ const VideoComponent = (props) => {
         console.log("datachannel message sent");
       },
     });
-  };
+  }; */}
 
   const transferFile = (data) => {
     let message = {
@@ -729,6 +731,15 @@ const VideoComponent = (props) => {
             </div>
             {renderRemoteVideos}
           </div>
+          {/* Chatting 컴포넌트 호출 부분 */}
+          {/* <div style={{ width: "25%", float: "right", height: "100%" }}>
+            <Chatting
+              sendChatData={sendChatData}
+              receiveChat={receiveChat}
+              transferFile={transferFile}
+              receiveFile={receiveFile}
+            />
+          </div> */}
           <div className="button-box">
             <div className="button-group">
               <Janusbutton />

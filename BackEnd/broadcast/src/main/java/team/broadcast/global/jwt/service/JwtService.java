@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.global.exception.CustomErrorCode;
 import team.broadcast.global.exception.CustomException;
+import team.broadcast.global.exception.ErrorResponse;
 
 import java.security.Key;
 import java.util.Base64;
@@ -111,7 +113,10 @@ public class JwtService {
     public void updateRefreshToken(String email, String refreshToken) {
         userRepository.findByEmail(email)
                 .ifPresentOrElse(
-                        user -> user.updateRefreshToken(refreshToken),
+                        user -> {
+                            user.updateRefreshToken(refreshToken);
+                            userRepository.save(user);
+                        },
                         () -> new CustomException(UserErrorCode.USER_NOT_FOUND)
                 );
     }
@@ -163,7 +168,14 @@ public class JwtService {
 
     public String getRefreshToken(String email) {
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
         return user.getToken();
+    }
+
+    public void expireRefreshToken(String refreshToken) {
+        User user = userRepository.findByToken(refreshToken)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다."));
+        user.deleteRefreshToken();
+        userRepository.save(user);
     }
 }

@@ -22,7 +22,7 @@ export default function MindNode() {
     
 
     useEffect(() => {
-        const socket = new SockJS("http://192.168.219.100:8080/ws");
+        const socket = new SockJS("http://192.168.219.44:8080/ws");
         const stomp = Stomp.over(socket);
         stomp.connect({}, () => onConnected(stomp), onError);
         setStompClient(stomp);
@@ -48,7 +48,7 @@ export default function MindNode() {
         console.error("WebSocket error:", error);
     }
     
-    function onMessageReceived(payload) {
+    const onMessageReceived = useCallback((payload) => {
         console.log("메시지 수신:", payload);
         const message = JSON.parse(payload.body);
         setNodes(message.data.nodes);
@@ -77,7 +77,7 @@ export default function MindNode() {
                 console.error("알 수 없는 메시지 유형:", message.type);
                 break;
         }
-    }
+    }, [setNodes, setEdges]);
     
     useEffect(() => {
         const loadedData = loadMindMap();
@@ -187,39 +187,26 @@ export default function MindNode() {
         }
     };
 
-//     const handleDeleteSelectEdge = (event) => {
-//         if (event.keyCode === 8) {
-//             const selectedEdge = elements.find((element) => element.type === 'edge' && element.selected);
-//             if (selectedEdge) {
-//                 const updatedElements = elements.filter((element) => element.id !== selectedEdge.id);
-//                 setElements(updatedElements);
-//                 const mindMapData = { data: { elements: updatedElements } };
-//                 stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
-//             }
-//         }
-//     };
+    const removeNode = (nodeId) => {
+        debugger;
+        setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
+        setEdges((prevEdges) =>
+            prevEdges.filter(
+                (edge) => edge.source !== nodeId && edge.target !== nodeId
+            )
+        );
     
-
-//     const handleDeleteSelectedNode = (event) => {
-//     if (event.keyCode === 8 && selectedNode) {
-//         setNodes((prevNodes) => prevNodes.filter((node) => node.id !== selectedNode.id));
-//         setEdges((prevEdges) =>
-//             prevEdges.filter(
-//                 (edge) => edge.source !== selectedNode.id && edge.target !== selectedNode.id
-//             )
-//         );
-
-//         const mindMapData = {data: { nodes, edges }};
-//         stompClient.send(
-//             "/app/ws/mind-map/1",
-//             {},
-//             JSON.stringify(mindMapData)
-//         );
-
-//         setSelectedNode(null);
-//         setSelectedNodeId(null);
-//     }
-//  };
+        setNodes((prevNodes) => {
+            const updatedNodes = prevNodes.filter((node) => node.id !== nodeId);
+            const mindMapData = { data: { nodes: updatedNodes, edges } };
+            stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
+            return updatedNodes;
+        });
+    };
+    
+    const handleNodeDelete = (nodeId) => {
+        removeNode(nodeId);
+    };
     
     
     const renameNode = (nodeId, newName) => {
@@ -342,6 +329,7 @@ export default function MindNode() {
                 onNodeClick={handleNodeClick}
                 onNodeDragStop={handleNodeDragStop}
                 onNodeDoubleClick={handleNodeDoubleClick}
+                onNodesDelete={handleNodeDelete}
                 onLoad={() => {}}
             >
                 <Controls />

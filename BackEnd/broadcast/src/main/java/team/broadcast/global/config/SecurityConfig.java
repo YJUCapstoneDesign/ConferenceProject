@@ -1,13 +1,11 @@
 package team.broadcast.global.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nimbusds.jose.util.StandardCharset;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,14 +21,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
-import org.springframework.security.web.authentication.logout.LogoutHandler;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.jwt.filter.JwtAuthenticationProcessingFilter;
+import team.broadcast.global.jwt.filter.JwtExceptionFilter;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.filter.CustomJsonLoginFilter;
 import team.broadcast.global.login.handler.LoginFailureHandler;
@@ -58,6 +55,8 @@ public class SecurityConfig {
     private final MyAuthSuccessHandler oauthLoginSuccessHandler;
     private final MyAuthFailureHandler oauthLoginFailHandler;
     private final LogoutService logoutService;
+
+    private final JwtExceptionFilter jwtExceptionFilter;
 
     // spring api documentation
     @Bean
@@ -153,7 +152,7 @@ public class SecurityConfig {
                                 "/app/**", "/api/signup", "/",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()
-                        .anyRequest().authenticated()); // 다른 곳에는 권한이 필요하다.
+                        .anyRequest().permitAll()); // 다른 곳에는 권한이 필요하다.
 
         // oauth 기반 로그인 설정
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
@@ -172,12 +171,13 @@ public class SecurityConfig {
                     SecurityContextHolder.clearContext();
                     // utf-8 적용
                     response.setCharacterEncoding("UTF-8");
-                    response.getWriter().println("성공적으로 삭제 되었습니다.");
+                    response.getWriter().println("로그아웃 되었습니다.");
                 })));
 
         // filter 적용
         http.addFilterAfter(customJsonLoginFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonLoginFilter.class);
+        http.addFilterBefore(jwtExceptionFilter, jwtAuthenticationProcessingFilter().getClass());
 
         return http.build();
     }

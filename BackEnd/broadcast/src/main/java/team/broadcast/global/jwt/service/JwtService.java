@@ -1,9 +1,6 @@
 package team.broadcast.global.jwt.service;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,9 +13,8 @@ import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
-import team.broadcast.global.exception.CustomErrorCode;
 import team.broadcast.global.exception.CustomException;
-import team.broadcast.global.exception.ErrorResponse;
+import team.broadcast.global.jwt.exception.JwtErrorCode;
 
 import java.security.Key;
 import java.util.Base64;
@@ -129,10 +125,19 @@ public class JwtService {
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
-            log.error("유효하지 않는 토큰입니다. {}", e.getMessage());
-            return false;
+        } catch (MalformedJwtException e) {
+            log.error("Invalid JWT token", e);
+            throw new CustomException(JwtErrorCode.MALFORMED);
+        } catch (ExpiredJwtException e) {
+            log.error("expired jwt token");
+            throw new CustomException(JwtErrorCode.EXPIRED);
+        } catch (UnsupportedJwtException e) {
+            log.error("unsupported jwt token");
+        } catch (IllegalArgumentException e) {
+            log.error("illegal jwt token");
+            throw new CustomException(JwtErrorCode.ILLEGAL_ARGUMENT);
         }
+        return false;
     }
 
 

@@ -21,8 +21,8 @@ import team.broadcast.global.login.user.CustomUserDetails;
 import java.io.IOException;
 import java.util.List;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
     private static final List<String> NO_CHECK_URLS = List.of("/api/login", "/api/logout");
 

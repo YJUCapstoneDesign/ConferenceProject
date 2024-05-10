@@ -1,5 +1,6 @@
 package team.broadcast.global.logout.service;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -8,7 +9,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.stereotype.Service;
+import team.broadcast.global.exception.CustomException;
+import team.broadcast.global.jwt.exception.JwtErrorCode;
 import team.broadcast.global.jwt.service.JwtService;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,9 +28,14 @@ public class LogoutService implements LogoutHandler {
     @Transactional
     public void logout(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.Authentication authentication) {
 
-        String refreshToken = jwtService.extractRefreshToken(request)
-                .filter(jwtService::isTokenValid)
-                .orElseThrow(() -> new IllegalStateException("Invalid refresh token"));
+        Optional<String> token = jwtService.extractRefreshToken(request);
+
+        if (token.isEmpty()) {
+            throw new CustomException(JwtErrorCode.NOT_FOUND_REFRESH);
+        }
+
+        String refreshToken = token.get();
+        jwtService.isTokenValid(refreshToken);
 
         // 세션 무효화
         HttpSession session = request.getSession();

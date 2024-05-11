@@ -5,6 +5,7 @@ import hark from "hark";
 import './VideoComponent.css';
 import Sidebar from "../Sidebar";
 import Janusbutton from "../janusbutton";
+import Chatting from "./chatting/chatting";
 
 const useReference = () => {
   const [reference, setReference] = useState(() => createRef());
@@ -55,7 +56,6 @@ const VideoComponent = (props) => {
 
   useEffect(() => {
     // 윈도우 새로고침 방지
-    // TODO: 에러 방지 필요
     window.addEventListener("beforeunload", function (e) {
       e.preventDefault();
       e.returnValue = "";
@@ -78,7 +78,7 @@ const VideoComponent = (props) => {
 
     Janus.init({
       debug: "all",
-        // dependencies: Janus.useDefaultDependencies(),
+      // dependencies: Janus.useDefaultDependencies(),
       callback: function () {
         janus = new Janus({
           server: servers,
@@ -575,8 +575,8 @@ const VideoComponent = (props) => {
 
   // 룸 id, 채팅 내용, 사용자 이름등의 정보가 message 객체에 저장, 
   // sfutest.data를 사용해 WebRTC에 내장되어있는 datachannel을 통해 전송한다.
-  {/*const sendChatData = (data) => {
-    let message = {  
+  const sendChatData = (data) => {
+    let message = {
       textroom: "message",
       room: myroom,
       text: data,
@@ -591,7 +591,7 @@ const VideoComponent = (props) => {
         console.log("datachannel message sent");
       },
     });
-  }; */}
+  };
 
   const transferFile = (data) => {
     let message = {
@@ -731,20 +731,21 @@ const VideoComponent = (props) => {
             </div>
             {renderRemoteVideos}
           </div>
-          {/* Chatting 컴포넌트 호출 부분 */}
-          {/* <div style={{ width: "25%", float: "right", height: "100%" }}>
-            <Chatting
-              sendChatData={sendChatData}
-              receiveChat={receiveChat}
-              transferFile={transferFile}
-              receiveFile={receiveFile}
-            />
-          </div> */}
+
           <div className="button-box">
             <div className="button-group">
               <Janusbutton />
             </div>
           </div>
+        </div>
+        {/* Chatting 컴포넌트 호출 부분 */}
+        <div style={{ width: "25%", float: "right", height: "100%" }}>
+          <Chatting
+            sendChatData={sendChatData}
+            receiveChat={receiveChat}
+            transferFile={transferFile}
+            receiveFile={receiveFile}
+          />
         </div>
       </div>
     </>

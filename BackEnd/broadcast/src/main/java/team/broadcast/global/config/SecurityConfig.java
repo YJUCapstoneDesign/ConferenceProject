@@ -27,7 +27,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.jwt.filter.JwtAuthenticationProcessingFilter;
-import team.broadcast.global.jwt.filter.JwtExceptionFilter;
+import team.broadcast.global.jwt.filter.CustomExceptionFilter;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.filter.CustomJsonLoginFilter;
 import team.broadcast.global.login.handler.LoginFailureHandler;
@@ -56,7 +56,7 @@ public class SecurityConfig {
     private final MyAuthFailureHandler oauthLoginFailHandler;
     private final LogoutService logoutService;
 
-    private final JwtExceptionFilter jwtExceptionFilter;
+    private final CustomExceptionFilter customExceptionFilter;
 
     // spring api documentation
     @Bean
@@ -177,7 +177,7 @@ public class SecurityConfig {
         // filter 적용
         http.addFilterAfter(customJsonLoginFilter(), LogoutFilter.class);
         http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonLoginFilter.class);
-        http.addFilterBefore(jwtExceptionFilter, jwtAuthenticationProcessingFilter().getClass());
+        http.addFilterBefore(customExceptionFilter, jwtAuthenticationProcessingFilter().getClass());
 
         return http.build();
     }

@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class JwtExceptionFilter extends OncePerRequestFilter {
+public class CustomExceptionFilter extends OncePerRequestFilter {
 
     private final Map<String, Object> body = new HashMap<>();
     private final ObjectMapper mapper = new ObjectMapper();

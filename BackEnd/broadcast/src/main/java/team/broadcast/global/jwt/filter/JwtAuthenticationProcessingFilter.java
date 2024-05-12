@@ -19,11 +19,12 @@ import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.user.CustomUserDetails;
 
 import java.io.IOException;
+import java.util.List;
 
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
 public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
-    private static final String NO_CHECK_URL = "/api/login";
+    private static final List<String> NO_CHECK_URLS = List.of("/api/login", "/api/logout");
 
     private final JwtService jwtService;
     private final UserRepository userRepository;
@@ -32,7 +33,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().equals(NO_CHECK_URL)) {
+        if (NO_CHECK_URLS.contains(request.getRequestURI())) {
             filterChain.doFilter(request, response); // /login 호출이 들어오면 다음 필터 호출
             return;
         }
@@ -51,6 +52,7 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
         checkAccessTokenAndAuthentication(request, response, filterChain);
     }
 
+    // refresh token 검증후 재발급
     public void checkRefreshTokenAndReIssueAccessToken(HttpServletResponse response, String refreshToken) {
         userRepository.findByToken(refreshToken)
                 .ifPresent(user -> {
@@ -72,13 +74,13 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                                                   FilterChain filterChain) throws ServletException, IOException {
         jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
-                .ifPresent(accessToken -> jwtService.extractEmail(accessToken)
-                        .ifPresent(email -> userRepository.findByEmail(email)
-                                .ifPresent(this::saveAuthentication)));
+                .flatMap(jwtService::extractEmail)
+                .flatMap(userRepository::findByEmail)
+                .ifPresent(this::saveAuthentication);
         filterChain.doFilter(request, response);
     }
 
-    /* 다음 아래 코드가 맞는지 생각을 해야 한다. 내가 원하는 방식이 되도록 노력하자! */
+
     public void saveAuthentication(User myUser) {
         String password = myUser.getPwd();
         // 소셜 로그인 유저의 비밀번호 임의로 설정 하여 소셜 로그인 유저도 인증 되도록 설정

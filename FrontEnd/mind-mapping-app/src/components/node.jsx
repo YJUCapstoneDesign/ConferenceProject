@@ -14,14 +14,15 @@ import SockJS from "sockjs-client";
 import Stomp from "stompjs";
 
 export default function MindNode() {
-    const [stompClient, setStompClient] = useState(null);
+    const [stompClient, setStompClient] = useState(null); 
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
     const [selectedNodeId, setSelectedNodeId] = useState(null);
     const [selectedNode, setSelectedNode] = useState(null);
+    
 
     useEffect(() => {
-        const socket = new SockJS("http://localhost:8080/ws");
+        const socket = new SockJS("http://192.168.219.44:8080/ws");
         const stomp = Stomp.over(socket);
         stomp.connect({}, () => onConnected(stomp), onError);
         setStompClient(stomp);
@@ -32,7 +33,7 @@ export default function MindNode() {
             }
         };
     }, []);
-    
+
     function onConnected(stompClient) {
         const mindMapData = {data: { nodes, edges }};
         stompClient.subscribe("/topic/update/1", onMessageReceived);
@@ -47,19 +48,17 @@ export default function MindNode() {
         console.error("WebSocket error:", error);
     }
     
-    function onMessageReceived(payload) {
+    const onMessageReceived = useCallback((payload) => {
+        console.log("메시지 수신:", payload);
         const message = JSON.parse(payload.body);
+        setNodes(message.data.nodes);
+        setEdges(message.data.edges);
         console.log("메시지 수신:", message);
         switch (message.type) {
-            case "JOIN":
-                console.log("사용자 참여:", message.sender);
-                break;
-            case "LEAVE":
-                console.log("사용자 나감:", message.sender);
-                break;
             case "NODE_ADDED":
                 const newNode = message.node;
                 setNodes((prevNodes) => [...prevNodes, newNode]);
+                setEdges((prevEdges) => [...prevEdges, ...message.edges]);
                 break;
             case "NODE_REMOVED":
                 const nodeId = message.nodeId;
@@ -76,9 +75,9 @@ export default function MindNode() {
                 break;
             default:
                 console.error("알 수 없는 메시지 유형:", message.type);
+                break;
         }
-    }
-    
+    }, [setNodes, setEdges]);
     
     useEffect(() => {
         const loadedData = loadMindMap();
@@ -145,7 +144,6 @@ export default function MindNode() {
         if (selectedNode) {
             const offsetX = 150;
             const offsetY = 100;
-    
             const newNode = {
                 id: `node_${Date.now()}`,
                 data: { label: "New Node" },
@@ -156,8 +154,6 @@ export default function MindNode() {
                 style: { border: "5px solid #9999" },
             };
     
-            setNodes((prevNodes) => [...prevNodes, newNode]);
-    
             const newEdge = {
                 id: `edge_${selectedNode.id}_${newNode.id}`,
                 source: selectedNode.id,
@@ -165,11 +161,15 @@ export default function MindNode() {
                 type: "default",
                 style: connectionLineStyle,
             };
+    
+            setNodes((prevNodes) => [...prevNodes, newNode]);
             setEdges((prevEdges) => [...prevEdges, newEdge]);
+    
+            const mindMapData = { data: { nodes: [...nodes, newNode], edges: [...edges, newEdge] } };
+            stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
         } else {
             const offsetX = event.clientX;
             const offsetY = event.clientY;
-    
             const newNode = {
                 id: `node_${Date.now()}`,
                 data: { label: "New Node" },
@@ -180,9 +180,34 @@ export default function MindNode() {
                 style: { border: "5px solid #9999" },
             };
     
+            const mindMapData = { data: { nodes: [...nodes, newNode], edges } };
+            stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
+    
             setNodes((prevNodes) => [...prevNodes, newNode]);
         }
     };
+
+    const removeNode = (nodeId) => {
+        debugger;
+        setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
+        setEdges((prevEdges) =>
+            prevEdges.filter(
+                (edge) => edge.source !== nodeId && edge.target !== nodeId
+            )
+        );
+    
+        setNodes((prevNodes) => {
+            const updatedNodes = prevNodes.filter((node) => node.id !== nodeId);
+            const mindMapData = { data: { nodes: updatedNodes, edges } };
+            stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
+            return updatedNodes;
+        });
+    };
+    
+    const handleNodeDelete = (nodeId) => {
+        removeNode(nodeId);
+    };
+    
     
     const renameNode = (nodeId, newName) => {
         setNodes((prevNodes) =>
@@ -194,12 +219,32 @@ export default function MindNode() {
         );
     };
 
-    const handleNodeDoubleClick = (e,node) => {
+    const handleNodeDoubleClick = (e, node) => {
         const newName = prompt("Enter a new name for the node:", node.data.label);
         if (newName !== null) {
             renameNode(node.id, newName);
+            const updatedNode = { ...node, data: { label: newName } };
+            const updatedNodes = nodes.map((n) => (n.id === node.id ? updatedNode : n));
+            const mindMapData = { data: { nodes: updatedNodes, edges } };
+            stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
         }
     };
+
+    const handleNodeDragStop = (event, node) => {
+        const updatedNodes = nodes.map((n) => {
+            if (n.id === node.id) {
+                return {
+                    ...n,
+                    position: { x: node.position.x, y: node.position.y },
+                };
+            }
+            return n;
+        });
+    
+        const mindMapData = { data: { nodes: updatedNodes, edges } };
+        stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
+    };
+    
 
     const onConnect = useCallback(
         (params) => setEdges((eds) => addEdge(params, eds)),
@@ -220,6 +265,13 @@ export default function MindNode() {
     const handleClearMindMap = () => {
         setNodes([]);
         setEdges([]);
+
+        const mindMapData = {data: { nodes: [], edges: [] }};
+        stompClient.send(
+            "/app/ws/mind-map/1",
+            {},
+            JSON.stringify(mindMapData)
+        );
     }
 
     const connectionLineStyle = {
@@ -275,7 +327,9 @@ export default function MindNode() {
                 onConnect={onConnect}
                 onClick={handleCanvasClick}
                 onNodeClick={handleNodeClick}
+                onNodeDragStop={handleNodeDragStop}
                 onNodeDoubleClick={handleNodeDoubleClick}
+                onNodesDelete={handleNodeDelete}
                 onLoad={() => {}}
             >
                 <Controls />

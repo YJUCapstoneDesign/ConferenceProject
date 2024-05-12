@@ -15,6 +15,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
@@ -26,11 +27,13 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.jwt.filter.JwtAuthenticationProcessingFilter;
+import team.broadcast.global.jwt.filter.CustomExceptionFilter;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.filter.CustomJsonLoginFilter;
 import team.broadcast.global.login.handler.LoginFailureHandler;
 import team.broadcast.global.login.handler.LoginSuccessHandler;
 import team.broadcast.global.login.service.LoginService;
+import team.broadcast.global.logout.service.LogoutService;
 import team.broadcast.global.oauth2.handler.MyAuthFailureHandler;
 import team.broadcast.global.oauth2.handler.MyAuthSuccessHandler;
 
@@ -51,6 +54,9 @@ public class SecurityConfig {
     private final LoginFailureHandler loginFailureHandler;
     private final MyAuthSuccessHandler oauthLoginSuccessHandler;
     private final MyAuthFailureHandler oauthLoginFailHandler;
+    private final LogoutService logoutService;
+
+    private final CustomExceptionFilter customExceptionFilter;
 
     // spring api documentation
     @Bean
@@ -143,15 +149,10 @@ public class SecurityConfig {
                         .requestMatchers("/images/**",
                                 "/api/mind-map/**",
                                 "/oauth2/**",
-                                "/app/**", "/api/signup", "/", "/logout",
+                                "/app/**", "/api/signup", "/",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()
-                        .anyRequest().authenticated()); // 다른 곳에는 권한이 필요하다.
-
-        // filter 적용
-        http.addFilterAfter(customJsonLoginFilter(), LogoutFilter.class);
-        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonLoginFilter.class);
-
+                        .anyRequest().permitAll()); // 다른 곳에는 권한이 필요하다.
 
         // oauth 기반 로그인 설정
         http.oauth2Login(httpSecurityOAuth2LoginConfigurer ->
@@ -161,6 +162,22 @@ public class SecurityConfig {
                         .failureHandler(oauthLoginFailHandler) // 로그인 실패시 사용하는 핸들러
                         .userInfoEndpoint(userInfoEndpointConfig ->
                                 userInfoEndpointConfig.userService(oAuth2UserService)));
+
+        http.logout(logout -> logout
+                .logoutUrl("/api/logout")
+                .logoutSuccessUrl("/")
+                .addLogoutHandler(logoutService)
+                .logoutSuccessHandler(((request, response, authentication) -> {
+                    SecurityContextHolder.clearContext();
+                    // utf-8 적용
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().println("로그아웃 되었습니다.");
+                })));
+
+        // filter 적용
+        http.addFilterAfter(customJsonLoginFilter(), LogoutFilter.class);
+        http.addFilterBefore(jwtAuthenticationProcessingFilter(), CustomJsonLoginFilter.class);
+        http.addFilterBefore(customExceptionFilter, jwtAuthenticationProcessingFilter().getClass());
 
         return http.build();
     }

@@ -80,6 +80,10 @@ public class User {
         this.token = updateRefreshToken;
     }
 
+    public void deleteRefreshToken() {
+        this.token = null;
+    }
+
     public void updateImageUrl(String updateImageUrl) {
         this.imageUrl = updateImageUrl;
     }

@@ -42,6 +42,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         String accessToken = jwtService.generateAccessToken(email);
         String refreshToken = jwtService.generateRefreshToken();
 
+        // 사용자가 로그인 할 때 마다  새로운 토큰을 생성하여 발급한다.
         jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
 
         User user = userRepository.findByEmail(email)

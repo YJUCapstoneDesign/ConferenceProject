@@ -2,10 +2,10 @@ import React, { useRef, useEffect, useState } from "react";
 import './video.css';
 const Video = (props) => {
 
-  const sizeUp = props.sizeUp;
   const videoRef = useRef();
   useEffect(() => {
     if (props.stream) {
+      console.log("!!! Stream !!!", props.stream)
       videoRef.current.srcObject = props.stream;
     }
   }, [props.stream]);
@@ -14,8 +14,6 @@ const Video = (props) => {
     e.preventDefault();
     if (!props.onClick) return;
     props.onClick(videoRef.current.srcObject, props.username);
-    // props.onClick(videoRef.current.srcObject); // props.username 제거 
-    // props.onClick();
   };
   return (
     <>

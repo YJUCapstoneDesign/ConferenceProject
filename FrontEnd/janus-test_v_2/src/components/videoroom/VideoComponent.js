@@ -48,7 +48,7 @@ const VideoComponent = (props) => {
     setMainStream(() => {
       return {
         stream: stream,
-        // username: username,
+        username: username,
       };
     });
   };
@@ -73,8 +73,8 @@ const VideoComponent = (props) => {
     if (getQueryStringValue("room") !== "")
       myroom = parseInt(getQueryStringValue("room"));
 
-    let doSimulcast = false; // 동시 캐스트
-    let doSimulcast2 = false;
+    let doSimulcast = true; // 동시 캐스트
+    // let doSimulcast2 = false;
 
     Janus.init({
       debug: "all",
@@ -175,6 +175,7 @@ const VideoComponent = (props) => {
                       );
                       for (let f in list) {
                         let id = list[f]["id"];
+                        let streams = list[f]["streams"];
                         let display = list[f]["display"];
                         let audio = list[f]["audio_codec"];
                         let video = list[f]["video_codec"];
@@ -353,24 +354,28 @@ const VideoComponent = (props) => {
     });
 
     function publishOwnFeed(useAudio) {
-      sfutest.createOffer({
-        media: {
-          data: true,
-          audioRecv: false,
-          videoRecv: false,
-          audioSend: useAudio,
-          videoSend: true,
-        }, // Publishers are sendonly
+      let tracks = [];
+
+      if (useAudio) {
+        tracks.push({
+          type: 'audio', capture: true, recv: false,
+          simulcast: doSimulcast,
+        });
+      }
+
+      tracks.push({
+        type: 'video', capture: true, recv: false,
+        // We may need to enable simulcast or SVC on the video track
         simulcast: doSimulcast,
-        simulcast2: doSimulcast2,
+      });
+
+      sfutest.createOffer({
+        tracks: tracks,
 
         success: function (jsep) {
           Janus.debug("Got publisher SDP!", jsep);
-          var publish = {
-            request: "configure",
-            audio: useAudio,
-            video: true,
-          };
+          let publish = { request: "configure", audio: useAudio, video: true, };
+
           sfutest.send({ message: publish, jsep: jsep });
         },
         error: function (error) {
@@ -379,7 +384,8 @@ const VideoComponent = (props) => {
           if (useAudio) {
             publishOwnFeed(false); // 오디오 꺼서 다시 보냄
           } else {
-            // 오디오 켜서 다시 보낼 수도 있음 publishOwnFeed(true);
+            // // 오디오 켜서 다시 보낼 수도 있음 publishOwnFeed(true);
+            // publishOwnFeed(true);
           }
         },
       });
@@ -411,6 +417,7 @@ const VideoComponent = (props) => {
             feed: id,
             private_id: myFeed.mypvtid,
           };
+
           remoteFeed.videoCodec = video;
           remoteFeed.send({ message: subscribe });
         },
@@ -458,7 +465,10 @@ const VideoComponent = (props) => {
             // Answer and attach
             remoteFeed.createAnswer({
               jsep: jsep,
-              media: { data: true, audioSend: false, videoSend: false }, // We want recvonly audio/video
+              tracks: [
+                { type: 'data' },
+              ],
+              // media: { data: true, audioSend: false, videoSend: false }, // We want recvonly audio/video
               success: function (jsep) {
                 Janus.debug("Got SDP!", jsep);
                 var body = { request: "start", room: myroom };
@@ -513,7 +523,7 @@ const VideoComponent = (props) => {
             newFeed[findIndex].hark = createSpeechEvents(stream);
             return newFeed;
           });
-          // // remoteFeed.stream = stream;
+          // remoteFeed.stream = stream;
           // var videoTracks = stream.getVideoTracks();
           // if (!videoTracks || videoTracks.length === 0) {
           //   // 원격 비디오 없는 경우
@@ -747,6 +757,21 @@ const VideoComponent = (props) => {
             receiveFile={receiveFile}
           />
         </div>
+        <div style={{ float: "left" }}>
+          <button onClick={handleAudioActiveClick}>
+            {activeAudio ? "소리 끄기" : "소리 켜기"}
+          </button>
+          <button onClick={handleVideoActiveClick}>
+            {activeVideo ? "비디오 끄기" : "비디오 켜기"}
+          </button>
+          <button onClick={handleSpeakerActiveClick}>
+            {activeSpeaker ? "화자 추적 비활성화" : "화자 추적 활성화"}
+          </button>
+          <button onClick={handleSharingActiveClick}>
+            {activeSharing ? "화면 공유 비활성화" : "화면 공유 활성화"}
+          </button>
+        </div>
+
       </div>
     </>
   );

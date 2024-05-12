@@ -9,18 +9,23 @@ const Chatting = (props) => {
     setInputChat(e.target.value);
   };
 
-  const saychat = () => {
-    fetch('http://localhost:4000/api/test', { 
+  const saychat = (e) => {
+    fetch('http://localhost:8080/api', { 
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'text/plain',
       },
-      body: JSON.stringify({
-        inputChat : inputChat,
-      }),
+      body: inputChat,
     })
-      .then((response) => response.json())
+    .then((response) => response.text())
+    .then((data) => {
+      console.log(data); // 응답 데이터 처리
+    })
+    .catch((error) => {
+      console.error('Error:', error);
+    });
   };
+  
 
   const handleClick = () => {
     props.sendChatData(inputChat);

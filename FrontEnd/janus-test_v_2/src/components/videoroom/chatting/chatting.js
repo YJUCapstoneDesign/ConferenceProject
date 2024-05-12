@@ -9,6 +9,19 @@ const Chatting = (props) => {
     setInputChat(e.target.value);
   };
 
+  const saychat = () => {
+    fetch('http://localhost:4000/api/test', { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        inputChat : inputChat,
+      }),
+    })
+      .then((response) => response.json())
+  };
+
   const handleClick = () => {
     props.sendChatData(inputChat);
     setChatData((prev) => [...prev, `나 : ${inputChat}`]);
@@ -99,7 +112,8 @@ const Chatting = (props) => {
       />
       <button onClick={handleClick}>전송</button>
       <input onChange={handleSelectedFile} type="file" />
-      <button onClick={handleFileTransfer}>파일 전송</button>
+      <button onClick={handleFileTransfer}>파일 전송</button><br/>
+      <button onClick={saychat}>말하기</button>
     </>
   );
 };

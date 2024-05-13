@@ -1,7 +1,7 @@
 import React from 'react';
 import "./janusbutton.css";
 
-function Janusbutton() {
+function Janusbutton({handleAudioActiveClick, handleVideoActiveClick, handleSharingActiveClick}) {
   return (
     <div className="janus_button mb-4 ml-4">
       <div className="group inline-block">
@@ -24,7 +24,7 @@ function Janusbutton() {
           className="new_work bg-white border rounded-3xl transform scale-0 group-hover:scale-100 absolute 
         transition duration-500 ease-in-out origin-bottom min-w-10"
         >
-          <li className="rounded-3xl px-3 py-3 hover:bg-indigo-400 hover:text-white transition duration-500 ease-in-out"><svg
+          <li className="rounded-3xl px-3 py-3 hover:bg-indigo-400 hover:text-white transition duration-500 ease-in-out" onClick={handleAudioActiveClick}><svg
           xmlns="http://www.w3.org/2000/svg"
           width="20"
           height="20"
@@ -35,7 +35,7 @@ function Janusbutton() {
           <path d="M11 19.931V22h2v-2.069c3.939-.495 7-3.858 7-7.931h-2c0 3.309-2.691 6-6 6s-6-2.691-6-6H4c0 4.072 3.061 7.436 7 7.931z"></path>
         </svg></li>
 
-          <li className="rounded-3xl px-3 py-3 hover:bg-indigo-400 hover:text-white transition duration-500 ease-in-out">
+          <li className="rounded-3xl px-3 py-3 hover:bg-indigo-400 hover:text-white transition duration-500 ease-in-out" onClick={handleVideoActiveClick}>
             <svg
             xmlns="http://www.w3.org/2000/svg"
             width="20"
@@ -46,7 +46,7 @@ function Janusbutton() {
             <path d="M18 7c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-3.333L22 17V7l-4 3.333V7z" />
         </svg>
           </li>
-          <li className="rounded-3xl px-3 py-3 hover:bg-indigo-400 hover:text-white transition duration-500 ease-in-out">
+          <li className="rounded-3xl px-3 py-3 hover:bg-indigo-400 hover:text-white transition duration-500 ease-in-out" onClick={handleSharingActiveClick}>
               <svg
               xmlns="http://www.w3.org/2000/svg"
               width="20"

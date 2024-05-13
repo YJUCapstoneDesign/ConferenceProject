@@ -777,7 +777,7 @@ const VideoComponent = (props) => {
 
           <div className="button-box">
             <div className="button-group">
-              <Janusbutton />
+              <Janusbutton handleAudioActiveClick={handleAudioActiveClick} handleVideoActiveClick={handleVideoActiveClick}  handleSharingActiveClick={handleSharingActiveClick}/>
             </div>
           </div>
         </div>
@@ -804,7 +804,6 @@ const VideoComponent = (props) => {
             {activeSharing ? "화면 공유 비활성화" : "화면 공유 활성화"}
           </button>
         </div>
-
       </div>
     </>
   );

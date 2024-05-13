@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @Getter
@@ -16,9 +17,9 @@ import java.util.Map;
 @Document(collection = "mindmaps")
 public class MindMap {
     @Id
-    private String id;
-
-    private Long roomId;
+    private String meetingId; // 회의와 마인드맵은 1:1 매핑으로 생각한다.
 
     private Map<String, Object> data;
+
+    private LocalDateTime createTime;
 }

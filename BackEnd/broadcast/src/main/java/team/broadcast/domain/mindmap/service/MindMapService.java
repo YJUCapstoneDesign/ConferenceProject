@@ -17,7 +17,7 @@ public class MindMapService {
     public String save(MindMapDto request) {
         MindMap mindMap = from(request);
         MindMap savedMindMap = mindMapRepository.save(mindMap);
-        return savedMindMap.getId();
+        return savedMindMap.getMeetingId();
     }
 
     @Transactional
@@ -31,14 +31,14 @@ public class MindMapService {
     public MindMapDto of(MindMap mindMap) {
         return MindMapDto.builder()
                 .data(mindMap.getData())
-                .roomId(mindMap.getRoomId())
+                .meetingId(mindMap.getMeetingId())
                 .build();
     }
 
     public MindMap from(MindMapDto dto) {
         return MindMap.builder()
                 .data(dto.getData())
-                .roomId(dto.getRoomId())
+                .meetingId(dto.getMeetingId())
                 .build();
     }
 }

@@ -5,16 +5,14 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.mail.MailUtil;
 import team.broadcast.global.mail.dto.EmailMessage;
 
 @Service
 @RequiredArgsConstructor
-public class InvitationAttenderService {
+public class InvitationService {
     private final MailUtil mailUtil;
     private final TemplateEngine templateEngine;
-    private final UserRepository userRepository;
 
 
     public void sendInviteMail(User user, String invitationCode) {
@@ -27,7 +25,7 @@ public class InvitationAttenderService {
 
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(user.getEmail())
-                .subject("[Unmute] 화상회의 초대 코드")
+                .subject("[Unmute] 화상회의 방 초대 코드")
                 .message(message)
                 .build();
 

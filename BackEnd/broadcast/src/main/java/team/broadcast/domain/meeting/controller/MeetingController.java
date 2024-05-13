@@ -10,6 +10,8 @@ import team.broadcast.domain.meeting.dto.MeetingCreateRequest;
 import team.broadcast.domain.meeting.dto.MeetingDTO;
 import team.broadcast.domain.meeting.dto.MeetingUpdateRequest;
 import team.broadcast.domain.meeting.service.MeetingService;
+import team.broadcast.domain.user.service.UserService;
+import team.broadcast.domain.video_room.service.InvitationService;
 import team.broadcast.global.login.user.CustomUserDetails;
 
 import java.util.List;
@@ -21,6 +23,8 @@ import java.util.List;
 public class MeetingController {
 
     private final MeetingService meetingService;
+    private final InvitationService invitationService;
+    private final UserService userService;
 
     // 현재 참가되어 있는 회의 모두 조회
     @GetMapping
@@ -63,4 +67,13 @@ public class MeetingController {
     public void deleteMeeting(@PathVariable Long meetingId) {
         meetingService.deleteMeeting(meetingId);
     }
+    
+    // 회의 참석자 추가
+//    @PostMapping("/{meetingId}/add-attender")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void sendMailFromAttender(@PathVariable Long meetingId, Long userId) {
+//        User user = userService.findUser(userId);
+//        Meeting meeting = meetingService.findMeetingById(meetingId);
+//        invitationService.sendInviteMail(user, );
+//    }
 }

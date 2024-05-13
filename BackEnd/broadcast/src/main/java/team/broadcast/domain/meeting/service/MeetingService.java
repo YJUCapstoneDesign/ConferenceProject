@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.attender.exception.AttenderErrorCode;
 import team.broadcast.domain.attender.mysql.repository.AttenderRepository;
@@ -17,6 +19,8 @@ import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.global.exception.CustomException;
+import team.broadcast.global.mail.MailUtil;
+import team.broadcast.global.mail.dto.EmailMessage;
 
 import java.util.List;
 
@@ -127,3 +131,4 @@ public class MeetingService {
                 .toList();
     }
 }
+

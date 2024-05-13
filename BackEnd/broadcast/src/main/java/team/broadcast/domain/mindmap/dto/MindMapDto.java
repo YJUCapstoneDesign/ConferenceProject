@@ -13,7 +13,7 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MindMapDto {
-    private Long roomId;
+    private String meetingId;
     private Map<String, Object> data;
 
     /**

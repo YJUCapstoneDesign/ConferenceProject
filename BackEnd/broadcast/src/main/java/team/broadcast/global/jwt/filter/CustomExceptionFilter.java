@@ -18,8 +18,8 @@ import java.util.Map;
 @Component
 public class CustomExceptionFilter extends OncePerRequestFilter {
 
-    private final Map<String, Object> body = new HashMap<>();
-    private final ObjectMapper mapper = new ObjectMapper();
+    private static final Map<String, Object> body = new HashMap<>();
+    private static final ObjectMapper mapper = new ObjectMapper();
 
     /*
     인증 오류가 아닌, JWT 관련 오류는 이 필터에서 따로 잡아낸다.

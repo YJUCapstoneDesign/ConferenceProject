@@ -43,7 +43,7 @@ public class LogoutService implements LogoutHandler {
 
         log.info("refresh token: {}", refreshToken);
 
-        // 데이터베이스에 저장된 refreshToken 삭제
+        // 보안을 위해 로그아웃에서는 데이터베이스에 저장된 refreshToken 삭제
         jwtService.expireRefreshToken(refreshToken);
 
 

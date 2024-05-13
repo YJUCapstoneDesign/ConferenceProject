@@ -33,7 +33,7 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     // RefreshToken 유/무에 따라 accessToken 만 보내거나 RefreshToken 과 같이 보내게 된디.
-    private void sendToken(HttpServletResponse response, CustomOAuth2User oAuth2User) {
+    private void sendToken(HttpServletResponse response, CustomOAuth2User oAuth2User) throws IOException {
         String email = oAuth2User.getEmail();
         String userRefreshToken = jwtService.getRefreshToken(email);
         String accessToken = jwtService.generateAccessToken(email);

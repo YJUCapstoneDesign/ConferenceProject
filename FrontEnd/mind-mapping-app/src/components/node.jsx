@@ -22,7 +22,7 @@ export default function MindNode() {
     
 
     useEffect(() => {
-        const socket = new SockJS("http://192.168.219.44:8080/ws");
+        const socket = new SockJS("http://192.168.219.100:8080/ws");
         const stomp = Stomp.over(socket);
         stomp.connect({}, () => onConnected(stomp), onError);
         setStompClient(stomp);
@@ -188,7 +188,6 @@ export default function MindNode() {
     };
 
     const removeNode = (nodeId) => {
-        debugger;
         setNodes((prevNodes) => prevNodes.filter((node) => node.id !== nodeId));
         setEdges((prevEdges) =>
             prevEdges.filter(
@@ -196,13 +195,16 @@ export default function MindNode() {
             )
         );
     
-        setNodes((prevNodes) => {
-            const updatedNodes = prevNodes.filter((node) => node.id !== nodeId);
-            const mindMapData = { data: { nodes: updatedNodes, edges } };
-            stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
-            return updatedNodes;
-        });
+        const updatedNodes = nodes.filter((node) => node.id !== nodeId);
+        const mindMapData = { data: { nodes: updatedNodes, edges } };
+        stompClient.send("/app/ws/mind-map/1", {}, JSON.stringify(mindMapData));
     };
+    
+    const handleNodeContextMenu = (event, node) => {
+        event.preventDefault(); // 기본 우클릭 메뉴 표시 방지
+        removeNode(node.id);
+    };
+    
     
     const handleNodeDelete = (nodeId) => {
         removeNode(nodeId);
@@ -289,12 +291,12 @@ export default function MindNode() {
                 <ul>
                     <li>
                         <button id="one" type="button" onClick={addNode}>
-                            Add Node
+                            노드 추가
                         </button>
                     </li>
                     <li>
                         <button id="three" onClick={handleSaveClick}>
-                            Save Mind Map
+                            마인드맵 저장
                         </button>
                     </li>
                     <li>
@@ -307,12 +309,12 @@ export default function MindNode() {
                             id="four"
                             onClick={() => handleLoadClick(selectedNodeId)}
                         >
-                            Load Mind Map
+                            마인드맵 불러오기
                         </button>
                     </li>
                     <li>
                         <button id="five" onClick={handleClearMindMap}>
-                            Clear Mind Map
+                            초기화
                         </button>
                     </li>
                 </ul>
@@ -329,7 +331,8 @@ export default function MindNode() {
                 onNodeClick={handleNodeClick}
                 onNodeDragStop={handleNodeDragStop}
                 onNodeDoubleClick={handleNodeDoubleClick}
-                onNodesDelete={handleNodeDelete}
+                // onNodesDelete={handleNodeDelete}
+                onNodeContextMenu={handleNodeContextMenu}
                 onLoad={() => {}}
             >
                 <Controls />

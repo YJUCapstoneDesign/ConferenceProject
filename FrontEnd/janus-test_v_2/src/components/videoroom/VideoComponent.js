@@ -174,23 +174,19 @@ const VideoComponent = (props) => {
                         list
                       );
                       for (let f in list) {
+                        if (list[f]["dummy"])
+                          continue;
                         let id = list[f]["id"];
                         let streams = list[f]["streams"];
                         let display = list[f]["display"];
-                        let audio = list[f]["audio_codec"];
-                        let video = list[f]["video_codec"];
-                        Janus.debug(
-                          "  >> [" +
-                          id +
-                          "] " +
-                          display +
-                          " (audio: " +
-                          audio +
-                          ", video: " +
-                          video +
-                          ")"
-                        );
-                        newRemoteFeed(id, display, audio, video); // 새로운 원격피드 등록
+                        for (let i in streams) {
+                          let stream = streams[i];
+                          stream["id"] = id;
+                          stream["display"] = display;
+                        }
+                        // feedStreams[id] = streams;
+                        Janus.debug("  >> [" + id + "] " + display + ":", streams);
+                        newRemoteFeed(id, display, streams);
                       }
                     }
                   } else if (event === "destroyed") {
@@ -206,22 +202,19 @@ const VideoComponent = (props) => {
                         list
                       );
                       for (let f in list) {
+                        if (list[f]["dummy"])
+                          continue;
                         let id = list[f]["id"];
+                        let streams = list[f]["streams"];
                         let display = list[f]["display"];
-                        let audio = list[f]["audio_codec"];
-                        let video = list[f]["video_codec"];
-                        Janus.debug(
-                          "  >> [" +
-                          id +
-                          "] " +
-                          display +
-                          " (audio: " +
-                          audio +
-                          ", video: " +
-                          video +
-                          ")"
-                        );
-                        newRemoteFeed(id, display, audio, video);
+                        for (let i in streams) {
+                          let stream = streams[i];
+                          stream["id"] = id;
+                          stream["display"] = display;
+                        }
+                        // feedStreams[id] = streams;
+                        Janus.debug("  >> [" + id + "] " + display + ":", streams);
+                        newRemoteFeed(id, display, streams);
                       }
                     } else if (msg["leaving"]) {
                       var leaving = msg["leaving"];
@@ -254,7 +247,7 @@ const VideoComponent = (props) => {
                 }
 
                 if (jsep) {
-                  console.log("jsep =============ㅇㅇㅇ", msg);
+                  console.log("jsep =============", msg);
                   sfutest.handleRemoteJsep({ jsep: jsep });
                   var audio = msg["audio_codec"];
                   if (
@@ -314,7 +307,7 @@ const VideoComponent = (props) => {
                   // 아직 연결 중인 상태
                 }
 
-                // var videoTracks = stream.getVideoTracks();
+                // let videoTracks = stream.getVideoTracks();
                 // if (!videoTracks || videoTracks.length === 0) {
                 //   // 웹캠 없는 경우 비디오 숨김처리
                 // } else {
@@ -356,10 +349,10 @@ const VideoComponent = (props) => {
     function publishOwnFeed(useAudio) {
       let tracks = [];
 
+
       if (useAudio) {
         tracks.push({
           type: 'audio', capture: true, recv: false,
-          simulcast: doSimulcast,
         });
       }
 
@@ -368,15 +361,17 @@ const VideoComponent = (props) => {
         // We may need to enable simulcast or SVC on the video track
         simulcast: doSimulcast,
       });
+      tracks.push({ type: 'data' }); // ondata used for chat
+
 
       sfutest.createOffer({
         tracks: tracks,
 
         success: function (jsep) {
           Janus.debug("Got publisher SDP!", jsep);
-          let publish = { request: "configure", audio: useAudio, video: true, };
+          let publish = { request: "configure", audio: useAudio, video: true };
 
-          sfutest.send({ message: publish, jsep: jsep });
+          sfutest.send({ message: publish, jsep: jsep, });
         },
         error: function (error) {
           Janus.error("WebRTC error:", error);
@@ -391,17 +386,20 @@ const VideoComponent = (props) => {
       });
     }
 
-    function newRemoteFeed(id, display, audio, video) {
+    function newRemoteFeed(id, display, streams) {
       // A new feed has been published, create a new plugin handle and attach to it as a subscriber
       // 새 피드가 구독되었으므로, 새 플러그인 만들고 remote 연결
 
-      let remoteFeed = null;
+      let remoteFeed = {};
       janus.attach({
         plugin: "janus.plugin.videoroom",
         opaqueId: opaqueId,
         success: function (pluginHandle) {
           remoteFeed = pluginHandle;
+          remoteFeed.remoteTracks = {};
+          remoteFeed.remoteVideos = 0;
           remoteFeed.simulcastStarted = false;
+          remoteFeed.svcStarted = false;
           Janus.log(
             "Plugin attached! (" +
             remoteFeed.getPlugin() +
@@ -410,15 +408,37 @@ const VideoComponent = (props) => {
             ")"
           );
           Janus.log("  -- This is a subscriber");
+
+          let subscription = [];
+
+          for (let i in streams) {
+            let stream = streams[i];
+            console.log("Streams", stream)
+            // If the publisher is VP8/VP9 and this is an older Safari, let's avoid video
+            if (stream.type === "video" && Janus.webRTCAdapter.browserDetails.browser === "safari" &&
+              ((stream.codec === "vp9" && !Janus.safariVp9) || (stream.codec === "vp8" && !Janus.safariVp8))) {
+              toastr.warning("Publisher is using " + stream.codec.toUpperCase +
+                ", but Safari doesn't support it: disabling video stream #" + stream.mindex);
+              continue;
+            }
+            subscription.push({
+              feed: stream['id'],	// This is mandatory
+              mid: stream.mid		// This is optional (all streams, if missing)
+            });
+            // FIXME Right now, this is always the same feed: in the future, it won't
+            remoteFeed.rfid = stream['id'];
+            remoteFeed.rfdisplay = stream['display'];
+          }
+
+
           let subscribe = {
             request: "join",
             room: myroom,
             ptype: "subscriber",
-            feed: id,
+            streams: subscription,
             private_id: myFeed.mypvtid,
           };
 
-          remoteFeed.videoCodec = video;
           remoteFeed.send({ message: subscribe });
         },
         error: function (error) {
@@ -432,8 +452,9 @@ const VideoComponent = (props) => {
             console.log(msg["error"]);
           } else if (event) {
             if (event === "attached") {
-              remoteFeed.rfid = msg["id"];
-              remoteFeed.rfdisplay = msg["display"];
+              // remoteFeed.rfid = msg["id"];
+              // remoteFeed.rfdisplay = msg["display"];
+
               connectFeed(remoteFeed);
               Janus.log(
                 "Successfully attached to feed " +
@@ -511,36 +532,39 @@ const VideoComponent = (props) => {
             return;
           }
 
-          let stream = new MediaStream([track]);
+          if (track.kind === "audio") {
+            let stream = new MediaStream([track]);
+            remoteFeed.remoteTracks[mid] = stream;
 
-          Janus.debug("Remote feed #" + remoteFeed.rfid + ", stream:", stream);
+            remoteFeed.stream = stream;
 
+            Janus.log("Created remote audio stream:", stream);
+            setFeeds((prev) => {
+              let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
+              let newFeed = [...prev];
+              newFeed[findIndex].stream = stream;
+              // TODO: hark undefined를 처리해야 한다.
+              newFeed[findIndex].hark = createSpeechEvents(stream); 
+              return newFeed;
+            });
+          } else {
+            let stream = new MediaStream([track]);
+            remoteFeed.remoteTracks[mid] = stream;
 
-          setFeeds((prev) => {
-            let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
-            let newFeed = [...prev];
-            newFeed[findIndex].stream = stream;
-            newFeed[findIndex].hark = createSpeechEvents(stream);
-            return newFeed;
-          });
-          // remoteFeed.stream = stream;
-          // var videoTracks = stream.getVideoTracks();
-          // if (!videoTracks || videoTracks.length === 0) {
-          //   // 원격 비디오 없는 경우
-          // } else {
-          //   // 있는 경우 뭐 별도 버튼처리
-          // }
-
-
-        },
-
-        oncleanup: function () {
-          Janus.log(
-            " ::: Got a cleanup notification (remote feed " + id + ") :::"
-          );
-          // 원격피드 끊기는 경우 처리
-          console.log("다른 사용자 나감 ㅇㅇㅇ");
-          disconnectFeed(remoteFeed);
+            Janus.log("Created remote video stream:", stream);
+            setFeeds((prev) => {
+              let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
+              let newFeed = [...prev];
+              newFeed[findIndex].stream = stream;
+              return newFeed;
+            });
+            // var videoTracks = stream.getVideoTracks();
+            // if (!videoTracks || videoTracks.length === 0) {
+            //   // 원격 비디오 없는 경우
+            // } else {
+            //   // 있는 경우 뭐 별도 버튼처리
+            // }
+          }
         },
         ondataopen: function () {
           console.log("remote datachannel opened");
@@ -573,6 +597,14 @@ const VideoComponent = (props) => {
             }
           }
         },
+        oncleanup: function () {
+          Janus.log(
+            " ::: Got a cleanup notification (remote feed " + id + ") :::"
+          );
+          // 원격피드 끊기는 경우 처리
+          console.log("다른 사용자 나감 ㅇㅇㅇ");
+          disconnectFeed(remoteFeed);
+        },
       });
     }
 
@@ -588,6 +620,7 @@ const VideoComponent = (props) => {
   const sendChatData = (data) => {
     let message = {
       textroom: "message",
+      transaction: Janus.randomString(12),
       room: myroom,
       text: data,
       display: username,

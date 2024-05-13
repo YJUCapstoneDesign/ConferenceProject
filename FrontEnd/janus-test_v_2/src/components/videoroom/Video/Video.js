@@ -5,7 +5,6 @@ const Video = (props) => {
   const videoRef = useRef();
   useEffect(() => {
     if (props.stream) {
-      console.log("!!! Stream !!!", props.stream)
       videoRef.current.srcObject = props.stream;
     }
   }, [props.stream]);
@@ -26,7 +25,7 @@ const Video = (props) => {
           ref={videoRef}
           onClick={onClick}
           muted={props.muted}
-          style={{backgroundColor: "black"}}
+          style={{ backgroundColor: "black" }}
           controls={props.onClick ? false : true}
         />
       </div>

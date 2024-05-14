@@ -1,11 +1,15 @@
 const React = require("react");
 const { default: VideoPage } = require("./components/pages/VideoPage");
+const { default: MindmapPage } = require("./components/mindmap/node");
+const { Routes, Route } = require("react-router-dom");
+
 const App = () => {
 
   return (
-    <div className="App">
-      <VideoPage />
-    </div>
+    <Routes>
+      <Route path="/" element={<VideoPage />} />
+      <Route path="/mindmap" element={<MindmapPage />} />
+    </Routes>
   );
 };
 

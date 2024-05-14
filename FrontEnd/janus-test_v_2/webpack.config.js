@@ -63,6 +63,7 @@ module.exports = {
       directory: path.resolve(__dirname, 'dist')
     },
     port: 3030,
+    historyApiFallback: true,
   },
   resolve: {
     extensions: [".jsx", ".js"],

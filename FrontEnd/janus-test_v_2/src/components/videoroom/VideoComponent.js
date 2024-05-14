@@ -284,16 +284,22 @@ const VideoComponent = (props) => {
                 }
 
                 let stream = localTracks[trackId];
+                Janus.debug(" ::: Got a local stream :::", stream);
+
+                if (stream) {
+                  setMyFeed((prev) => ({
+                    ...prev,
+                    stream: stream,
+                  }));
+                  return;
+                }
 
                 if (track.kind === "audio") {
-
+                  
                 } else {
                   stream = new MediaStream([track]);
                   localTracks[trackId] = stream;
                 }
-
-                Janus.debug(" ::: Got a local stream :::", stream);
-                mystream = stream;
 
                 setMyFeed((prev) => ({
                   ...prev,
@@ -349,7 +355,6 @@ const VideoComponent = (props) => {
     function publishOwnFeed(useAudio) {
       let tracks = [];
 
-
       if (useAudio) {
         tracks.push({
           type: 'audio', capture: true, recv: false,
@@ -361,6 +366,7 @@ const VideoComponent = (props) => {
         // We may need to enable simulcast or SVC on the video track
         simulcast: doSimulcast,
       });
+
       tracks.push({ type: 'data' }); // ondata used for chat
 
 
@@ -375,12 +381,12 @@ const VideoComponent = (props) => {
         },
         error: function (error) {
           Janus.error("WebRTC error:", error);
-          console.log("webrtc error:", error);
           if (useAudio) {
             publishOwnFeed(false); // 오디오 꺼서 다시 보냄
           } else {
             // // 오디오 켜서 다시 보낼 수도 있음 publishOwnFeed(true);
-            // publishOwnFeed(true);
+            alert("WebRTC error... " + JSON.stringify(error));
+            publishOwnFeed(true);
           }
         },
       });
@@ -400,20 +406,13 @@ const VideoComponent = (props) => {
           remoteFeed.remoteVideos = 0;
           remoteFeed.simulcastStarted = false;
           remoteFeed.svcStarted = false;
-          Janus.log(
-            "Plugin attached! (" +
-            remoteFeed.getPlugin() +
-            ", id=" +
-            remoteFeed.getId() +
-            ")"
-          );
+          Janus.log("Plugin attached! (" + remoteFeed.getPlugin() + ", id=" + remoteFeed.getId() + ")");
           Janus.log("  -- This is a subscriber");
 
           let subscription = [];
 
           for (let i in streams) {
             let stream = streams[i];
-            console.log("Streams", stream)
             // If the publisher is VP8/VP9 and this is an older Safari, let's avoid video
             if (stream.type === "video" && Janus.webRTCAdapter.browserDetails.browser === "safari" &&
               ((stream.codec === "vp9" && !Janus.safariVp9) || (stream.codec === "vp8" && !Janus.safariVp8))) {
@@ -423,7 +422,7 @@ const VideoComponent = (props) => {
             }
             subscription.push({
               feed: stream['id'],	// This is mandatory
-              mid: stream.mid		// This is optional (all streams, if missing)
+              mid: stream['mid']		// This is optional (all streams, if missing)
             });
             // FIXME Right now, this is always the same feed: in the future, it won't
             remoteFeed.rfid = stream['id'];
@@ -611,7 +610,7 @@ const VideoComponent = (props) => {
     // Helper to parse query string
     function getQueryStringValue(name) {
       // 쿼리스트링에서 룸네임 찾기
-      return 12341234;
+      return myroom;
     }
   }, []);
 
@@ -620,7 +619,6 @@ const VideoComponent = (props) => {
   const sendChatData = (data) => {
     let message = {
       textroom: "message",
-      transaction: Janus.randomString(12),
       room: myroom,
       text: data,
       display: username,
@@ -652,11 +650,6 @@ const VideoComponent = (props) => {
         console.log("datachannel file sent...");
       },
     });
-  };
-
-  const sendPrivateMessage = (data, target) => {
-    // 구현되면, target한테 1:1 data 쪽지 전송
-    console.log(target, "한테 쪽지 전송:", data);
   };
 
   const handleAudioActiveClick = () => {

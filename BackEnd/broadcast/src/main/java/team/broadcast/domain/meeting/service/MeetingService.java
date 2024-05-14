@@ -33,10 +33,19 @@ public class MeetingService {
 
     // 회의 추가
     @Transactional
-    public MeetingDTO createMeeting(MeetingCreateRequest meetingCreateRequest) {
+    public MeetingDTO createMeeting(User user, MeetingCreateRequest meetingCreateRequest) {
         Meeting meeting = meetingCreateRequest.from();
 
         Meeting saved = meetingRepository.save(meeting);
+
+        // 회읠를 생성한 사람은 자동으로 참석자의 호스트가 된다.
+        Attender attender = Attender.builder()
+                .user(user)
+                .meeting(saved)
+                .role(MeetingRole.HOST)
+                .build();
+
+        attenderRepository.save(attender);
 
         return MeetingDTO.from(saved);
     }

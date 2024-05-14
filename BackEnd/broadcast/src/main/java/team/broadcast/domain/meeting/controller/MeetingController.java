@@ -23,8 +23,6 @@ import java.util.List;
 public class MeetingController {
 
     private final MeetingService meetingService;
-    private final InvitationService invitationService;
-    private final UserService userService;
 
     // 현재 참가되어 있는 회의 모두 조회
     @GetMapping
@@ -49,8 +47,8 @@ public class MeetingController {
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "회의 생성", description = "회의 생성 API")
-    public MeetingDTO createMeeting(@RequestBody MeetingCreateRequest request) {
-        return meetingService.createMeeting(request);
+    public MeetingDTO createMeeting(@AuthenticationPrincipal CustomUserDetails customUser, @RequestBody MeetingCreateRequest request) {
+        return meetingService.createMeeting(customUser.getUser(), request);
     }
 
     //회의 수정
@@ -67,7 +65,7 @@ public class MeetingController {
     public void deleteMeeting(@PathVariable Long meetingId) {
         meetingService.deleteMeeting(meetingId);
     }
-    
+
     // 회의 참석자 추가
 //    @PostMapping("/{meetingId}/add-attender")
 //    @ResponseStatus(HttpStatus.OK)

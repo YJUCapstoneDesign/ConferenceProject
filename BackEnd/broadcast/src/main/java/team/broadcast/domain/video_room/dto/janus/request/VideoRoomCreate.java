@@ -1,4 +1,4 @@
-package team.broadcast.domain.video_room.dto.request;
+package team.broadcast.domain.video_room.dto.janus.request;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;

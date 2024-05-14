@@ -8,9 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.service.UserService;
 import team.broadcast.domain.video_room.dto.VideoRoom;
-import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
-import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
-import team.broadcast.domain.video_room.dto.request.VideoRoomEditRequest;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreate;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomEditRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

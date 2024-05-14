@@ -5,19 +5,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.service.UserService;
 import team.broadcast.domain.video_room.dto.VideoRoom;
-import team.broadcast.domain.video_room.dto.request.InviteRequest;
-import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
-import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
-import team.broadcast.domain.video_room.exception.RoomErrorCode;
-import team.broadcast.domain.video_room.service.InvitationService;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreate;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.service.VideoRoomService;
-import team.broadcast.global.exception.CustomException;
 import team.broadcast.global.login.user.CustomUserDetails;
 
 @Slf4j
@@ -57,15 +50,5 @@ public class VideoRoomController {
         }
     }
 
-    /**
-     * @param videoRoomId - 방 아이디
-     */
-
-    @GetMapping("/{videoRoomId}/invite")
-    @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "방 초대 링크 발송",
-            description = "초대 링크를 프론트에 줘서 공유할 수 있도록 한다.")
-    public String sendInviteLink(@PathVariable Long videoRoomId, @AuthenticationPrincipal CustomUserDetails userDetails) {
-            return videoRoomService.inviteLink(videoRoomId, userDetails.getId());
-    }
+    //TODO: 초대 링크 수정 예정
 }

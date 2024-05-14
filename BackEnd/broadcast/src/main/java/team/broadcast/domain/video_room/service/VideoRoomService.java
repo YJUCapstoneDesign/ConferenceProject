@@ -17,11 +17,11 @@ import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.domain.video_room.dto.VideoRoom;
-import team.broadcast.domain.video_room.dto.request.VideoRoomCreate;
-import team.broadcast.domain.video_room.dto.request.VideoRoomDestroyRequest;
-import team.broadcast.domain.video_room.dto.request.VideoRoomEditRequest;
-import team.broadcast.domain.video_room.dto.response.VideoRoomResponse;
-import team.broadcast.domain.video_room.dto.response.VideoRoomResult;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreate;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomEditRequest;
+import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResponse;
+import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResult;
 import team.broadcast.domain.video_room.exception.RoomErrorCode;
 import team.broadcast.domain.video_room.repository.VideoRoomRepository;
 import team.broadcast.global.exception.CustomException;
@@ -95,7 +95,6 @@ public class VideoRoomService {
         VideoRoom room = VideoRoom.builder()
                 .roomId(response.getRoom())
                 .roomName(request.getDisplay())
-                .publisherId(user.getId())
                 .participants(arr)
                 .build();
 

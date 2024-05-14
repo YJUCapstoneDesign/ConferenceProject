@@ -20,7 +20,7 @@ public class VideoRoomRepository {
 
     public VideoRoom update(VideoRoom updatedRoom) {
         VideoRoom oldRoom = videoRooms.get(updatedRoom.getRoomId());
-        oldRoom.setRoomName(updatedRoom.getRoomName());
+        oldRoom.updateRoomName(updatedRoom.getRoomName());
         videoRooms.put(oldRoom.getRoomId(), oldRoom);
         return oldRoom;
     }

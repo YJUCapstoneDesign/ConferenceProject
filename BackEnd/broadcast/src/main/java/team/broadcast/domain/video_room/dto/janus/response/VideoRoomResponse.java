@@ -1,9 +1,8 @@
-package team.broadcast.domain.video_room.dto.response;
+package team.broadcast.domain.video_room.dto.janus.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.exception.JanusErrorCode;
 
 @Data

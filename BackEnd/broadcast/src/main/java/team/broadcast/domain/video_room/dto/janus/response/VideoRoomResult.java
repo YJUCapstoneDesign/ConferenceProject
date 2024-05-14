@@ -1,4 +1,4 @@
-package team.broadcast.domain.video_room.dto.response;
+package team.broadcast.domain.video_room.dto.janus.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

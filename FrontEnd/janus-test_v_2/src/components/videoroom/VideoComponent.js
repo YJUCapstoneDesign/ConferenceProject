@@ -790,20 +790,6 @@ const VideoComponent = (props) => {
             receiveFile={receiveFile}
           />
         </div>
-        <div style={{ float: "left" }}>
-          <button onClick={handleAudioActiveClick}>
-            {activeAudio ? "소리 끄기" : "소리 켜기"}
-          </button>
-          <button onClick={handleVideoActiveClick}>
-            {activeVideo ? "비디오 끄기" : "비디오 켜기"}
-          </button>
-          <button onClick={handleSpeakerActiveClick}>
-            {activeSpeaker ? "화자 추적 비활성화" : "화자 추적 활성화"}
-          </button>
-          <button onClick={handleSharingActiveClick}>
-            {activeSharing ? "화면 공유 비활성화" : "화면 공유 활성화"}
-          </button>
-        </div>
       </div>
     </>
   );

@@ -31,8 +31,6 @@ public class CustomExceptionFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
         } catch (CustomException e) {
             setCustomErrorResponse(request, response, e);
-        } catch (Exception e) {
-            setErrorResponse(request, response, e);
         }
     }
 

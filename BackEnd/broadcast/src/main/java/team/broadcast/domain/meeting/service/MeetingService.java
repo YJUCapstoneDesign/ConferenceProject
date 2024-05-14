@@ -4,8 +4,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.thymeleaf.TemplateEngine;
-import org.thymeleaf.context.Context;
 import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.attender.exception.AttenderErrorCode;
 import team.broadcast.domain.attender.mysql.repository.AttenderRepository;
@@ -16,11 +14,13 @@ import team.broadcast.domain.meeting.dto.MeetingUpdateRequest;
 import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
+import team.broadcast.domain.mindmap.service.InvitationService;
+import team.broadcast.domain.user.dto.InviteUser;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.exception.UserErrorCode;
+import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
-import team.broadcast.global.mail.MailUtil;
-import team.broadcast.global.mail.dto.EmailMessage;
 
 import java.util.List;
 
@@ -30,6 +30,8 @@ import java.util.List;
 public class MeetingService {
     private final MeetingRepository meetingRepository;
     private final AttenderRepository attenderRepository;
+    private final InvitationService invitationService; // 초대 코드 발송 서비스
+    private final UserRepository userRepository;
 
     // 회의 추가
     @Transactional
@@ -52,9 +54,18 @@ public class MeetingService {
 
     // 회의 수정
     @Transactional
-    public MeetingDTO updateMeeting(Long id, MeetingUpdateRequest meetingUpdateRequest) {
+    public MeetingDTO updateMeeting(User user, Long id, MeetingUpdateRequest meetingUpdateRequest) {
+
         Meeting meeting = meetingRepository.findById(id)
                 .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), id)
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+
+        // 사용자가 호스트인 경우에만 삭제할 수 있다.
+        if (!attender.isHost()) {
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
+        }
 
         meeting.updateName(meetingUpdateRequest.getName());
         meeting.updateStartTime(meetingUpdateRequest.getStartTime());
@@ -108,6 +119,18 @@ public class MeetingService {
         return attenderRepository.save(attender);
     }
 
+    //회의 참석자 나감
+    @Transactional
+    public void exitAttender(Long meetingId, User user) {
+        Meeting meeting = meetingRepository.findById(meetingId)
+                .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
+
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(meeting.getId(), user.getId())
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+
+        attenderRepository.delete(attender);
+    }
+
     // 회의에 있는 참여자 가져오기
     @Transactional
     public List<UserResponse> findAttenders(Long meetingId) {
@@ -116,6 +139,22 @@ public class MeetingService {
         return attenders.stream()
                 .map(attender -> UserResponse.from(attender.getUser()))
                 .toList();
+    }
+
+    // 호스트 유저가 회원 유저에게 이메일 발송
+    public void sendEmail(User user, String inviteUserEmail, Long meetingId) {
+        User inviteUser = userRepository.findByEmail(inviteUserEmail)
+                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), meetingId)
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+
+        // 사용자가 호스트인지 확인하는 코드
+        if (!attender.isHost()) {
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
+        }
+
+        invitationService.sendInviteMail(inviteUser, "테스트 링크입니다.");
     }
 
     // 현재 참석되어 있는 모든 회의 불러오기

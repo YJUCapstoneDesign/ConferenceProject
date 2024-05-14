@@ -1,4 +1,4 @@
-package team.broadcast.domain.video_room.service;
+package team.broadcast.domain.mindmap.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ public class InvitationService {
 
         EmailMessage emailMessage = EmailMessage.builder()
                 .to(user.getEmail())
-                .subject("[Unmute] 화상회의 방 초대 코드")
+                .subject("[Unmute] 회의 초대 코드")
                 .message(message)
                 .build();
 

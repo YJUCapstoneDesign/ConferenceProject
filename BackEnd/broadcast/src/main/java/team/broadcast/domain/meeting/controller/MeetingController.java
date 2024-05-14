@@ -10,8 +10,7 @@ import team.broadcast.domain.meeting.dto.MeetingCreateRequest;
 import team.broadcast.domain.meeting.dto.MeetingDTO;
 import team.broadcast.domain.meeting.dto.MeetingUpdateRequest;
 import team.broadcast.domain.meeting.service.MeetingService;
-import team.broadcast.domain.user.service.UserService;
-import team.broadcast.domain.video_room.service.InvitationService;
+import team.broadcast.domain.user.dto.InviteUser;
 import team.broadcast.global.login.user.CustomUserDetails;
 
 import java.util.List;
@@ -54,8 +53,8 @@ public class MeetingController {
     //회의 수정
     @PutMapping("/{meetingId}/update")
     @Operation(summary = "회의 수정", description = "회의 수정 API")
-    public MeetingDTO updateMeeting(@PathVariable Long meetingId, @RequestBody MeetingUpdateRequest request) {
-        return meetingService.updateMeeting(meetingId, request);
+    public MeetingDTO updateMeeting(@PathVariable Long meetingId, @RequestBody MeetingUpdateRequest request, @AuthenticationPrincipal CustomUserDetails customUser) {
+        return meetingService.updateMeeting(customUser.getUser(), meetingId, request);
     }
 
     // 회의 삭제
@@ -66,12 +65,19 @@ public class MeetingController {
         meetingService.deleteMeeting(meetingId);
     }
 
-    // 회의 참석자 추가
-//    @PostMapping("/{meetingId}/add-attender")
-//    @ResponseStatus(HttpStatus.OK)
-//    public void sendMailFromAttender(@PathVariable Long meetingId, Long userId) {
-//        User user = userService.findUser(userId);
-//        Meeting meeting = meetingService.findMeetingById(meetingId);
-//        invitationService.sendInviteMail(user, );
-//    }
+    // 회의에서 사용자 탈퇴
+    @DeleteMapping("/{meetingId/exit")
+    @ResponseStatus(HttpStatus.OK)
+    public void exitMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal CustomUserDetails customUser) {
+        meetingService.exitAttender(meetingId, customUser.getUser());
+    }
+
+    @PostMapping("/{meetingId}/invite")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "참석자 초대 링크 발송",
+            description = "이미 회원인 사용자에게 호스트가 회의 초대 링크 이메일을 보낸다.")
+    public String sendEmail(@PathVariable Long meetingId, @RequestBody InviteUser inviteUser, @AuthenticationPrincipal CustomUserDetails customUser) {
+        meetingService.sendEmail(customUser.getUser(), inviteUser.getEmail(), meetingId);
+        return "{ \"message\" : \"success\" }";
+    }
 }

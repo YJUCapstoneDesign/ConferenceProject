@@ -50,5 +50,4 @@ public class VideoRoomController {
         }
     }
 
-    //TODO: 초대 링크 수정 예정
 }

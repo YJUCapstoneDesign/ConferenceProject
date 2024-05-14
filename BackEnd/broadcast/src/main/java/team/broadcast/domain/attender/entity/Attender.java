@@ -36,5 +36,7 @@ public class Attender {
     @Enumerated(EnumType.STRING)
     private MeetingRole role;
 
-
+    public boolean isHost() {
+        return this.role == MeetingRole.HOST;
+    }
 }

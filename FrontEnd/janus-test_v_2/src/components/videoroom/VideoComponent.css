@@ -39,3 +39,9 @@
   justify-content: center;
   margin: 0 auto;
 } */
+
+.chat {
+  display: flex;
+  width: 13%;
+  height: 100%;
+}

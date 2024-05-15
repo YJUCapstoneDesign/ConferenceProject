@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import "./chatting.css"
 
 const Chatting = (props) => {
   const [chatData, setChatData] = useState([]);
@@ -8,6 +9,18 @@ const Chatting = (props) => {
   const handleChange = (e) => {
     setInputChat(e.target.value);
   };
+
+  // 일단 파일 선택시 Enter치면 파일 전송, 아니면 채팅 전송으로 만듬
+  const activeEnter = (e) => {
+    if (e.key === "Enter") {
+      if (seletecedFile) {
+        handleFileTransfer();
+      } else {
+        handleClick();
+      }
+    }
+  };
+
 
   const saychat = (e) => {
     fetch('http://localhost:8080/api', { 
@@ -101,32 +114,36 @@ const Chatting = (props) => {
 
   return (
     <>
-      <div className="h-96 w-72 rounded-[7px] border border-blue-gray-200">
+    <div className="transform scale-0 group-hover:scale-100 absolute 
+                  transition duration-500 ease-in-out origin-bottom min-w-10 new_chat">
+      <div className="h-96 w-60 rounded-[7px] border border-blue-gray-200">
         {renderChatData}
       </div>
+      {/*채팅 input*/}
       <div className="relative flex h-10 w-full min-w-[200px] max-w-[24rem]">
+      {/* <button onClick={() => {
+          handleClick();
+        }} className="!absolute right-1 top-1 z-10 select-none rounded bg-pink-500 py-2 px-4 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-pink-500/20 transition-all hover:shadow-lg hover:shadow-pink-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none peer-placeholder-shown:pointer-events-none peer-placeholder-shown:bg-blue-gray-500 peer-placeholder-shown:opacity-50 peer-placeholder-shown:shadow-none" data-ripple-light="true">Enter
+        </button>  */}
       <label htmlFor="file" className="!absolute top-2 left-3 w-4 h-4 bg-white border-gray-300 rounded-xl flex font-normal text-center justify-center cursor-pointer">
         <div className="btn-upload"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: 'rgba(0, 0, 0, 1)' }}>
         <path d="M12 2C6.486 2 2 6.486 2 12s4.486 10 10 10 10-4.486 10-10S17.514 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"></path>
         </svg>
       </div>
       </label>  
-      <input onChange={handleSelectedFile} type="file" name="file" id="file" className="hidden"></input>
-        <button onClick={() => {
-          handleClick();
-          handleFileTransfer();
-        }} className="!absolute right-14 top-1 z-10 select-none rounded bg-indigo-500 py-2 px-3 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-indigo-500/20 transition-all hover:shadow-lg hover:shadow-indigo-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none peer-placeholder-shown:pointer-events-none peer-placeholder-shown:bg-blue-gray-500 peer-placeholder-shown:opacity-50 peer-placeholder-shown:shadow-none" data-ripple-light="true">Enter
-        </button>       
+      <input onChange={handleSelectedFile} type="file" name="file" id="file" className="hidden"></input>      
         <input
           type="text"
           value={inputChat}
           onChange={handleChange}
-          className="appearance-none block w-72 bg-white text-gray-700 border border-gray-200 rounded-lg py-2 px-4 leading-tight break-all focus:outline-none transition duration-300 ease-in-out focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 pl-9"
+          onKeyDown={(e) => activeEnter(e)}
+          className="appearance-none block w-60 bg-white text-gray-700 border border-gray-200 rounded-lg py-2 px-4 leading-tight break-all focus:outline-none transition duration-300 ease-in-out focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 pl-9"
           placeholder="Enter your message" 
           required
         />      
       </div>
-      {/* <button onClick={saychat}>말하기</button> */}
+      <button onClick={saychat}>말하기</button>
+      </div>
     </>
   );
 };

@@ -767,16 +767,14 @@ const VideoComponent = (props) => {
             </div>
             {renderRemoteVideos}
           </div>
-
+          
+          <div className="flex justify-between">
           <div className="button-box">
-            <div className="button-group">
               <Janusbutton handleAudioActiveClick={handleAudioActiveClick} handleVideoActiveClick={handleVideoActiveClick}  handleSharingActiveClick={handleSharingActiveClick}/>
-            </div>
           </div>
-        </div>
-        {/* Chatting 컴포넌트 호출 부분 */}
-        <div className="chat w-0">
-          <div className="mt-4 ml-4">
+          {/* chatting */}
+          <div className="chat">
+          <div className="mb-4 mr-4">
             <div className="group inline-block">
               <Chatting
                     sendChatData={sendChatData}
@@ -802,6 +800,36 @@ const VideoComponent = (props) => {
             </div>  
           </div>
         </div>
+        </div>
+        </div>
+        {/* Chatting 컴포넌트 호출 부분 */}
+        {/* <div className="chat">
+          <div className="mt-4 ml-4">
+            <div className="group inline-block">
+              <Chatting
+                    sendChatData={sendChatData}
+                    receiveChat={receiveChat}
+                    transferFile={transferFile}
+                    receiveFile={receiveFile}
+              />
+              <button
+                className="outline-none focus:outline-none border px-3 py-3 bg-white flex items-center min-w-1 rounded-3xl">
+                <span>
+                  <svg
+                    className="fill-current h-4 w-4 transform group-hover:-rotate-180
+                    transition duration-500 ease-in-out rotate-0"
+                    xmlns="http://www.w3.org/2000/svg"  
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                    />
+                  </svg>
+                </span>
+              </button>
+            </div>  
+          </div>
+        </div> */}
       </div>
     </>
   );

@@ -66,17 +66,21 @@ public class MeetingController {
     }
 
     // 회의에서 사용자 탈퇴
-    @DeleteMapping("/{meetingId/exit")
+    @DeleteMapping("/{meetingId}/exit")
     @ResponseStatus(HttpStatus.OK)
-    public void exitMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal CustomUserDetails customUser) {
+    public void exitMeeting(@PathVariable Long meetingId,
+                            @AuthenticationPrincipal CustomUserDetails customUser) {
         meetingService.exitAttender(meetingId, customUser.getUser());
     }
+
+    // TODO: 초대 받은 회원 추가 코드 작성, 호스트 임명 코드 추가하기
 
     @PostMapping("/{meetingId}/invite")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "참석자 초대 링크 발송",
             description = "이미 회원인 사용자에게 호스트가 회의 초대 링크 이메일을 보낸다.")
-    public String sendEmail(@PathVariable Long meetingId, @RequestBody InviteUser inviteUser, @AuthenticationPrincipal CustomUserDetails customUser) {
+    public String sendEmail(@PathVariable Long meetingId, @RequestBody InviteUser inviteUser,
+                            @AuthenticationPrincipal CustomUserDetails customUser) {
         meetingService.sendEmail(customUser.getUser(), inviteUser.getEmail(), meetingId);
         return "{ \"message\" : \"success\" }";
     }

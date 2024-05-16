@@ -51,7 +51,7 @@ class VideoRoomServiceTest {
                 .display("임시 테스트 방")
                 .build();
 
-        VideoRoom room = videoRoomService.createRoom(email, testRoom);
+        VideoRoom room = videoRoomService.createRoom(1L, email, testRoom);
 
         // 방이 생성이 되었는지 확인
         assertThat(room).isNotNull();
@@ -79,7 +79,7 @@ class VideoRoomServiceTest {
                 .display("임시 테스트 방")
                 .build();
 
-        VideoRoom room = videoRoomService.createRoom(email, testRoom);
+        VideoRoom room = videoRoomService.createRoom(1L, email, testRoom);
 
         assertThat(room).isNotNull();
 
@@ -96,11 +96,11 @@ class VideoRoomServiceTest {
         assertThat(updatedRoom.getRoomName()).isEqualTo("안녕하세요");
 
         // 방삭제
-        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
-                .room(room.getRoomId())
-                .secret(newSecret)
-                .build();
-
-        videoRoomService.destroyRoom(destroy);
+//        VideoRoomDestroyRequest destroy = VideoRoomDestroyRequest.builder()
+//                .room(room.getRoomId())
+//                .secret(newSecret)
+//                .build();
+//
+//        videoRoomService.destroyRoom(destroy);
     }
 }

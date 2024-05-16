@@ -10,9 +10,9 @@ import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.attender.exception.AttenderErrorCode;
 import team.broadcast.domain.attender.mysql.repository.AttenderRepository;
-import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
+import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
@@ -79,7 +79,7 @@ public class VideoRoomService {
 
     // 1. 비디오 생성
     @Transactional
-    public VideoRoom createRoom(String email, VideoRoomCreate request) throws Exception {
+    public VideoRoom createRoom(Long meetingId, String email, VideoRoomCreate request) throws Exception {
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
 
         VideoRoomResponse block = checkExceptionResponse(send);
@@ -87,15 +87,23 @@ public class VideoRoomService {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
-        List<AttenderDTO> arr = new ArrayList<>();
-        arr.add(new AttenderDTO(user.getId(), request.getRoom(), MeetingRole.HOST));
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), meetingId)
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+
+        if (!attender.isHost()) {
+            throw new RuntimeException("호스트만 생성이 가능합니다.");
+        }
+
+        List<AttenderDTO> participants = new ArrayList<>();
+        participants.add(AttenderDTO.from(attender));
 
         VideoRoomResult response = block.getResponse();
 
         VideoRoom room = VideoRoom.builder()
                 .roomId(response.getRoom())
                 .roomName(request.getDisplay())
-                .participants(arr)
+                .participants(participants)
+                .meetingId(meetingId)
                 .build();
 
         videoRoomRepository.save(room);
@@ -125,7 +133,7 @@ public class VideoRoomService {
 
     // 3. 비디오 삭제
     @Transactional
-    public void destroyRoom(VideoRoomDestroyRequest request) throws Exception {
+    public void destroyRoom(User user, VideoRoomDestroyRequest request) throws Exception {
 
 
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
@@ -138,6 +146,15 @@ public class VideoRoomService {
 
         if (room == null) {
             throw new IllegalAccessException("Destroy Error");
+        }
+
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), room.getMeetingId())
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+
+
+        // 호스트인 경우에만 삭제가 가능하다.
+        if (!attender.isHost()) {
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
         }
 
         videoRoomRepository.delete(room.getRoomId());

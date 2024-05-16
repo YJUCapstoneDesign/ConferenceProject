@@ -21,15 +21,15 @@ import team.broadcast.global.login.user.CustomUserDetails;
 public class VideoRoomController {
     private final VideoRoomService videoRoomService;
 
-    @PostMapping("/create")
+    @PostMapping("/{meetingId}/create")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "방 생성",
-            description = "방 생성 후 자동으로 입장이 된다. 입장된 사람은 host가 된다.")
-    public VideoRoom createRoom(@RequestBody VideoRoomCreate createRequest) {
+            description = "방 생성 후 자동으로 입장이 된다. 회의 Host가 방을 생성할 수 있다.")
+    public VideoRoom createRoom(@PathVariable Long meetingId, @RequestBody VideoRoomCreate createRequest) {
         try {
             Long randomRoomId = VideoRoom.generateRandomRoomId();
             createRequest.setRoom(randomRoomId);
-            return videoRoomService.createRoom(createRequest.getEmail(), createRequest);
+            return videoRoomService.createRoom(meetingId, createRequest.getEmail(), createRequest);
 
         } catch (Exception e) {
             throw new RuntimeException("방 생성에 실패 했습니다.");
@@ -40,10 +40,12 @@ public class VideoRoomController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "방 삭제",
             description = "host 만 방을 삭제 할 수 있다.")
-    public String deleteRoom(@PathVariable Long videoRoomId) {
+    public String deleteRoom(@PathVariable Long videoRoomId,
+                             @RequestBody String secret,
+                             @AuthenticationPrincipal CustomUserDetails customUserDetails) {
         try {
-            VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest();
-            videoRoomService.destroyRoom(videoRoomDestroyRequest);
+            VideoRoomDestroyRequest videoRoomDestroyRequest = new VideoRoomDestroyRequest(videoRoomId, secret);
+            videoRoomService.destroyRoom(customUserDetails.getUser(), videoRoomDestroyRequest);
             return "deleted room [" + videoRoomId + "]";
         } catch (Exception e) {
             return e.getMessage();

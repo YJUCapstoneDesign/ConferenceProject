@@ -21,6 +21,8 @@ public class VideoRoom {
 
     private LocalDateTime startTime; // 방을 생성한 시간
 
+    private Long meetingId; // 회의 아이디
+
     private List<AttenderDTO> participants; // 방 참가자 리스트
 
     public static Long generateRandomRoomId() {

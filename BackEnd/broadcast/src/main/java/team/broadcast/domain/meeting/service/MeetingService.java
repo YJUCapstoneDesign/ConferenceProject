@@ -15,7 +15,6 @@ import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
 import team.broadcast.domain.mindmap.service.InvitationService;
-import team.broadcast.domain.user.dto.InviteUser;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
@@ -63,7 +62,7 @@ public class MeetingService {
                 .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
 
         // 사용자가 호스트인 경우에만 삭제할 수 있다.
-        if (!attender.isHost()) {
+        if (attender.isHost()) {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
         }
 
@@ -150,7 +149,7 @@ public class MeetingService {
                 .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
 
         // 사용자가 호스트인지 확인하는 코드
-        if (!attender.isHost()) {
+        if (attender.isHost()) {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
         }
 

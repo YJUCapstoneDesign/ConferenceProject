@@ -74,7 +74,7 @@ const VideoComponent = (props) => {
       myroom = parseInt(getQueryStringValue("room"));
 
     let doSimulcast = true; // 동시 캐스트
-    // let doSimulcast2 = false;
+    let doSimulcast2 = true;
 
     Janus.init({
       debug: "all",
@@ -295,10 +295,14 @@ const VideoComponent = (props) => {
                 }
 
                 if (track.kind === "audio") {
-                  
+                  stream = new MediaStream();
+                  localTracks[trackId] = stream;
+                  Janus.debug(" ::: Got a local audio stream :::", stream);
+
                 } else {
                   stream = new MediaStream([track]);
                   localTracks[trackId] = stream;
+                  Janus.debug(" ::: Got a local stream :::", stream);
                 }
 
                 setMyFeed((prev) => ({
@@ -313,7 +317,8 @@ const VideoComponent = (props) => {
                   // 아직 연결 중인 상태
                 }
 
-                // let videoTracks = stream.getVideoTracks();
+                let videoTracks = stream.getVideoTracks();
+                console.log("local track videoTracks", videoTracks);
                 // if (!videoTracks || videoTracks.length === 0) {
                 //   // 웹캠 없는 경우 비디오 숨김처리
                 // } else {
@@ -365,9 +370,10 @@ const VideoComponent = (props) => {
         type: 'video', capture: true, recv: false,
         // We may need to enable simulcast or SVC on the video track
         simulcast: doSimulcast,
+        simulcast2: doSimulcast2,
       });
 
-      tracks.push({ type: 'data' }); // ondata used for chat
+      tracks.push({ type: 'data', }); // ondata used for chat
 
 
       sfutest.createOffer({
@@ -490,7 +496,7 @@ const VideoComponent = (props) => {
               ],
               // media: { data: true, audioSend: false, videoSend: false }, // We want recvonly audio/video
               success: function (jsep) {
-                Janus.debug("Got SDP!", jsep);
+                Janus.debug("new Remote Got SDP!", jsep);
                 var body = { request: "start", room: myroom };
                 remoteFeed.send({ message: body, jsep: jsep });
               },
@@ -531,38 +537,54 @@ const VideoComponent = (props) => {
             return;
           }
 
+          // 기존 트랙을 찾아 병합합니다.
+          let stream = remoteFeed.stream || new MediaStream();
+          stream.addTrack(track);
+          // remoteFeed.remoteTracks[mid] = stream;
+
+          Janus.log(`Created remote ${track.kind} stream:`, stream);
+
+          setFeeds((prev) => {
+            let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
+            if (findIndex === -1) {
+              // 새 피드를 추가합니다.
+              return [...prev, { rfid: remoteFeed.rfid, stream, hark: track.kind === "audio" ? createSpeechEvents(stream) : undefined }];
+
+            } else {
+              // 기존 피드를 업데이트합니다.
+              let newFeed = [...prev];
+              newFeed[findIndex].stream = stream;
+              if (track.kind === "audio") {
+                newFeed[findIndex].hark = createSpeechEvents(stream);
+              }
+              return newFeed;
+            }
+          });
           if (track.kind === "audio") {
-            let stream = new MediaStream([track]);
-            remoteFeed.remoteTracks[mid] = stream;
+            //TODO: 해당 엘레멘트 부분 수정하기
+            let audioElement = document.getElementById(`audio-${remoteFeed.rfid}`);
+            if (!audioElement) {
+              audioElement = document.createElement('audio');
+              audioElement.id = `audio-${remoteFeed.rfid}`;
+              audioElement.style.display = "none";
+              audioElement.autoplay = true;
+              audioElement.srcObject = stream;
+              document.body.appendChild(audioElement); // 오디오 요소를 DOM에 추가하여 음성 출력
+            } else {
+              audioElement.srcObject = stream;
+            }
+          }
 
-            remoteFeed.stream = stream;
-
-            Janus.log("Created remote audio stream:", stream);
-            setFeeds((prev) => {
-              let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
-              let newFeed = [...prev];
-              newFeed[findIndex].stream = stream;
-              // TODO: hark undefined를 처리해야 한다.
-              newFeed[findIndex].hark = createSpeechEvents(stream); 
-              return newFeed;
-            });
-          } else {
-            let stream = new MediaStream([track]);
-            remoteFeed.remoteTracks[mid] = stream;
-
-            Janus.log("Created remote video stream:", stream);
-            setFeeds((prev) => {
-              let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
-              let newFeed = [...prev];
-              newFeed[findIndex].stream = stream;
-              return newFeed;
-            });
-            // var videoTracks = stream.getVideoTracks();
-            // if (!videoTracks || videoTracks.length === 0) {
-            //   // 원격 비디오 없는 경우
-            // } else {
-            //   // 있는 경우 뭐 별도 버튼처리
-            // }
+          // 비디오 트랙에 대한 추가 처리를 수행합니다.
+          if (track.kind === "video") {
+            var videoTracks = stream.getVideoTracks();
+            if (!videoTracks || videoTracks.length === 0) {
+              Janus.log("No remote video tracks available.");
+              // 비디오가 없는 경우 추가 처리를 합니다.
+            } else {
+              Janus.log("Remote video tracks available.");
+              // 비디오가 있는 경우 추가 처리를 합니다.
+            }
           }
         },
         ondataopen: function () {
@@ -767,69 +789,41 @@ const VideoComponent = (props) => {
             </div>
             {renderRemoteVideos}
           </div>
-          
+
           <div className="flex justify-between">
-          <div className="button-box">
-              <Janusbutton handleAudioActiveClick={handleAudioActiveClick} handleVideoActiveClick={handleVideoActiveClick}  handleSharingActiveClick={handleSharingActiveClick}/>
-          </div>
-          {/* chatting */}
-          <div className="chat">
-          <div className="mb-4 mr-4">
-            <div className="group inline-block">
-              <Chatting
+            <div className="button-box">
+              <Janusbutton handleAudioActiveClick={handleAudioActiveClick} handleVideoActiveClick={handleVideoActiveClick} handleSharingActiveClick={handleSharingActiveClick} />
+            </div>
+            {/* chatting */}
+            <div className="chat">
+              <div className="mb-4 mr-4">
+                <div className="group inline-block">
+                  <Chatting
                     sendChatData={sendChatData}
                     receiveChat={receiveChat}
                     transferFile={transferFile}
                     receiveFile={receiveFile}
-              />
-              <button
-                className="outline-none focus:outline-none border px-3 py-3 bg-white flex items-center min-w-1 rounded-3xl">
-                <span>
-                  <svg
-                    className="fill-current h-4 w-4 transform group-hover:-rotate-180
+                  />
+                  <button
+                    className="outline-none focus:outline-none border px-3 py-3 bg-white flex items-center min-w-1 rounded-3xl">
+                    <span>
+                      <svg
+                        className="fill-current h-4 w-4 transform group-hover:-rotate-180
                     transition duration-500 ease-in-out rotate-0"
-                    xmlns="http://www.w3.org/2000/svg"  
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </div>  
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                        />
+                      </svg>
+                    </span>
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-        </div>
-        </div>
-        {/* Chatting 컴포넌트 호출 부분 */}
-        {/* <div className="chat">
-          <div className="mt-4 ml-4">
-            <div className="group inline-block">
-              <Chatting
-                    sendChatData={sendChatData}
-                    receiveChat={receiveChat}
-                    transferFile={transferFile}
-                    receiveFile={receiveFile}
-              />
-              <button
-                className="outline-none focus:outline-none border px-3 py-3 bg-white flex items-center min-w-1 rounded-3xl">
-                <span>
-                  <svg
-                    className="fill-current h-4 w-4 transform group-hover:-rotate-180
-                    transition duration-500 ease-in-out rotate-0"
-                    xmlns="http://www.w3.org/2000/svg"  
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
-                    />
-                  </svg>
-                </span>
-              </button>
-            </div>  
-          </div>
-        </div> */}
       </div>
     </>
   );

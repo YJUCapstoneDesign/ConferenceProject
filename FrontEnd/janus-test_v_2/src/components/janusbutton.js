@@ -3,7 +3,7 @@ import "./janusbutton.css";
 
 function Janusbutton({handleAudioActiveClick, handleVideoActiveClick, handleSharingActiveClick}) {
   return (
-    <div className="janus_button mb-4 ml-4 block">
+    <div className="janus_button mb-4 -ml-12 block">
       <div className="group inline-block">
         <button
           className="outline-none focus:outline-none border px-3 py-3 bg-white flex items-center min-w-1 rounded-3xl ">

@@ -6,6 +6,7 @@ import './VideoComponent.css';
 import Sidebar from "../Sidebar";
 import Janusbutton from "../janusbutton";
 import Chatting from "./chatting/chatting";
+import RecordPage from "../S3/RecordPage";
 
 const useReference = () => {
   const [reference, setReference] = useState(() => createRef());
@@ -717,7 +718,7 @@ const VideoComponent = (props) => {
           replaceVideo: true,
         },
         success: function (jsep) {
-          Janus.debug(jsep);
+          Janus.debug(jsep);  
           sfutest.send({ message: { audio: true, video: true }, jsep: jsep });
         },
         error: function (error) {
@@ -765,6 +766,7 @@ const VideoComponent = (props) => {
         <div className="side-box">
           <Sidebar />
         </div>
+        <div className="ml-4 mt-4 inline-block"><RecordPage /></div>
         <div className="main-box">
           <div className="box">
             <div className="big-screen"> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
@@ -789,7 +791,6 @@ const VideoComponent = (props) => {
             </div>
             {renderRemoteVideos}
           </div>
-
           <div className="flex justify-between">
             <div className="button-box">
               <Janusbutton handleAudioActiveClick={handleAudioActiveClick} handleVideoActiveClick={handleVideoActiveClick} handleSharingActiveClick={handleSharingActiveClick} />

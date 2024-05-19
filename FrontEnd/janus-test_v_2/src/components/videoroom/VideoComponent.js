@@ -766,7 +766,7 @@ const VideoComponent = (props) => {
         <div className="side-box">
           <Sidebar />
         </div>
-        <div className="ml-4 mt-4 inline-block"><RecordPage /></div>
+        {/* <div className="ml-4 mt-4 inline-block"><RecordPage /></div> */}
         <div className="main-box">
           <div className="box">
             <div className="big-screen"> {/* 가장 큰 화면의 상대적 위치 설정 부분이였음*/}
@@ -806,18 +806,30 @@ const VideoComponent = (props) => {
                     receiveFile={receiveFile}
                   />
                   <button
-                    className="outline-none focus:outline-none border px-3 py-3 bg-white flex items-center min-w-1 rounded-3xl">
+                    className="outline-indigo-500 shadow-xl focus:outline-none border-2 px-3 py-3 bg-white flex items-center min-w-1 rounded-3xl hover:bg-indigo-500 hover:text-white">
                     <span>
-                      <svg
+                      {/* <svg
                         className="fill-current h-4 w-4 transform group-hover:-rotate-180
-                    transition duration-500 ease-in-out rotate-0"
+                        transition duration-500 ease-in-out rotate-0"
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 20 20"
                       >
                         <path
                           d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
                         />
-                      </svg>
+                      </svg> */}
+                      <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      style={{ fill: 'currentColor', verticalAlign: 'middle' }}
+                      className="fill-current h-4 w-4"
+                    >
+                      <circle cx="9.5" cy="9.5" r="1.5"></circle>
+                      <circle cx="14.5" cy="9.5" r="1.5"></circle>
+                      <path d="M12 2C6.486 2 2 5.589 2 10c0 2.908 1.897 5.515 5 6.934V22l5.34-4.004C17.697 17.852 22 14.32 22 10c0-4.411-4.486-8-10-8zm0 14h-.333L9 18v-2.417l-.641-.247C5.671 14.301 4 12.256 4 10c0-3.309 3.589-6 8-6s8 2.691 8 6-3.589 6-8 6z"></path>
+                    </svg>
                     </span>
                   </button>
                 </div>

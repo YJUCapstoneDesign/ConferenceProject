@@ -42,6 +42,7 @@ public class WebsocketHandler extends TextWebSocketHandler {
 
         ws.forEach(s -> {
             try {
+                log.info("send message: {}", msg);
                 s.sendMessage(new TextMessage(msg));
             } catch (IOException e) {
                 throw new RuntimeException(e);

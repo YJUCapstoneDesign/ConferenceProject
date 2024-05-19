@@ -29,22 +29,22 @@ class VideoRoomServiceTest {
 
     @BeforeEach
     void init() throws Exception {
-        name = userService.generateRandomName(10);
-        SignupUser test = SignupUser.builder()
-                .email(name + "@gmail.com")
-                .username("test")
-                .password("1234")
-                .phone("01011111111")
-                .build();
-
-        userService.createUser(test);
+//        name = "test";
+//        SignupUser test = SignupUser.builder()
+//                .email(name + "@naver.com")
+//                .username("test")
+//                .password("1234")
+//                .phone("01011111111")
+//                .build();
+//
+//        userService.createUser(test);
     }
 
     @Test
     @DisplayName("방 생성")
     void createRoom() throws Exception {
         Long roomId = 12341234L;
-        String email = this.name + "@gmail.com";
+        String email = this.name + "@naver.com";
         // 방 생성
         VideoRoomCreate testRoom = VideoRoomCreate.builder()
                 .room(roomId)

@@ -145,11 +145,11 @@ public class SecurityConfig {
         // 일부 경로 허용 나머지는 전부 인증이 필요하다.
         http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry ->
                 authorizationManagerRequestMatcherRegistry
-                        .requestMatchers("/ws/**", "/ws/info/**").permitAll()
+                        .requestMatchers("/app").permitAll()
                         .requestMatchers("/images/**",
                                 "/api/mind-map/**",
                                 "/oauth2/**",
-                                "/app/**", "/api/signup", "/",
+                                "/api/signup", "/",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()
                         .anyRequest().permitAll()); // 다른 곳에는 권한이 필요하다.

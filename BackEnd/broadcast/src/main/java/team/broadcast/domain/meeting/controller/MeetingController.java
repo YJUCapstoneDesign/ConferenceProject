@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.meeting.dto.MeetingCreateRequest;
 import team.broadcast.domain.meeting.dto.MeetingDTO;
 import team.broadcast.domain.meeting.dto.MeetingUpdateRequest;
+import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.service.MeetingService;
 import team.broadcast.domain.user.dto.InviteUser;
+import team.broadcast.global.exception.CustomException;
+import team.broadcast.global.jwt.exception.JwtErrorCode;
+import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.user.CustomUserDetails;
 
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.List;
 public class MeetingController {
 
     private final MeetingService meetingService;
+    private final JwtService jwtService;
 
     // 현재 참가되어 있는 회의 모두 조회
     @GetMapping
@@ -54,14 +59,28 @@ public class MeetingController {
     @PutMapping("/{meetingId}/update")
     @Operation(summary = "회의 수정", description = "회의 수정 API")
     public MeetingDTO updateMeeting(@PathVariable Long meetingId, @RequestBody MeetingUpdateRequest request, @AuthenticationPrincipal CustomUserDetails customUser) {
-        return meetingService.updateMeeting(customUser.getUser(), meetingId, request);
+        boolean checked = meetingService.checkHostInMeeting(customUser.getId(), meetingId);
+        if (!checked) {
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
+        }
+
+        // 호스트인 경우 업데이트 실행
+        return meetingService.updateMeeting(meetingId, request);
     }
 
     // 회의 삭제
     @DeleteMapping("/{meetingId}/delete")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "회의 삭제", description = "회의 삭제 API")
-    public void deleteMeeting(@PathVariable Long meetingId) {
+    public void deleteMeeting(@PathVariable Long meetingId, @AuthenticationPrincipal CustomUserDetails customUser) {
+        boolean checked = meetingService.checkHostInMeeting(customUser.getId(), meetingId);
+
+        // 호스트가 아닌 경우 권한 오류를 부여 한다.
+        if (!checked) {
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
+        }
+
+        // 호스트인 경우에만 삭제 실행
         meetingService.deleteMeeting(meetingId);
     }
 
@@ -73,15 +92,33 @@ public class MeetingController {
         meetingService.exitAttender(meetingId, customUser.getUser());
     }
 
-    // TODO: 초대 받은 회원 추가 코드 작성, 호스트 임명 코드 추가하기
+    @GetMapping("/{meetingId}/join")
+    @ResponseStatus(HttpStatus.OK)
+    public void joinMeeting(@PathVariable Long meetingId, @RequestParam String token) {
+        String email = jwtService.extractEmail(token)
+                .orElseThrow(() -> new CustomException(JwtErrorCode.NOT_FOUND_ACCESS));
+
+        // TODO: 참석자 추가 코드 수정 필요.
+//        meetingService.addAttender(meetingId, email);
+    }
 
     @PostMapping("/{meetingId}/invite")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "참석자 초대 링크 발송",
             description = "이미 회원인 사용자에게 호스트가 회의 초대 링크 이메일을 보낸다.")
-    public String sendEmail(@PathVariable Long meetingId, @RequestBody InviteUser inviteUser,
+    public String sendEmail(@PathVariable Long meetingId,
+                            @RequestBody InviteUser inviteUser,
                             @AuthenticationPrincipal CustomUserDetails customUser) {
-        meetingService.sendEmail(customUser.getUser(), inviteUser.getEmail(), meetingId);
+
+        // 보내는 사람이 호스트인지 검사하는 코드
+        boolean checked = meetingService.checkHostInMeeting(customUser.getId(), meetingId);
+
+        if (!checked) {
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
+        }
+        String token = jwtService.generateAccessToken(inviteUser.getEmail());
+        // 빋는 시용자에게 메일을 보낸다.
+        meetingService.sendEmail(meetingId, inviteUser.getEmail(), token);
         return "{ \"message\" : \"success\" }";
     }
 }

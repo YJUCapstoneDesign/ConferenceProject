@@ -24,7 +24,7 @@ public class VideoRoomController {
     @PostMapping("/{meetingId}/create")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "방 생성",
-            description = "방 생성 후 자동으로 입장이 된다. 회의 Host가 방을 생성할 수 있다.")
+            description = "방 생성 후 자동으로 입장이 된다. 회의 Host 가 방을 생성할 수 있다.")
     public VideoRoom createRoom(@PathVariable Long meetingId, @RequestBody VideoRoomCreate createRequest) {
         try {
             Long randomRoomId = VideoRoom.generateRandomRoomId();
@@ -39,7 +39,7 @@ public class VideoRoomController {
     @DeleteMapping("/{videoRoomId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "방 삭제",
-            description = "host 만 방을 삭제 할 수 있다.")
+            description = "Host 만 방을 삭제 할 수 있다.")
     public String deleteRoom(@PathVariable Long videoRoomId,
                              @RequestBody String secret,
                              @AuthenticationPrincipal CustomUserDetails customUserDetails) {

@@ -80,10 +80,6 @@ public class VideoRoomService {
     // 1. 비디오 생성
     @Transactional
     public VideoRoom createRoom(Long meetingId, String email, VideoRoomCreate request) throws Exception {
-        Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
-
-        VideoRoomResponse block = checkExceptionResponse(send);
-
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
@@ -91,11 +87,15 @@ public class VideoRoomService {
                 .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
 
         if (!attender.isHost()) {
-            throw new RuntimeException("호스트만 생성이 가능합니다.");
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
         }
 
         List<AttenderDTO> participants = new ArrayList<>();
         participants.add(AttenderDTO.from(attender));
+
+        Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
+
+        VideoRoomResponse block = checkExceptionResponse(send);
 
         VideoRoomResult response = block.getResponse();
 

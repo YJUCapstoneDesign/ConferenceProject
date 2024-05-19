@@ -15,10 +15,12 @@ import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
 import team.broadcast.domain.mindmap.service.InvitationService;
+import team.broadcast.domain.user.dto.InviteUser;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.domain.user.service.UserService;
 import team.broadcast.global.exception.CustomException;
 
 import java.util.List;
@@ -30,7 +32,14 @@ public class MeetingService {
     private final MeetingRepository meetingRepository;
     private final AttenderRepository attenderRepository;
     private final InvitationService invitationService; // 초대 코드 발송 서비스
-    private final UserRepository userRepository;
+    private final UserService userService;
+
+    public boolean checkHostInMeeting(Long userId, Long meetingId) {
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(userId, meetingId)
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+
+        return attender.isHost();
+    }
 
     // 회의 추가
     @Transactional
@@ -53,18 +62,10 @@ public class MeetingService {
 
     // 회의 수정
     @Transactional
-    public MeetingDTO updateMeeting(User user, Long id, MeetingUpdateRequest meetingUpdateRequest) {
+    public MeetingDTO updateMeeting(Long meetingId, MeetingUpdateRequest meetingUpdateRequest) {
 
-        Meeting meeting = meetingRepository.findById(id)
+        Meeting meeting = meetingRepository.findById(meetingId)
                 .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
-
-        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), id)
-                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
-
-        // 사용자가 호스트인 경우에만 삭제할 수 있다.
-        if (attender.isHost()) {
-            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
-        }
 
         meeting.updateName(meetingUpdateRequest.getName());
         meeting.updateStartTime(meetingUpdateRequest.getStartTime());
@@ -141,19 +142,14 @@ public class MeetingService {
     }
 
     // 호스트 유저가 회원 유저에게 이메일 발송
-    public void sendEmail(User user, String inviteUserEmail, Long meetingId) {
-        User inviteUser = userRepository.findByEmail(inviteUserEmail)
-                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+    public void sendEmail(Long meetingId, String userEmail, String token) {
 
-        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), meetingId)
-                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+        // 여기서 사용자가 실제로 존재하는지 검사를 해야 한다.
+        User findUser = userService.findUserByEmail(userEmail);
 
-        // 사용자가 호스트인지 확인하는 코드
-        if (attender.isHost()) {
-            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
-        }
+        String content = "http://localhost:8080/api/meeting/" + meetingId + "/join?token=" + token;
 
-        invitationService.sendInviteMail(inviteUser, "테스트 링크입니다.");
+        invitationService.sendInviteMail(findUser, content);
     }
 
     // 현재 참석되어 있는 모든 회의 불러오기

@@ -37,7 +37,7 @@ public class Attender {
     private MeetingRole role;
 
     public boolean isHost() {
-        return this.role != MeetingRole.HOST;
+        return this.role == MeetingRole.HOST;
     }
 
     public void updateRole(MeetingRole role) {

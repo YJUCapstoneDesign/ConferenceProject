@@ -1,6 +1,7 @@
 package team.broadcast.global.jwt.filter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,8 +9,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import team.broadcast.global.exception.CustomException;
-import team.broadcast.global.exception.ErrorResponse;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,33 +28,21 @@ public class CustomExceptionFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
             filterChain.doFilter(request, response);
-        } catch (CustomException e) {
+        } catch (JwtException | IllegalArgumentException e) {
             setCustomErrorResponse(request, response, e);
         }
     }
 
-    public void setErrorResponse(HttpServletRequest request, HttpServletResponse response, Throwable exception) throws IOException {
 
-        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-
-        body.put("status", HttpServletResponse.SC_BAD_REQUEST);
-        body.put("code", "BASIC-ERROR");
-        body.put("message", exception.getMessage());
-        body.put("path", request.getServletPath());
-
-        mapper.writeValue(response.getOutputStream(), body);
-    }
-
-    public void setCustomErrorResponse(HttpServletRequest request, HttpServletResponse response, CustomException e) throws IOException {
+    public void setCustomErrorResponse(HttpServletRequest request, HttpServletResponse response, Throwable e) throws IOException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ErrorResponse errorResponse = e.getCustomErrorCode().getErrorResponse();
-        response.setStatus(errorResponse.getStatus());
 
-        body.put("status", errorResponse.getStatus());
-        body.put("code", errorResponse.getCode());
-        body.put("message", errorResponse.getReason());
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+
+        body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
+        body.put("code", "JWT-1");
+        body.put("message", e.getMessage());
         body.put("path", request.getServletPath());
 
         mapper.writeValue(response.getOutputStream(), body);

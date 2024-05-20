@@ -12,9 +12,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
-import team.broadcast.global.exception.CustomException;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.user.CustomUserDetails;
 
@@ -46,7 +44,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         jwtService.updateRefreshToken(user.getEmail(), refreshToken);
 
@@ -57,7 +55,6 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-
         UserResponse userResponse = UserResponse.from(user);
 
         objectMapper.writeValue(response.getWriter(), userResponse);

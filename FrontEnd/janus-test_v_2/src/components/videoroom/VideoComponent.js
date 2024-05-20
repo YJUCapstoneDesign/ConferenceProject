@@ -562,7 +562,7 @@ const VideoComponent = (props) => {
             }
           });
           if (track.kind === "audio") {
-            //TODO: 해당 엘레멘트 부분 수정하기
+            
             let audioElement = document.getElementById(`audio-${remoteFeed.rfid}`);
             if (!audioElement) {
               audioElement = document.createElement('audio');
@@ -718,7 +718,7 @@ const VideoComponent = (props) => {
           replaceVideo: true,
         },
         success: function (jsep) {
-          Janus.debug(jsep);  
+          Janus.debug(jsep);
           sfutest.send({ message: { audio: true, video: true }, jsep: jsep });
         },
         error: function (error) {

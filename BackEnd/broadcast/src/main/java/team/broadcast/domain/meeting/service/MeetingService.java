@@ -15,11 +15,8 @@ import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
 import team.broadcast.domain.mindmap.service.InvitationService;
-import team.broadcast.domain.user.dto.InviteUser;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.exception.UserErrorCode;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.domain.user.service.UserService;
 import team.broadcast.global.exception.CustomException;
 
@@ -146,6 +143,16 @@ public class MeetingService {
 
         // 여기서 사용자가 실제로 존재하는지 검사를 해야 한다.
         User findUser = userService.findUserByEmail(userEmail);
+
+        // 이미 참석자인지 확인을 한다.
+        Attender isAttender = attenderRepository.findByUserIdAndMeetingId(findUser.getId(), meetingId)
+                .orElse(null);
+
+        log.info("isAttender: {}", isAttender);
+
+        if (isAttender != null) {
+            throw new CustomException(AttenderErrorCode.DUPLICATED_ATTENDER);
+        }
 
         String content = "http://localhost:8080/api/meeting/" + meetingId + "/join?token=" + token;
 

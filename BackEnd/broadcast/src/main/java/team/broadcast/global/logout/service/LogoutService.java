@@ -1,5 +1,6 @@
 package team.broadcast.global.logout.service;
 
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -30,7 +31,7 @@ public class LogoutService implements LogoutHandler {
         Optional<String> token = jwtService.extractRefreshToken(request);
 
         if (token.isEmpty()) {
-            throw new CustomException(JwtErrorCode.NOT_FOUND_REFRESH);
+            throw new JwtException("Refresh Token을 찾을 수 없습니다.");
         }
 
         String refreshToken = token.get();

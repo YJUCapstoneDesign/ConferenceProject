@@ -10,20 +10,22 @@ import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.attender.exception.AttenderErrorCode;
 import team.broadcast.domain.attender.mysql.repository.AttenderRepository;
+import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
+import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
+import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.exception.UserErrorCode;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
-import team.broadcast.domain.video_room.dto.VideoRoom;
+import team.broadcast.domain.user.service.UserService;
+import team.broadcast.domain.video_room.dto.RoomResponse;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreate;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
-import team.broadcast.domain.video_room.dto.janus.request.VideoRoomEditRequest;
 import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResponse;
 import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResult;
+import team.broadcast.domain.video_room.entity.Room;
 import team.broadcast.domain.video_room.exception.RoomErrorCode;
-import team.broadcast.domain.video_room.repository.VideoRoomRepository;
+import team.broadcast.domain.video_room.repository.RoomMemoryRepository;
 import team.broadcast.global.exception.CustomException;
 
 import java.util.ArrayList;
@@ -32,15 +34,17 @@ import java.util.List;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class VideoRoomService {
+public class RoomService {
 
     private static final String ROOM_ADDRESS = "http://localhost:8080/api/room/";
 
     private final JanusClient janusClient;
-    private final VideoRoomRepository videoRoomRepository;
+    private final RoomMemoryRepository roomMemoryRepository;
     private final AttenderRepository attenderRepository;
-    private final UserRepository userRepository;
+    private final MeetingRepository meetingRepository;
+    private final UserService userService;
 
+    // janus webrtc 에러가 있는지 체크한다.
     private VideoRoomResponse checkExceptionResponse(Mono<VideoRoomResponse> responseMono) throws Exception {
         VideoRoomResponse response = responseMono.block();
 
@@ -61,7 +65,7 @@ public class VideoRoomService {
 
     // 방 초대 링크 생성
     public String inviteLink(Long videoRoomId, Long userId) {
-        VideoRoom room = videoRoomRepository.findById(videoRoomId);
+        Room room = roomMemoryRepository.findById(videoRoomId);
 
         // 방이 존재하지 않으면 에러 메시지를 보낸다.
         if (room == null) {
@@ -69,19 +73,19 @@ public class VideoRoomService {
         }
 
         // 초대 링크를 생성하는 사람이 회의 추최자야 한다.
-        List<Attender> attender = attenderRepository.findByUserId(userId);
-        if (attender.isEmpty()) {
-            throw new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND);
-        }
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(userId, room.getMeetingId())
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
 
+        if (!attender.isHost()) {
+            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
+        }
         return ROOM_ADDRESS + videoRoomId;
     }
 
     // 1. 비디오 생성
     @Transactional
-    public VideoRoom createRoom(Long meetingId, String email, VideoRoomCreate request) throws Exception {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
+    public RoomResponse createRoom(Long meetingId, String email, VideoRoomCreate request) throws Exception {
+        User user = userService.findUserByEmail(email);
 
         Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), meetingId)
                 .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
@@ -90,8 +94,8 @@ public class VideoRoomService {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
         }
 
-        List<AttenderDTO> participants = new ArrayList<>();
-        participants.add(AttenderDTO.from(attender));
+        List<Attender> participants = new ArrayList<>();
+        participants.add(attender);
 
         Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
 
@@ -99,39 +103,55 @@ public class VideoRoomService {
 
         VideoRoomResult response = block.getResponse();
 
-        VideoRoom room = VideoRoom.builder()
-                .roomId(response.getRoom())
-                .roomName(request.getDisplay())
+        Room room = Room.builder()
+                .id(response.getRoom())
+                .name(request.getDisplay())
                 .participants(participants)
                 .meetingId(meetingId)
                 .build();
 
-        videoRoomRepository.save(room);
+        roomMemoryRepository.save(room);
 
-        return room;
+        return toDto(room);
     }
 
-    // 2. 비디오 수정
-    @Transactional
-    public VideoRoom updateRoom(VideoRoomEditRequest request) throws Exception {
+    // 방 입장
+    public void joinRoom(Long roomId, User user) {
+        Room room = roomMemoryRepository.findById(roomId);
 
-        Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
+        if (room == null) {
+            throw new CustomException(RoomErrorCode.ROOM_NOT_FOUND);
+        }
 
-        VideoRoomResponse block = checkExceptionResponse(send);
+        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), room.getMeetingId())
+                .orElse(null);
 
-        VideoRoomResult response = block.getResponse();
+        if (attender == null) {
+            Meeting meeting = meetingRepository.findById(room.getMeetingId())
+                    .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
+            attender = Attender.builder()
+                    .user(user)
+                    .meeting(meeting)
+                    .role(MeetingRole.PARTICIPANT)
+                    .build();
+        }
 
-        VideoRoom updateRoom = VideoRoom.builder()
-                .roomId(response.getRoom())
-                .roomName(request.getNewDescription())
+        attenderRepository.save(attender);
+        roomMemoryRepository.save(room);
+    }
+
+    public RoomResponse toDto(Room room) {
+        return RoomResponse.builder()
+                .name(room.getName())
+                .currentCount(room.getCurrentCount())
+                .maxCount(room.getMaxCount())
+                // 해당 코드가 맞는지 먼저 생각을 한다.
+                .participants(room.getParticipants().stream().map(AttenderDTO::from).toList())
                 .build();
-
-        videoRoomRepository.update(updateRoom);
-
-        return updateRoom;
     }
 
-    // 3. 비디오 삭제
+
+    // 2. 비디오 삭제
     @Transactional
     public void destroyRoom(User user, VideoRoomDestroyRequest request) throws Exception {
 
@@ -142,7 +162,7 @@ public class VideoRoomService {
 
         VideoRoomResult response = block.getResponse();
 
-        VideoRoom room = videoRoomRepository.findById(response.getRoom());
+        Room room = roomMemoryRepository.findById(response.getRoom());
 
         if (room == null) {
             throw new IllegalAccessException("Destroy Error");
@@ -157,10 +177,10 @@ public class VideoRoomService {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
         }
 
-        videoRoomRepository.delete(room.getRoomId());
+        roomMemoryRepository.delete(room.getId());
     }
 
-    public VideoRoom findByRoomId(Long roomId) {
-        return videoRoomRepository.findById(roomId);
+    public Room findByRoomId(Long roomId) {
+        return roomMemoryRepository.findById(roomId);
     }
 }

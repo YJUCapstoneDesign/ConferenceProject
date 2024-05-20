@@ -12,6 +12,8 @@ import team.broadcast.domain.meeting.dto.MeetingUpdateRequest;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.service.MeetingService;
 import team.broadcast.domain.user.dto.InviteUser;
+import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.service.UserService;
 import team.broadcast.global.exception.CustomException;
 import team.broadcast.global.jwt.exception.JwtErrorCode;
 import team.broadcast.global.jwt.service.JwtService;
@@ -27,6 +29,7 @@ public class MeetingController {
 
     private final MeetingService meetingService;
     private final JwtService jwtService;
+    private final UserService userService;
 
     // 현재 참가되어 있는 회의 모두 조회
     @GetMapping
@@ -94,12 +97,15 @@ public class MeetingController {
 
     @GetMapping("/{meetingId}/join")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "초대 인증",
+            description = "초대 이메일을 클릭한 사람의 URI를 통해 토큰을 받아 해당 사람을 구별을 하고 참석자로 추가를 한다.")
     public void joinMeeting(@PathVariable Long meetingId, @RequestParam String token) {
         String email = jwtService.extractEmail(token)
                 .orElseThrow(() -> new CustomException(JwtErrorCode.NOT_FOUND_ACCESS));
 
-        // TODO: 참석자 추가 코드 수정 필요.
-//        meetingService.addAttender(meetingId, email);
+        // 사용자가 회원인지 검사하는 로직 추가
+        User user = userService.findUserByEmail(email);
+        meetingService.addAttender(meetingId, user);
     }
 
     @PostMapping("/{meetingId}/invite")
@@ -116,9 +122,11 @@ public class MeetingController {
         if (!checked) {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
         }
+
         String token = jwtService.generateAccessToken(inviteUser.getEmail());
+
         // 빋는 시용자에게 메일을 보낸다.
         meetingService.sendEmail(meetingId, inviteUser.getEmail(), token);
-        return "{ \"message\" : \"success\" }";
+        return "{ \"message\" : \"success\" }"; // 잘되었는지 테스트로 코드를 작성
     }
 }

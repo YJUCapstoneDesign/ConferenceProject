@@ -11,10 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.mysql.repository.UserRepository;
-import team.broadcast.global.exception.CustomException;
-import team.broadcast.global.jwt.exception.JwtErrorCode;
 
 import java.security.Key;
 import java.util.Base64;
@@ -113,7 +110,7 @@ public class JwtService {
                             user.updateRefreshToken(refreshToken);
                             userRepository.save(user);
                         },
-                        () -> new CustomException(UserErrorCode.USER_NOT_FOUND)
+                        () -> new IllegalArgumentException("해당 유저를 찾을 수 없습니다.")
                 );
     }
 
@@ -127,15 +124,15 @@ public class JwtService {
             return true;
         } catch (MalformedJwtException e) {
             log.error("Invalid JWT token", e);
-            throw new CustomException(JwtErrorCode.MALFORMED);
+            throw new JwtException("유효하지 않은 JWT 토큰");
         } catch (ExpiredJwtException e) {
             log.error("expired jwt token");
-            throw new CustomException(JwtErrorCode.EXPIRED);
+            throw new JwtException("만료된 JWT 토큰");
         } catch (UnsupportedJwtException e) {
             log.error("unsupported jwt token");
         } catch (IllegalArgumentException e) {
             log.error("illegal jwt token");
-            throw new CustomException(JwtErrorCode.ILLEGAL_ARGUMENT);
+            throw new JwtException("유효하지 않는 compact JWT 토큰");
         }
         return false;
     }

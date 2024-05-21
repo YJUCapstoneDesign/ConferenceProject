@@ -24,4 +24,13 @@ public class MeetingDTO {
                 .endTime(meeting.getEndTime())
                 .build();
     }
+
+    public Meeting toEntity() {
+        return Meeting.builder()
+                .id(id)
+                .name(name)
+                .createTime(createTime)
+                .endTime(endTime)
+                .build();
+    }
 }

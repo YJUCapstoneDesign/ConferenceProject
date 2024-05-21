@@ -23,7 +23,7 @@ public class AttenderDTO {
     }
 
     // dto -> entity로 변환화는 메서드
-    public Attender from(User user, Meeting meeting) { // 연관관계를 가지는 것은 파라미터로 받게 처리한다.
+    public Attender toEntity(User user, Meeting meeting) { // 연관관계를 가지는 것은 파라미터로 받게 처리한다.
         return Attender.builder()
                 .user(user)
                 .meeting(meeting)
@@ -31,7 +31,7 @@ public class AttenderDTO {
                 .build();
     }
 
-    public static AttenderDTO from(Attender attender) {
+    public static AttenderDTO toDTO(Attender attender) {
         return builder()
                 .userId(attender.getUser().getId())
                 .meetingId(attender.getMeeting().getId())

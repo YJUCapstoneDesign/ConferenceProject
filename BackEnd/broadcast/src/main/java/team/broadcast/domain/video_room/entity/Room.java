@@ -32,5 +32,15 @@ public class Room {
         this.name = name;
     }
 
+    // 기존 리스트를 수정할 수 없도록 분리를 한다.
+    public List<Attender> getParticipants() {
+        return List.copyOf(participants);
+    }
+
+    public void updateParticipants(List<Attender> attenders) {
+        this.participants = attenders;
+        this.currentCount = attenders.size();
+    }
+
 
 }

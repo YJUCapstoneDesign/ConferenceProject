@@ -8,14 +8,12 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.attender.entity.Attender;
-import team.broadcast.domain.attender.exception.AttenderErrorCode;
-import team.broadcast.domain.attender.mysql.repository.AttenderRepository;
-import team.broadcast.domain.enumstore.enums.MeetingRole;
+import team.broadcast.domain.attender.service.AttenderService;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
-import team.broadcast.domain.meeting.entity.Meeting;
+import team.broadcast.domain.meeting.dto.MeetingDTO;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
-import team.broadcast.domain.meeting.mysql.repository.MeetingRepository;
+import team.broadcast.domain.meeting.service.MeetingService;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.service.UserService;
 import team.broadcast.domain.video_room.dto.RoomResponse;
@@ -40,9 +38,9 @@ public class RoomService {
 
     private final JanusClient janusClient;
     private final RoomMemoryRepository roomMemoryRepository;
-    private final AttenderRepository attenderRepository;
-    private final MeetingRepository meetingRepository;
+    private final AttenderService attenderService;
     private final UserService userService;
+    private final MeetingService meetingService;
 
     // janus webrtc 에러가 있는지 체크한다.
     private VideoRoomResponse checkExceptionResponse(Mono<VideoRoomResponse> responseMono) throws Exception {
@@ -73,8 +71,7 @@ public class RoomService {
         }
 
         // 초대 링크를 생성하는 사람이 회의 추최자야 한다.
-        Attender attender = attenderRepository.findByUserIdAndMeetingId(userId, room.getMeetingId())
-                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+        Attender attender = attenderService.getAttenderByUserIdAndMeetingId(userId, room.getMeetingId());
 
         if (!attender.isHost()) {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
@@ -87,8 +84,7 @@ public class RoomService {
     public RoomResponse createRoom(Long meetingId, String email, VideoRoomCreate request) throws Exception {
         User user = userService.findUserByEmail(email);
 
-        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), meetingId)
-                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+        Attender attender = attenderService.getAttenderByUserIdAndMeetingId(user.getId(), meetingId);
 
         if (!attender.isHost()) {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
@@ -122,21 +118,24 @@ public class RoomService {
         if (room == null) {
             throw new CustomException(RoomErrorCode.ROOM_NOT_FOUND);
         }
-
-        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), room.getMeetingId())
-                .orElse(null);
-
-        if (attender == null) {
-            Meeting meeting = meetingRepository.findById(room.getMeetingId())
-                    .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
+        Attender attender = null;
+        try {
+            attender = attenderService.getAttenderByUserIdAndMeetingId(user.getId(), room.getMeetingId());
+        } catch (CustomException e) {
+            MeetingDTO meeting = meetingService.findMeetingById(room.getMeetingId());
             attender = Attender.builder()
                     .user(user)
-                    .meeting(meeting)
-                    .role(MeetingRole.PARTICIPANT)
+                    .meeting(meeting.toEntity())
                     .build();
         }
 
-        attenderRepository.save(attender);
+        attenderService.addAttender(AttenderDTO.toDTO(attender));
+
+        List<Attender> participants = room.getParticipants();
+        participants.add(attender);
+
+        room.updateParticipants(participants);
+
         roomMemoryRepository.save(room);
     }
 
@@ -146,7 +145,7 @@ public class RoomService {
                 .currentCount(room.getCurrentCount())
                 .maxCount(room.getMaxCount())
                 // 해당 코드가 맞는지 먼저 생각을 한다.
-                .participants(room.getParticipants().stream().map(AttenderDTO::from).toList())
+                .participants(room.getParticipants().stream().map(AttenderDTO::toDTO).toList())
                 .build();
     }
 
@@ -168,9 +167,7 @@ public class RoomService {
             throw new IllegalAccessException("Destroy Error");
         }
 
-        Attender attender = attenderRepository.findByUserIdAndMeetingId(user.getId(), room.getMeetingId())
-                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
-
+        Attender attender = attenderService.getAttenderByUserIdAndMeetingId(user.getId(), room.getMeetingId());
 
         // 호스트인 경우에만 삭제가 가능하다.
         if (!attender.isHost()) {

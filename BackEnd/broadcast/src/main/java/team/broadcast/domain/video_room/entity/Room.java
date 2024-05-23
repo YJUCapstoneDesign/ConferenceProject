@@ -18,7 +18,7 @@ public class Room {
     private String name;
 
     private int currentCount;
-    private int MaxCount = 6;
+    private final int MaxCount = 6;
 
     private Long meetingId;
 
@@ -30,6 +30,14 @@ public class Room {
 
     public void updateRoomName(String name) {
         this.name = name;
+    }
+
+    public void addAttender(Attender attender) {
+        this.participants.add(attender);
+    }
+
+    public void removeAttender(Attender attender) {
+        this.participants.remove(attender);
     }
 
     // 기존 리스트를 수정할 수 없도록 분리를 한다.

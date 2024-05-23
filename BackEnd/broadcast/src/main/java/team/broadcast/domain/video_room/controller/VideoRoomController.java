@@ -38,6 +38,15 @@ public class VideoRoomController {
         }
     }
 
+
+    @PostMapping("/join/{roomId}")
+    //  TODO: 수정 필요
+    @ResponseStatus(HttpStatus.OK)
+    public void joinRoom(@PathVariable Long roomId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
+        roomService.joinRoom(roomId, customUserDetails.getUser());
+    }
+
+
     @GetMapping("/{videoRoomId}/invite")
     @ResponseStatus(HttpStatus.OK)
     public String inviteRoomLink(@PathVariable Long videoRoomId,

@@ -23,4 +23,5 @@ public class VideoRoomCreate {
     private Boolean isPrivate = true;
     private final String request = "create";
     private String email; // 호스트 구분하기 위한 이메일
+    private final boolean record = true;
 }

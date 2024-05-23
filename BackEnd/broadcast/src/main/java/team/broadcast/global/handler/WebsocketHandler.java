@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Component
 public class WebsocketHandler extends TextWebSocketHandler {
-    private Map<String, WebSocketSession> users = new ConcurrentHashMap<>();
+    private final Map<String, WebSocketSession> users = new ConcurrentHashMap<>();
 
     // websocket 접속시 사용되는 메소드
     @Override
@@ -37,8 +37,6 @@ public class WebsocketHandler extends TextWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String msg = message.getPayload();
-
-        log.info("receive message: {}", msg);
 
         Collection<WebSocketSession> ws = users.values();
 

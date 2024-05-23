@@ -17,6 +17,7 @@ import team.broadcast.domain.user.mysql.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -71,9 +72,8 @@ public class AttenderService {
         return AttenderDTO.toDTO(attender);
     }
 
-    public Attender getAttenderByUserIdAndMeetingId(Long userId, Long meetingId) {
-        return attenderRepository.findByUserIdAndMeetingId(userId, meetingId)
-                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
+    public Optional<Attender> findAttenderByUserIdAndMeetingId(Long userId, Long meetingId) {
+        return attenderRepository.findByUserIdAndMeetingId(userId, meetingId);
 
     }
 

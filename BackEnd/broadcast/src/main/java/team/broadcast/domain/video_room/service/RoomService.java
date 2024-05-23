@@ -8,10 +8,13 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.attender.entity.Attender;
+import team.broadcast.domain.attender.exception.AttenderErrorCode;
 import team.broadcast.domain.attender.service.AttenderService;
+import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
 import team.broadcast.domain.meeting.dto.MeetingDTO;
+import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.service.MeetingService;
 import team.broadcast.domain.user.entity.User;
@@ -71,7 +74,8 @@ public class RoomService {
         }
 
         // 초대 링크를 생성하는 사람이 회의 추최자야 한다.
-        Attender attender = attenderService.getAttenderByUserIdAndMeetingId(userId, room.getMeetingId());
+        Attender attender = attenderService.findAttenderByUserIdAndMeetingId(userId, room.getMeetingId())
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
 
         if (!attender.isHost()) {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
@@ -84,7 +88,8 @@ public class RoomService {
     public RoomResponse createRoom(Long meetingId, String email, VideoRoomCreate request) throws Exception {
         User user = userService.findUserByEmail(email);
 
-        Attender attender = attenderService.getAttenderByUserIdAndMeetingId(user.getId(), meetingId);
+        Attender attender = attenderService.findAttenderByUserIdAndMeetingId(user.getId(), meetingId)
+                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
 
         if (!attender.isHost()) {
             throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
@@ -118,23 +123,18 @@ public class RoomService {
         if (room == null) {
             throw new CustomException(RoomErrorCode.ROOM_NOT_FOUND);
         }
-        Attender attender = null;
-        try {
-            attender = attenderService.getAttenderByUserIdAndMeetingId(user.getId(), room.getMeetingId());
-        } catch (CustomException e) {
-            MeetingDTO meeting = meetingService.findMeetingById(room.getMeetingId());
-            attender = Attender.builder()
-                    .user(user)
-                    .meeting(meeting.toEntity())
-                    .build();
+
+        Attender attender = attenderService.findAttenderByUserIdAndMeetingId(roomId, user.getId())
+                .orElse(null);
+
+
+        if (attender == null) {
+            attender = meetingService.addAttender(room.getMeetingId(), user);
         }
 
         attenderService.addAttender(AttenderDTO.toDTO(attender));
 
-        List<Attender> participants = room.getParticipants();
-        participants.add(attender);
-
-        room.updateParticipants(participants);
+        room.addAttender(attender);
 
         roomMemoryRepository.save(room);
     }
@@ -167,7 +167,8 @@ public class RoomService {
             throw new IllegalAccessException("Destroy Error");
         }
 
-        Attender attender = attenderService.getAttenderByUserIdAndMeetingId(user.getId(), room.getMeetingId());
+        Attender attender = attenderService.findAttenderByUserIdAndMeetingId(user.getId(), room.getMeetingId())
+                .orElseThrow(() -> new CustomException(MeetingErrorCode.MEETING_NOT_FOUND));
 
         // 호스트인 경우에만 삭제가 가능하다.
         if (!attender.isHost()) {

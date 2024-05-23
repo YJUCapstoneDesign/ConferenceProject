@@ -5,6 +5,31 @@ import 'react-datepicker/dist/react-datepicker.css';
 function RoomService() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
+  const [MeetingName, setMeetingName] = useState(null);
+
+  const CreateRoom = () => {
+    fetch('http://localhost:4000/api/test', { 
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        MeetingName: MeetingName,
+        startDate: startDate,
+        endDate: endDate
+      }),
+    })
+      .then((response) => response.json())
+      .then(response => {
+        if (response.access_token && response.refresh_token) {
+          localStorage.setItem("access_token", response.access_token);
+          localStorage.setItem("refresh_token", response.refresh_token);
+          alert("성공");
+          } else {
+          alert("토큰 x")
+          }
+      });
+  };
 
   return (
     <div className="App animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
@@ -14,8 +39,8 @@ function RoomService() {
           <p className="text-sm text-gray-600 text-center mt-8 mb-6">간단한 요청사항을 실행한 후 회의를 시작해보세요.</p> 
           <form>
             <div className="mb-6">
-              <label htmlFor="email" className="block mb-2 text-sm text-gray-600"></label>
-              <input type="email" id="email" name="email" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700" required placeholder="Meeting name" />
+              <label htmlFor="name" className="block mb-2 text-sm text-gray-600"></label>
+              <input type="text" id="text" name="text" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700"onChange={(e) => setMeetingName(e.target.value)} required placeholder="Meeting name" />
             </div>
             <div className="flex items-center mb-6">
               <DatePicker
@@ -39,7 +64,7 @@ function RoomService() {
                 placeholderText="Select date end"
               />
             </div>
-            <button type="submit" className="w-32 bg-gradient-to-r from-indigo-700 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4">생 성</button>
+            <button type="submit" className="w-32 bg-gradient-to-r from-indigo-700 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4" onClick={CreateRoom}>생 성</button>
           </form>
           <p className="text-xs text-gray-600 text-center mt-8">&copy; 2024 UNMUTE</p>
         </div>

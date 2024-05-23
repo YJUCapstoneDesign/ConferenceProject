@@ -20,8 +20,9 @@ let initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 export default function App() {
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
-  // const [message, setMessage] = useState(''); // 서버에서 받은 데이터를 저장할 state
   const [socketData, setSocketData ] = useState();
+  const [selectedNodes, setSelectedNodes] = useState({});
+  const [selectedEdges, setSelectedEdges] = useState({});
 
   const ws = useRef(null); // 웹소켓 연결을 위한 ref
 
@@ -41,17 +42,31 @@ export default function App() {
     ws.current.onmessage = (message) => { // 서버에서 메시지가 오면 실행
       console.log("msg updated");
       const dataSet = message.data
-      setSocketData(dataSet) // 나눈 데이터를 setSocketData에 저장
+      setSocketData(dataSet);
     } 
   })
 
-  const addNode = useCallback(() => { // 버튼 클릭 시 실행
+  const addNode = useCallback(() => {
+    console.log(selectedNodes)
+    console.log(selectedEdges)
     const newNode = {
       id: (nodes.length + 1).toString(),
       position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
       data: { label: "New Node" },
     }
-    onDataChange(newNode, null);
+    const newNodes = [...nodes, newNode];
+    initialNodes = newNodes;
+
+    webSockectConnect();
+
+    const newData = {
+      node: newNodes,
+      edge: initialEdges
+    }
+
+    ws.current.onopen = () => {
+      ws.current.send(JSON.stringify(newData));
+    }
   });
 
   const onSelectionDragStop = (e, nodes) => {
@@ -90,6 +105,38 @@ export default function App() {
       ws.current.send(JSON.stringify(newData));
     }
   }
+
+  const onNodesDelete = () => {
+    webSockectConnect();
+
+    const result = nodes.filter((node) => node.id !== selectedNodes.id);
+    const newNodes = result;
+    initialNodes = newNodes;
+
+    const newData = {
+      node: newNodes,
+      edge: initialEdges
+    }
+
+    ws.current.onopen = () => {
+      ws.current.send(JSON.stringify(newData));
+    }
+  }
+
+  const onEdgeUpdate = () => {
+    // console.log(selectedEdges);
+  }
+
+  const onSelectNodes = (e, nodes) => {
+    setSelectedNodes(nodes);
+    console.log(selectedNodes)
+  }
+
+  const onSelectEdges = (e, edges) => {
+    setSelectedEdges(edges);
+    console.log(selectedEdges)
+  }
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
         <button onClick={addNode}>추가 버튼</button>
@@ -99,7 +146,12 @@ export default function App() {
         onNodesChange={() => {onNodesChange}}
         onEdgesChange={() => {onEdgesChange}}
         onNodeDragStop={onNodeDragStop}
+        onNodesDelete={onNodesDelete}
+        onNodeClick={onSelectNodes}
+        onEdgeClick={onSelectEdges}
+        onSelectionChange={() => {console.log("change")}}
         onSelectionDragStop={onSelectionDragStop}
+        onEdgeUpdate={onEdgeUpdate}
         onConnect={() => {}}
       >
         <Controls />

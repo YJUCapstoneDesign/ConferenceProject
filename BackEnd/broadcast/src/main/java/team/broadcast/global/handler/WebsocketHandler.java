@@ -38,6 +38,8 @@ public class WebsocketHandler extends TextWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         String msg = message.getPayload();
 
+        log.info("receive message: {}", msg);
+
         Collection<WebSocketSession> ws = users.values();
 
         ws.forEach(s -> {

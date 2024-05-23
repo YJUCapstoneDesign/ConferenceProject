@@ -66,6 +66,13 @@ module.exports = {
     static: {
       directory: path.resolve(__dirname, 'dist')
     },
+    proxy: [
+      {
+        context: ['/api'],
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      }
+    ],
     port: 3030,
     historyApiFallback: true,
   },

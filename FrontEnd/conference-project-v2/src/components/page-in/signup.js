@@ -27,9 +27,9 @@ function Signup() {
     })
       .then((response) => response.json())
       .then(response => {
-        if (response.message === 'SUCCESS') {
+        if (response.message === 'success') {
         alert("성공");
-        navigate("/")
+        navigate("/signin")
         } else {
           alert('양식을 다시 한번 확인해주세요');
         }

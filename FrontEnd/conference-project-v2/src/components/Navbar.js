@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import {Link} from 'react-scroll'
 import { FaBars, FaTimes } from 'react-icons/fa'
+import { Link as RouterLink } from 'react-router-dom';
 
 import './css/Navbar.css'
 
 const Navbar = () => {
-
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
-
     const closeMenu = () => setClick(false)
 
     return (
@@ -36,7 +35,7 @@ const Navbar = () => {
                         <Link to="notice" spy={true} smooth={true} offset={-150} duration={500} onClick={closeMenu}>Note</Link>
                     </li>
                     <li className='nav-item'>
-                        <a href='/Login'>Login</a>
+                        <RouterLink to="/Login">Login</RouterLink>
                     </li>
                 </ul>
             </nav>

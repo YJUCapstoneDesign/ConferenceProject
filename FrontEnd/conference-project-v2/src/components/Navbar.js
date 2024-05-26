@@ -2,13 +2,18 @@ import React, { useState } from 'react'
 import {Link} from 'react-scroll'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom';
-
 import './css/Navbar.css'
 
 const Navbar = () => {
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     const closeMenu = () => setClick(false)
+    const LoginStateToken = localStorage.getItem('accessToken')
+
+    const logout = () => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+      };
 
     return (
         <div className='header'>
@@ -34,9 +39,16 @@ const Navbar = () => {
                     <li className='nav-item'>
                         <Link to="notice" spy={true} smooth={true} offset={-150} duration={500} onClick={closeMenu}>Note</Link>
                     </li>
-                    <li className='nav-item'>
-                        <RouterLink to="/Login">Login</RouterLink>
-                    </li>
+                    {LoginStateToken ? (
+                        <li className='nav-item' onClick={logout}>
+                            Logout
+                        </li> 
+                        ) : (
+                        <li className='nav-item'>
+                            <RouterLink to="/Login">Login</RouterLink>
+                        </li> 
+                        )
+                    }
                 </ul>
             </nav>
         </div>

@@ -1,55 +1,47 @@
 import '../css/signin.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const Signin = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
     const navigate = useNavigate(); 
-    
-    const login = () => {
-        fetch('http://localhost:4000/api/test', { 
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            email: email,
-            password: password,
-          }),
-        })
-          .then((response) => response.json())
-          .then(response => {
-            if (response.access_token && response.refresh_token) {
-            localStorage.setItem("access_token", response.access_token);
-            localStorage.setItem("refresh_token", response.refresh_token);
-            alert("성공");
-            navigate("/")
-            } else {
-              alert('아이디 또는 비밀번호가 일치하지 않습니다.');
-            }
-          });
-      };
 
+    const login = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await axios.post("http://localhost:4000/api/test", {
+                email,
+                password,
+            });
+            const { accessToken, refreshToken } = response.data;
+            localStorage.setItem("token", JSON.stringify({ accessToken, refreshToken }));
+            navigate("/");
+        } catch (err) {
+            setError("로그인 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
+        }
+    };
 
     return (
         <div className='Sign-in'>
             <div className="py-32 animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
-              <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl mb-5">
+                <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl mb-5">
                     <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage: "url('https://source.unsplash.com/random/?conference')"}}></div>
                     <div className="w-full p-8 lg:w-1/2">
                         <a href="/"><p className='text-xs font-mono text-decoration-line: underline mb-5 inline-block'> Back to Website</p></a>
                         <h2 className="text-2xl font-bold text-gray-700 font-mono text-left">Welcome!</h2>
-                        {/* <p className="text-xl text-gray-600 text-center">Welcome back!</p> */}
+                        {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
                         <div className="mt-4">
                             <label className="block text-gray-700 text-sm font-bold font-mono mb-2 ">Email</label>
-                            <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none text-base" type="email" placeholder='Please enter your e-mail' onChange={(e) => setEmail(e.target.value)} />
+                            <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none text-base" type="email" placeholder='Please enter your e-mail' value={email} onChange={(e) => setEmail(e.target.value)} />
                         </div>
                         <div className="mt-4">
                             <div className="flex justify-between">
                                 <label className="block text-gray-700 text-sm  font-mono font-bold mb-2">Password</label>
                             </div>
-                            <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none text-base" type="password" placeholder='Please enter your password' onChange={(e) => setPassword(e.target.value)} />
+                            <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none text-base" type="password" placeholder='Please enter your password' value={password} onChange={(e) => setPassword(e.target.value)} />
                             <a href="/pass" className="text-xs text-gray-500 inline-block">Forget Password?</a>
                             <a href="/signup"><p className='text-xs font-mono text-decoration-line: underline inline-block ml-56'>Sign-up</p></a>
                         </div>

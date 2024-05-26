@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import axios from 'axios';
 
 function RoomService() {
   const [startDate, setStartDate] = useState(null);
@@ -8,26 +9,19 @@ function RoomService() {
   const [MeetingName, setMeetingName] = useState(null);
 
   const CreateRoom = () => {
-    fetch('http://localhost:4000/api/test', { 
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        MeetingName: MeetingName,
-        startDate: startDate,
-        endDate: endDate
-      }),
-    })
-      .then((response) => response.json())
+    const data = {
+      startDate: startDate,
+      endDate: endDate,
+      meetingName: MeetingName
+    };
+    axios.post('', data)
       .then(response => {
-        if (response.access_token && response.refresh_token) {
-          localStorage.setItem("access_token", response.access_token);
-          localStorage.setItem("refresh_token", response.refresh_token);
-          alert("성공");
-          } else {
-          alert("토큰 x")
-          }
+        console.log(response.data);
+        alert("방 생성 성공");
+      })
+      .catch(error => {
+        console.error('Error creating room:', error);
+        alert("방 생성 실패")
       });
   };
 

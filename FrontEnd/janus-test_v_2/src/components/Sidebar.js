@@ -25,7 +25,7 @@ function Sidebar() {
                     </Link>
                 </li>   
                 <li className="min-w-max" onClick={OpenPopupMind}>
-                    <Link to="/mindmap" className="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600" target='_blank'>
+                    <Link to="/mindmap" className="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                         <path className="fill-current text-gray-600 group-hover:text-indigo-600" fillRule="evenodd" d="M15.874 13C15.4299 14.7252 13.8638 16 12 16C10.1362 16 8.57006 14.7252 8.12602 13H3V11H8.12602C8.57006 9.27477 10.1362 8 12 8C13.8638 8 15.4299 9.27477 15.874 11H21V13H15.874ZM12 14C13.1046 14 14 13.1046 14 12C14 10.8954 13.1046 10 12 10C10.8954 10 10 10.8954 10 12C10 13.1046 10.8954 14 12 14Z" clipRule="evenodd" />
                     </svg>
@@ -33,7 +33,7 @@ function Sidebar() {
                     </Link>
                 </li>
                 <li className="min-w-max" onClick={OpenPopupWhite}>
-                    <Link to="/whiteboard" className="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600" target='_blank'>
+                    <Link to="/whiteboard" className="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600">
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                         <path className="fill-current text-gray-600 group-hover:text-indigo-600" d="M8.58579 17H3V15H21V17H15.4142L18.6569 20.2426L17.2426 21.6569L13 17.4142V20H11V17.4142L6.75736 21.6569L5.34315 20.2426L8.58579 17ZM5 3H19C19.5523 3 20 3.44772 20 4V14H4V4C4 3.44772 4.44772 3 5 3ZM6 5V12H18V5H6Z" />
                     </svg>

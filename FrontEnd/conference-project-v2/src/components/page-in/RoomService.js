@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from './api';
+import api from './api';
 
 function RoomService() {
   const [startDate, setStartDate] = useState(null);
@@ -14,7 +14,7 @@ function RoomService() {
       endDate: endDate,
       meetingName: MeetingName
     };
-    axios.post('', data)
+    api.post('', data)
       .then(response => {
         console.log(response.data);
         alert("회의 생성 성공");

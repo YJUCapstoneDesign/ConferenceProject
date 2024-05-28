@@ -1,7 +1,7 @@
 import '../css/signin.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from './api';
+import api from './api';
 
 function Signup() {
   const [name, setName] = useState("");
@@ -15,7 +15,7 @@ function Signup() {
   const signup = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("http://localhost:4000/api/test", {
+      const response = await api.post("http://localhost:4000/api/test", {
         name,
         email,
         password,

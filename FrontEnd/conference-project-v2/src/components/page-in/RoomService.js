@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import axios from 'axios';
+import axios from './api';
 
 function RoomService() {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [MeetingName, setMeetingName] = useState(null);
-
+  
   const CreateRoom = () => {
     const data = {
       startDate: startDate,
@@ -17,11 +17,11 @@ function RoomService() {
     axios.post('', data)
       .then(response => {
         console.log(response.data);
-        alert("방 생성 성공");
+        alert("회의 생성 성공");
       })
       .catch(error => {
         console.error('Error creating room:', error);
-        alert("방 생성 실패")
+        alert("회의 생성 실패")
       });
   };
 

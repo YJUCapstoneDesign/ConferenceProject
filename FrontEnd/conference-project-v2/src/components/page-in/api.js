@@ -14,14 +14,14 @@ api.interceptors.request.use(
     //요청시 AccessToken 계속 보내주기
     if (!token) {
       config.headers.accessToken = null;
-      config.headers.refreshToken = null;
+      config.headers['authorization-refresh'] = null;
       return config;
     }
 
     if (config.headers && token) {
       const { accessToken, refreshToken } = JSON.parse(token);
       config.headers.authorization = `Bearer ${accessToken}`;
-      config.headers.refreshToken = `Bearer ${refreshToken}`;
+      config.headers['authorization-refresh'] = `Bearer ${refreshToken}`;
       return config;
     }
     console.log("request start", config);
@@ -49,9 +49,9 @@ api.interceptors.response.use(
         const refreshToken = await localStorage.getItem("refreshToken");
         // refresh 토큰 요청
         const { data } = await axios.post(
-          ``, // refresh 토큰 api 주소
+          `http://localhost:8080`, // refresh 토큰 api 주소
           {},
-          { headers: { authorization: `Bearer ${refreshToken}` } }
+          { headers: { 'authorization-refresh': `Bearer ${refreshToken}` } }
         );
         // 새로운 토큰 저장
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =

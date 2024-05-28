@@ -1,7 +1,8 @@
 import '../css/signin.css';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from './api';
+import axios from 'axios';  
+// import api from './api';
 
 const Signin = () => {
     const [email, setEmail] = useState("");
@@ -12,11 +13,13 @@ const Signin = () => {
     const login = async (event) => {
         event.preventDefault();
         try {
-            const response = await api.post("http://localhost:4000/api/test", {
+            const response = await axios.post("http://localhost:8080/api/login", {
                 email,
                 password,
             });
-            const { accessToken, refreshToken } = response.data;
+            // const { accessToken, refreshToken } = response.data;
+            const accessToken = response.headers['authorization'];
+            const refreshToken = response.headers['authorization-refresh']
             localStorage.setItem("token", JSON.stringify({ accessToken, refreshToken }));
             navigate("/");
         } catch (err) {

@@ -2,7 +2,7 @@ import axios from "axios";
 
 // url 호출 시 기본 값 셋팅
 const api = axios.create({
-  baseURL: "",
+  baseURL: "http://localhost:8080",
   headers: { "Content-type": "application/json" }, // 헤더에 데이터 타입 json으로 담기
 });
 

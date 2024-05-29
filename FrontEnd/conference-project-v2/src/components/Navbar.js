@@ -40,13 +40,13 @@ const Navbar = () => {
                         <Link to="notice" spy={true} smooth={true} offset={-150} duration={500} onClick={closeMenu}>Note</Link>
                     </li>
                     {LoginStateToken ? (
-                        <li className='nav-item' onClick={logout}>
-                            Logout
-                        </li> 
+                            <li className='nav-item logout' onClick={logout}>
+                                Log out
+                            </li>  
                         ) : (
-                        <li className='nav-item'>
-                            <RouterLink to="/Login">Login</RouterLink>
-                        </li> 
+                            <li className='nav-item'>
+                                <RouterLink to="/Login">Login</RouterLink>
+                            </li>
                         )
                     }
                 </ul>

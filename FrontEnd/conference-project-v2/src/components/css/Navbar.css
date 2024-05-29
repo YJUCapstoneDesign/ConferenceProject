@@ -24,6 +24,7 @@
 .header .nav-menu a {
   color: #ffffff;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .header .navbar img {
@@ -53,6 +54,12 @@
   font-weight: bold;
   font-size: 30px;
   color: #ffffff
+}
+
+.header .nav-item.logout {
+  cursor: pointer;
+  color: #ffffff;  
+  font-weight: bold;
 }
 
 

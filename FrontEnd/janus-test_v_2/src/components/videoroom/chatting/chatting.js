@@ -21,7 +21,6 @@ const Chatting = (props) => {
     }
   };
 
-
   const saychat = (e) => {
     fetch('http://localhost:8080/api', { 
       method: 'POST',
@@ -143,7 +142,7 @@ const Chatting = (props) => {
           placeholder="Enter your message" 
           required
         />  
-        <label htmlFor="file" className="!absolute top-2 left-72 w-4 h-4 bg-white border-gray-300 rounded-xl flex font-normal text-center justify-center cursor-pointer">
+        <label className="!absolute top-2 left-72 w-4 h-4 bg-white border-gray-300 rounded-xl flex font-normal text-center justify-center cursor-pointer">
         <div className="btn-upload">
           {/* 아이콘 수정 */}
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" style={{ fill: 'rgba(0, 0, 0, 1)' }}>

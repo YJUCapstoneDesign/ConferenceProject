@@ -20,7 +20,6 @@ public class RoomMemoryRepository {
 
     public Room update(Room updatedRoom) {
         Room oldRoom = videoRooms.get(updatedRoom.getId());
-        oldRoom.updateRoomName(updatedRoom.getName());
         videoRooms.put(oldRoom.getId(), oldRoom);
         return oldRoom;
     }

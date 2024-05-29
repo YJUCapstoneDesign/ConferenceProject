@@ -5,9 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
-import team.broadcast.domain.attender.entity.Attender;
-
-import java.util.List;
 
 @Getter
 @Builder
@@ -22,33 +19,7 @@ public class Room {
 
     private Long meetingId;
 
-    private List<Attender> participants; // 회의 참석자에 대한 정보를 받고 있다.
-
     public static Long generateRandomRoomId() {
         return Long.valueOf(RandomStringUtils.random(6, false, true));
     }
-
-    public void updateRoomName(String name) {
-        this.name = name;
-    }
-
-    public void addAttender(Attender attender) {
-        this.participants.add(attender);
-    }
-
-    public void removeAttender(Attender attender) {
-        this.participants.remove(attender);
-    }
-
-    // 기존 리스트를 수정할 수 없도록 분리를 한다.
-    public List<Attender> getParticipants() {
-        return List.copyOf(participants);
-    }
-
-    public void updateParticipants(List<Attender> attenders) {
-        this.participants = attenders;
-        this.currentCount = attenders.size();
-    }
-
-
 }

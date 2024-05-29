@@ -1,4 +1,4 @@
-package team.broadcast.domain.user.mysql.repository;
+package team.broadcast.domain.user.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import team.broadcast.domain.user.entity.User;

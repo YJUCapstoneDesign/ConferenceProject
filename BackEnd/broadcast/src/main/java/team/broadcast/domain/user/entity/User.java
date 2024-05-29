@@ -5,11 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import team.broadcast.domain.attender.entity.Attender;
-import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.enumstore.enums.UserRole;
+import team.broadcast.domain.team.entity.Team;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -47,19 +45,17 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole admin;
 
-    @Column(name = "USER_MEMBERSHIP")
-    @Enumerated(EnumType.STRING)
-    private Membership membership;
-
     @Column(name = "USER_PLATFORM", length = 10)
     private String platform;
 
     @Column(name = "USER_TOKEN")
     private String token;
 
-    @OneToMany
-    @JoinColumn(name = "USER_ID_SEQ")
-    private final List<Attender> attenders = new ArrayList<>(); // 양방향 연결
+    @ManyToMany
+    @JoinTable(name = "USER_TEAM",
+            joinColumns = @JoinColumn(name = "USER_ID_SEQ"),
+            inverseJoinColumns = @JoinColumn(name = "TM_ID"))
+    private List<Team> teams;
 
     public User(String username) {
         this.name = username;

@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.user.CustomUserDetails;
 

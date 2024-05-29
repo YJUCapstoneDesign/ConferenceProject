@@ -8,14 +8,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.dto.UpdateUser;
 import team.broadcast.domain.user.dto.UserResponse;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
 
 import java.io.File;
@@ -49,7 +48,6 @@ public class UserService {
                 .email(userDto.getEmail())
                 .phone(userDto.getPhone())
                 .admin(UserRole.USER)
-                .membership(Membership.BASIC)
                 .build();
 
         log.info("user={}", newUser);

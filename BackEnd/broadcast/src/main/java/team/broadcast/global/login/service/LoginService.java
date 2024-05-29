@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.login.user.CustomUserDetails;
 
 @Service

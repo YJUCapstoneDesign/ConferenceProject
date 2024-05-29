@@ -2,10 +2,9 @@ package team.broadcast.domain.enumstore.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import team.broadcast.domain.enumstore.enums.Membership;
+import team.broadcast.domain.enumstore.enums.TeamRole;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.enumstore.mapper.EnumMapperFactory;
-import team.broadcast.domain.enumstore.enums.MeetingRole;
 
 import java.util.LinkedHashMap;
 
@@ -16,8 +15,7 @@ public class EnumMapper {
     @Bean
     public EnumMapperFactory createEnumMapperFactory() {
         EnumMapperFactory enumMapperFactory = new EnumMapperFactory(new LinkedHashMap<>());
-        enumMapperFactory.put("MeetingRole", MeetingRole.class);
-        enumMapperFactory.put("Membership", Membership.class);
+        enumMapperFactory.put("TeamRole", TeamRole.class);
         enumMapperFactory.put("UserRole", UserRole.class);
         return enumMapperFactory;
     }

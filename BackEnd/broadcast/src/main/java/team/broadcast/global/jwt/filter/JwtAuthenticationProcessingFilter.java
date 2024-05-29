@@ -14,7 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.keygen.KeyGenerators;
 import org.springframework.web.filter.OncePerRequestFilter;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.login.user.CustomUserDetails;
 

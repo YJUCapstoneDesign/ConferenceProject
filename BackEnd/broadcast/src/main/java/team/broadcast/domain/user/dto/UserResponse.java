@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import team.broadcast.domain.enumstore.enums.Membership;
 import team.broadcast.domain.user.entity.User;
 
 @Data
@@ -17,12 +16,7 @@ public class UserResponse {
     private String imageUrl;
     private String email;
     private String phone;
-    private Membership membership;
 
-    // 회원인지 확인하는 메서드
-    public boolean isMember() {
-        return membership == Membership.MEMBER;
-    }
 
     public static UserResponse from(User user) {
         return UserResponse.builder()
@@ -31,7 +25,6 @@ public class UserResponse {
                 .imageUrl(user.getImageUrl())
                 .email(user.getEmail())
                 .phone(user.getPhone())
-                .membership(user.getMembership())
                 .build();
     }
 }

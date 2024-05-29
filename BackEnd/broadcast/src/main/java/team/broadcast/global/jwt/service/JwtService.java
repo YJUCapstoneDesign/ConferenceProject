@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import team.broadcast.domain.user.entity.User;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.domain.user.repository.UserRepository;
 
 import java.security.Key;
 import java.util.Base64;

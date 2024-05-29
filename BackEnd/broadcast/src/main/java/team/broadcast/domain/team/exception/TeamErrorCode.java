@@ -1,4 +1,4 @@
-package team.broadcast.domain.meeting.exception;
+package team.broadcast.domain.team.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import team.broadcast.global.exception.ErrorResponse;
 
 @Getter
 @AllArgsConstructor
-public enum MeetingErrorCode implements CustomErrorCode {
+public enum TeamErrorCode implements CustomErrorCode {
 
     MEETING_NOT_FOUND(404, "MTG-1", "회의를 찾을 수 없습니다."),
     DUPLICATED_MEETING(409, "MTG-2", "회의가 이미 있습니다."),

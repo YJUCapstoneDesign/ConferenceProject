@@ -25,7 +25,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
-import team.broadcast.domain.user.mysql.repository.UserRepository;
+import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.jwt.filter.JwtAuthenticationProcessingFilter;
 import team.broadcast.global.jwt.filter.CustomExceptionFilter;
 import team.broadcast.global.jwt.service.JwtService;

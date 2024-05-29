@@ -6,6 +6,7 @@ import OurService from './components/page-in/OurService';
 import Signin from './components/page-in/signin';
 import Signup from './components/page-in/signup';
 import RoomService from './components/page-in/RoomService';
+import JanusTeam from './components/page-in/JanusTeam';
 // App
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
                     <Route path="Login" element={<Signin/>} />
                     <Route path='signup' element={<Signup />} />
                     <Route path='Room' element={<RoomService/>} />
+                    <Route path='/JanusTeam' element={<JanusTeam/>} />
                 </Routes>
             </div>
     </BrowserRouter>

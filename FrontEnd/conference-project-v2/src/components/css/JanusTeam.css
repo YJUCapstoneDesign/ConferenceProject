@@ -1,0 +1,19 @@
+#wrap {
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.main-box {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;   
+}
+
+.cal {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;   
+}

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import team.broadcast.domain.video_room.dto.RoomResponse;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreate;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.entity.Room;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +32,7 @@ class RoomServiceTest {
         VideoRoomCreate testRoom = VideoRoomCreate.builder()
                 .room(roomId)
                 .display("임시 테스트 방")
+                .publishers(6)
                 .build();
 
         RoomResponse room = roomService.createRoom(1L, email, testRoom);

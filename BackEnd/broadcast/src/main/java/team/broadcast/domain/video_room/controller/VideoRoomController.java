@@ -7,7 +7,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import team.broadcast.domain.meeting.service.MeetingService;
 import team.broadcast.domain.video_room.dto.RoomResponse;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreate;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
@@ -38,21 +37,6 @@ public class VideoRoomController {
         }
     }
 
-
-    @PostMapping("/join/{roomId}")
-    //  TODO: 수정 필요
-    @ResponseStatus(HttpStatus.OK)
-    public void joinRoom(@PathVariable Long roomId, @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        roomService.joinRoom(roomId, customUserDetails.getUser());
-    }
-
-
-    @GetMapping("/{videoRoomId}/invite")
-    @ResponseStatus(HttpStatus.OK)
-    public String inviteRoomLink(@PathVariable Long videoRoomId,
-                                 @AuthenticationPrincipal CustomUserDetails customUserDetails) {
-        return roomService.inviteLink(videoRoomId, customUserDetails.getId());
-    }
 
     @DeleteMapping("/{videoRoomId}")
     @ResponseStatus(HttpStatus.OK)

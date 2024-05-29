@@ -10,11 +10,8 @@ import team.broadcast.domain.attender.dto.AttenderDTO;
 import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.attender.exception.AttenderErrorCode;
 import team.broadcast.domain.attender.service.AttenderService;
-import team.broadcast.domain.enumstore.enums.MeetingRole;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
-import team.broadcast.domain.meeting.dto.MeetingDTO;
-import team.broadcast.domain.meeting.entity.Meeting;
 import team.broadcast.domain.meeting.exception.MeetingErrorCode;
 import team.broadcast.domain.meeting.service.MeetingService;
 import team.broadcast.domain.user.entity.User;
@@ -64,24 +61,6 @@ public class RoomService {
         return response;
     }
 
-    // 방 초대 링크 생성
-    public String inviteLink(Long videoRoomId, Long userId) {
-        Room room = roomMemoryRepository.findById(videoRoomId);
-
-        // 방이 존재하지 않으면 에러 메시지를 보낸다.
-        if (room == null) {
-            throw new CustomException(RoomErrorCode.ROOM_NOT_FOUND);
-        }
-
-        // 초대 링크를 생성하는 사람이 회의 추최자야 한다.
-        Attender attender = attenderService.findAttenderByUserIdAndMeetingId(userId, room.getMeetingId())
-                .orElseThrow(() -> new CustomException(AttenderErrorCode.ATTENDER_NOT_FOUND));
-
-        if (!attender.isHost()) {
-            throw new CustomException(MeetingErrorCode.ALLOW_HOST_ROLE);
-        }
-        return ROOM_ADDRESS + videoRoomId;
-    }
 
     // 1. 비디오 생성
     @Transactional

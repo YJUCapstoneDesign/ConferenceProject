@@ -1,7 +1,6 @@
 package team.broadcast.domain.video_room.repository;
 
 import org.springframework.stereotype.Repository;
-import team.broadcast.domain.attender.entity.Attender;
 import team.broadcast.domain.video_room.entity.Room;
 
 import java.util.ArrayList;

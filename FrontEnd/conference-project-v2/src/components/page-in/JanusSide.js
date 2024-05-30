@@ -39,6 +39,14 @@ function JanusSide() {
                     <span className="group-hover:text-gray-700 text-base">WhiteBoard</span>
                     </div>
                 </li>
+                <li className="min-w-max" onClick={OpenPopupWhite}>
+                    <div className="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5" fill='currentColor'>
+                        <path d="M18 7c0-1.103-.897-2-2-2H4c-1.103 0-2 .897-2 2v10c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-3.333L22 17V7l-4 3.333V7zm-1.998 10H4V7h12l.001 4.999L16 12l.001.001.001 4.999z" />
+                    </svg>
+                    <span className="group-hover:text-gray-700 text-base">Video Room</span>
+                    </div>
+                </li>
                 </ul>
             </div>
         </div>

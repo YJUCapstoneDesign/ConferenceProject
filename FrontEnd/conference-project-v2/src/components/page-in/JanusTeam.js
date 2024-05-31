@@ -2,6 +2,10 @@ import JanusSide from "./JanusSide";
 import "../css/JanusTeam.css";
 import "./Calendar";
 import Calendar from "./Calendar";
+import UserList from "./UserList";
+import BeforeLog from "./BeforeLog";
+import Tutorial from "./Tutorial";
+import Undefined from "./Undefined";
 
 function JanusTeam() {
   return (
@@ -9,50 +13,30 @@ function JanusTeam() {
       <div className="side-box">
         <JanusSide />
       </div>
-      
-      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 w-full gap-8 m-10 auto-rows-auto">
-        
-        <div className="col-span-2 backdrop-blur-sm bg-white p-6 rounded-md shadow-sm cursor-pointer border-2 border-gray-50 hover:border-indigo-300 transition-colors duration-500 sm:h-80 md:h-80 lg:h-96">
-        <h2 className="text-xl font-bold mb-10">Profile</h2>
-          <div className="sm:mt-4 lg:mt-4 xl:mt-4">
-            <div className="flex justify-end sm:justify-start lg:justify-end xl:justify-start -space-x-1.5">
+      <section class="text-gray-600 body-font w-full">
+          <div class="container px-5 py-5 mx-auto max-w-full">
+            <div class="flex flex-wrap w-full mb-6 p-4 -ml-3">
+              <div class="w-full mb-6 lg:mb-0">
+                <h1 class="sm:text-4xl text-5xl font-bold title-font mb-2 text-gray-900">Team Page</h1>
+                <div class="h-1 w-44 bg-indigo-500 rounded"></div>
+              </div>
+            </div>
+            <div class="flex flex-wrap -m-4">
+              <div class="xl:w-1/4 md:w-1/2 p-4 mb-7">
+                <div class="bg-white p-6 rounded-lg">
+                  <h2 class="tracking-widest text-indigo-500 text-xs font-bold title-font mb-1">CALENDAR</h2>
+                  <h2 class="text-lg text-gray-900 font-medium title-font mb-4">Manage your time here!</h2>
+                  <Calendar/>
+                </div>
+              </div>
+                <BeforeLog/>
+                <Tutorial/>
+                <UserList/>
+                <Undefined/>
             </div>
           </div>
-        </div>
-
-        <div className="backdrop-blur-sm bg-white p-6 rounded-md shadow-sm cursor-pointer border-2 border-gray-50 hover:border-indigo-300 transition-colors duration-500 sm:h-80 md:h-80 lg:h-96">
-          <div className="sm:mt-4 lg:mt-4 xl:mt-4">
-            <div className="flex justify-end sm:justify-start lg:justify-end xl:justify-start -space-x-1.5">
-            </div>
-          </div>
-        </div>
-        
-        <div className="backdrop-blur-sm bg-white p-6 rounded-md shadow-sm cursor-pointer border-2 border-gray-50 hover:border-indigo-300 transition-colors duration-500">
-        <h2 className="text-xl font-bold mb-10">User List</h2>
-          <div className="sm:mt-4 lg:mt-4 xl:mt-4">
-            <div className="flex justify-end sm:justify-start lg:justify-end xl:justify-start -space-x-1.5">
-            </div>
-          </div>
-        </div>
-        
-        <div className="backdrop-blur-sm bg-white p-6 rounded-md shadow-sm cursor-pointer border-2 border-gray-50 hover:border-indigo-300 transition-colors duration-500">
-        <h2 className="text-xl font-bold mb-10">Previous Meeting</h2>
-          <div className="sm:mt-4 lg:mt-4 xl:mt-4">
-            <div className="flex justify-end sm:justify-start lg:justify-end xl:justify-start -space-x-1.5">
-            </div>
-          </div>
-        </div>
-
-        <div className="backdrop-blur-sm bg-white p-6 rounded-md shadow-sm cursor-pointer border-2 border-gray-50 hover:border-indigo-300 transition-colors duration-500">
-        <h2 className="text-xl font-bold mb-10">Calendar</h2>
-          <Calendar/>
-          <div className="sm:mt-4 lg:mt-4 xl:mt-4">
-            <div className="flex justify-end sm:justify-start lg:justify-end xl:justify-start -space-x-1.5">
-            </div>
-          </div>
-        </div>
-        
-      </div>
+        </section>
+    
     </div>
   );
 }

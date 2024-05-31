@@ -1,15 +1,13 @@
 package team.broadcast.domain.team.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import team.broadcast.domain.enumstore.enums.TeamRole;
 import team.broadcast.domain.user.entity.User;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -21,7 +19,6 @@ import java.util.List;
 @Table(name = "TB_TEAM")
 public class Team {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "TM_ID")
     private Long id;
 
@@ -36,6 +33,18 @@ public class Team {
     @Enumerated(EnumType.STRING)
     private TeamRole role;
 
-    @ManyToMany(mappedBy = "TB_USER")
-    private List<User> users;
+    @ManyToMany(mappedBy = "teams")
+    private List<User> userList = new ArrayList<>();
+
+    public void addUser(User user) {
+        userList.add(user);
+    }
+
+    public void removeUser(User user) {
+        userList.remove(user);
+    }
+
+    public void updatePassword(String password) {
+        this.password = password;
+    }
 }

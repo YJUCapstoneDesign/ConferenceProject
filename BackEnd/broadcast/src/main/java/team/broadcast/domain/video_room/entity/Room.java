@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Builder
 @NoArgsConstructor
@@ -15,9 +17,10 @@ public class Room {
     private String name;
 
     private int currentCount;
+
     private final int MaxCount = 6;
 
-    private Long meetingId;
+    private LocalDateTime createTime;
 
     public static Long generateRandomRoomId() {
         return Long.valueOf(RandomStringUtils.random(6, false, true));

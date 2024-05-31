@@ -36,17 +36,5 @@ public class WebsocketHandler extends TextWebSocketHandler {
     // websocket 연결 중 메시지 전달시 사용되는 메소드
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
-        String msg = message.getPayload();
-
-        Collection<WebSocketSession> ws = users.values();
-
-        ws.forEach(s -> {
-            try {
-                log.info("send message: {}", msg);
-                s.sendMessage(new TextMessage(msg));
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-        });
     }
 }

@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.team.entity.Team;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -51,11 +52,11 @@ public class User {
     @Column(name = "USER_TOKEN")
     private String token;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "USER_TEAM",
             joinColumns = @JoinColumn(name = "USER_ID_SEQ"),
             inverseJoinColumns = @JoinColumn(name = "TM_ID"))
-    private List<Team> teams;
+    private List<Team> teams = new ArrayList<>();
 
     public User(String username) {
         this.name = username;
@@ -82,5 +83,9 @@ public class User {
 
     public void updateImageUrl(String updateImageUrl) {
         this.imageUrl = updateImageUrl;
+    }
+
+    public void updateTeams(List<Team> teams) {
+        this.teams = teams;
     }
 }

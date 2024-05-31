@@ -63,8 +63,6 @@ public class RoomService {
         Room room = Room.builder()
                 .id(response.getRoom())
                 .name(request.getDisplay())
-//                .participants(participants)
-                .meetingId(meetingId)
                 .build();
 
         roomMemoryRepository.save(room);

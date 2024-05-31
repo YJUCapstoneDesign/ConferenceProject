@@ -2,6 +2,7 @@ package team.broadcast.domain.team.service;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team.broadcast.domain.enumstore.enums.TeamRole;
@@ -10,16 +11,19 @@ import team.broadcast.domain.team.entity.Team;
 import team.broadcast.domain.team.exception.TeamErrorCode;
 import team.broadcast.domain.team.repository.TeamRepository;
 import team.broadcast.domain.user.entity.User;
+import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TeamService {
     private final TeamRepository teamRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
     // 팀 생성 팀을 생성한 사람은 호스트가 된다.
@@ -36,6 +40,7 @@ public class TeamService {
         ArrayList<Team> teams = new ArrayList<>(Collections.singletonList(team));
         user.updateTeams(teams);
         teamRepository.save(team);
+        userRepository.save(user);
 
         return team.getId();
     }
@@ -47,17 +52,27 @@ public class TeamService {
 
     // 팀 입장시 비밀번호가 맞는지 확인한다.
     public boolean confirmTeamPwd(Team team, String password) {
-        // 데이터베이스에는 비밀번호가 암호화 되어 있음.
-        return team.getPassword().equals(passwordEncoder.encode(password));
+        return passwordEncoder.matches(password, team.getPassword());
     }
 
-    public Long searchTeam(TeamRequest request) {
+    // 입장 처리 로직
+    public Long joinTeam(TeamRequest request, User user) {
         Team team = getTeam(request.getTeamId());
 
         boolean checkPwd = confirmTeamPwd(team, request.getPassword());
 
         if (!checkPwd) {
             throw new CustomException(TeamErrorCode.INVALID_PASSWORD);
+        }
+
+        boolean joined = isJoined(team, user);
+
+        // 팀에 없는 경우 팀에 추가시킨다.
+        if (!joined) {
+            team.addUser(user);
+            teamRepository.save(team);
+            user.updateTeams(Collections.singletonList(team));
+            userRepository.save(user);
         }
 
         return team.getId();
@@ -80,11 +95,10 @@ public class TeamService {
 
     @Transactional
     public void deleteTeam(Long teamId, String password) {
-        password = passwordEncoder.encode(password);
 
         Team team = getTeam(teamId);
 
-        boolean checkPwd = confirmTeamPwd(team, password);
+        boolean checkPwd = confirmTeamPwd(team, passwordEncoder.encode(password));
 
         if (!checkPwd) {
             throw new CustomException(TeamErrorCode.INVALID_PASSWORD);
@@ -95,9 +109,18 @@ public class TeamService {
         teamRepository.deleteById(teamId);
     }
 
-    // 현재 참석된 참석자 리스트 조회하기
-    public List<User> getUsers(Long teamId) {
+    // 현재 팀에 소속이 되어있는지 검사하는 코드
+    public boolean isJoined(Team team, User user) {
+        return team.getUserList().contains(user);
+    }
+
+    // 현재 참석된 참석자 리스트 조회하기 (참석자 리스트 보내기)
+    public List<String> getUsersNickname(Long teamId) {
         Team team = getTeam(teamId);
-        return team.getUserList();
+
+        return team.getUserList()
+                .stream()
+                .map(User::getNickname)
+                .toList();
     }
 }

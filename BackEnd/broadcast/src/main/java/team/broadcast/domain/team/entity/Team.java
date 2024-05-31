@@ -25,7 +25,9 @@ public class Team {
     @Column(name = "TM_PASSWORD", length = 100)
     private String password;
 
-    @Column(name = "TM_CREATION")
+    @Column(name = "TM_CREATION",
+            updatable = false,
+            nullable = false)
     @CreatedDate
     private LocalDateTime createAt;
 

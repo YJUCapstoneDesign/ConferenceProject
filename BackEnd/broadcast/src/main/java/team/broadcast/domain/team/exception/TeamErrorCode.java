@@ -20,6 +20,10 @@ public enum TeamErrorCode implements CustomErrorCode {
 
     @Override
     public ErrorResponse getErrorResponse() {
-        return null;
+        return ErrorResponse.builder()
+                .reason(reason)
+                .code(code)
+                .status(status)
+                .build();
     }
 }

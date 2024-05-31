@@ -7,11 +7,11 @@ import lombok.*;
  */
 @Getter
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
 public class VideoRoomDestroyRequest {
     private Long room;
     private String secret;
+    @Builder.Default
     private final String request = "destroy";
 
 }

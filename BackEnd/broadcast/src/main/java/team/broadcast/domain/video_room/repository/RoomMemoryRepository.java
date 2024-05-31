@@ -18,12 +18,6 @@ public class RoomMemoryRepository {
         return room;
     }
 
-    public Room update(Room updatedRoom) {
-        Room oldRoom = videoRooms.get(updatedRoom.getId());
-        videoRooms.put(oldRoom.getId(), oldRoom);
-        return oldRoom;
-    }
-
     public Room findById(Long roomId) {
         return videoRooms.get(roomId);
     }

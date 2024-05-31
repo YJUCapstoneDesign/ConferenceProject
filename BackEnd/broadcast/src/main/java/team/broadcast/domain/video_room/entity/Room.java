@@ -1,28 +1,34 @@
 package team.broadcast.domain.video_room.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import org.apache.commons.lang3.RandomStringUtils;
+import lombok.*;
 
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Room {
+    // 방 아이디 == teamId가 된다.
     private Long id;
+    // 방 이름
     private String name;
 
+    private List<String> userList;
+    // 현재 참석한 사람의 수
+    @Setter
     private int currentCount;
 
+    // 최대 참석자 수
+    @Builder.Default
     private final int MaxCount = 6;
 
-    private LocalDateTime createTime;
-
-    public static Long generateRandomRoomId() {
-        return Long.valueOf(RandomStringUtils.random(6, false, true));
+    public void addUser(String username) {
+        userList.add(username);
     }
+
+    public void removeUser(String username) {
+        userList.remove(username);
+    }
+
 }

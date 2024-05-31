@@ -14,7 +14,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 @Slf4j
 @Component
-public class WebsocketHandler extends TextWebSocketHandler {
+public class MindMapHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> users = new ConcurrentHashMap<>();
 
     // websocket 접속시 사용되는 메소드

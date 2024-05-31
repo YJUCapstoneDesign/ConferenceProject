@@ -28,7 +28,7 @@ export default function App() {
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080/app");
-
+    console.log("웹소켓 연결됨");
     ws.current.onmessage = (message) => { // 서버에서 메시지가 오면 실행
       setSocketData(message.data);
     };

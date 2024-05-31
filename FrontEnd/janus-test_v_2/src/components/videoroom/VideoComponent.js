@@ -6,7 +6,6 @@ import './VideoComponent.css';
 import Sidebar from "../Sidebar";
 import Janusbutton from "../janusbutton";
 import Chatting from "./chatting/chatting";
-import RecordPage from "../S3/RecordPage";
 
 const useReference = () => {
   const [reference, setReference] = useState(() => createRef());

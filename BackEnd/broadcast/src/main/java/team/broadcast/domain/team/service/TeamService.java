@@ -14,6 +14,7 @@ import team.broadcast.global.exception.CustomException;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -92,5 +93,11 @@ public class TeamService {
         // 팀 테이블 삭제하기 전에 CrazyEight 삭제를 해야 한다.
         // 추후 추가 예정..
         teamRepository.deleteById(teamId);
+    }
+
+    // 현재 참석된 참석자 리스트 조회하기
+    public List<User> getUsers(Long teamId) {
+        Team team = getTeam(teamId);
+        return team.getUserList();
     }
 }

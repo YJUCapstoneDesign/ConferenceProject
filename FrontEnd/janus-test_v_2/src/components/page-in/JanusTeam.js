@@ -1,6 +1,6 @@
 import React from "react";
 import JanusSide from "./TeamJanus/JanusSide";
-import "../css/JanusTeam.css";
+import "../css/JanusTeam.css"
 import UserList from "./TeamJanus/UserList";
 import BeforeLog from "./TeamJanus/BeforeLog";
 import Tutorial from "./TeamJanus/Tutorial";

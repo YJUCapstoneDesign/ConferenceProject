@@ -1,5 +1,6 @@
 package team.broadcast.domain.team.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -14,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/team")
 @RequiredArgsConstructor
+@Tag(name = "팀 API")
 public class TeamController {
     private final TeamService teamService;
 

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreateRequest;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.service.RoomService;
 
 @Slf4j
@@ -14,7 +15,7 @@ import team.broadcast.domain.video_room.service.RoomService;
 @RequiredArgsConstructor
 @RequestMapping("/api/room")
 @Tag(name = "화상회의 API")
-public class VideoRoomController {
+public class RoomController {
     private final RoomService roomService;
 
     @PostMapping("/create/{teamId}")
@@ -28,6 +29,19 @@ public class VideoRoomController {
 
         } catch (Exception e) {
             throw new IllegalArgumentException("방 생성에 실패 했습니다.");
+        }
+    }
+
+    @DeleteMapping("/delete/{teamId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "방 삭제",
+            description = "방 삭제는 아이디로 삭제 된다.")
+    public void deleteRoom(@PathVariable Long teamId, @RequestBody String secret) {
+        try {
+            VideoRoomDestroyRequest videoRoomDestroyRequest = VideoRoomDestroyRequest.create(teamId, secret);
+            roomService.destroyRoom(videoRoomDestroyRequest);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("방 삭제에 실패 했습니다.");
         }
     }
 }

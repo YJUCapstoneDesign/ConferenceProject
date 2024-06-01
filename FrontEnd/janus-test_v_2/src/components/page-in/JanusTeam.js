@@ -1,3 +1,4 @@
+import React from "react";
 import JanusSide from "./TeamJanus/JanusSide";
 import "../css/JanusTeam.css";
 import UserList from "./TeamJanus/UserList";
@@ -5,7 +6,6 @@ import BeforeLog from "./TeamJanus/BeforeLog";
 import Tutorial from "./TeamJanus/Tutorial";
 import Undefined from "./TeamJanus/Undefined";
 import Calendarbox from "./TeamJanus/Calendarbox";
-import React from "react";
 
 function JanusTeam() {
   return (

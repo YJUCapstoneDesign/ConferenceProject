@@ -3,7 +3,7 @@ import './canvas.css';
 
 export default function Canvas() {
     return (
-        <div className="flex flex-wrap h-full w-full text-center text-white font-bold cursor-auto">
+        <div className="canvas flex flex-wrap h-full w-full text-center text-white font-bold cursor-auto">
             <div className="str w-3/6 bg-[#839EFF] flex items-center justify-center relative" onClick={() => {console.log("S")}}>
                 <div className="drop-shadow-md px-12">
                     <div className="text-12xl font-bold">

@@ -1,4 +1,4 @@
-.relative {
+.canvas .relative {
     position: relative;
     display: flex;
     flex-direction: column;
@@ -27,5 +27,4 @@
 .weak .description,
 .oppor .description,
 .ths .description {
-    display: none;
-}
+    display: no

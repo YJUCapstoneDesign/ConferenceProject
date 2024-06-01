@@ -19,13 +19,6 @@ module.exports = {
           presets: ['@babel/preset-env', '@babel/preset-react']
         }
       },
-      { 
-        test: /\.(png|jpg|jpeg)$/,
-        use: [
-          'file-loader'
-        ]
-
-      },
       {
         test: /\.svg$/,
         use: ['file-loader'],

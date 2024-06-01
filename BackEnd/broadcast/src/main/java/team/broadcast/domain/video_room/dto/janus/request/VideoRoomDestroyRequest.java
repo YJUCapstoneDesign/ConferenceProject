@@ -14,4 +14,7 @@ public class VideoRoomDestroyRequest {
     @Builder.Default
     private final String request = "destroy";
 
+    public static VideoRoomDestroyRequest create(Long id, String secret) {
+        return new VideoRoomDestroyRequest(id, secret, "destroy");
+    }
 }

@@ -20,10 +20,8 @@ module.exports = {
         }
       },
       { 
-        test: /\.(png|jpg|jpeg)$/,
-        use: [
-          'file-loader'
-        ]
+        test: /.(png|jpg|jpeg)$/,
+        type: 'asset/resource',
 
       },
       {

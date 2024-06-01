@@ -30,7 +30,6 @@ function JanusTeam() {
             </div>
           </div>
         </section>
-    
     </div>
   );
 }

@@ -27,4 +27,5 @@
 .weak .description,
 .oppor .description,
 .ths .description {
-    display: no
+    display: none;
+}

@@ -1,4 +1,5 @@
-  
+import React from 'react';
+
 function PassWord() {
   return (
     <div className="App animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
@@ -8,7 +9,7 @@ function PassWord() {
           <p className="text-sm text-gray-600 text-center mt-8 mb-6">걱정하지 마세요. 비밀번호 재설정은 간단합니다.<br/> UNMUTE에 등록하신 이메일 주소만 알려주세요.</p> 
           <form>
             <div className="mb-6">
-              <label for="email" className="block mb-2 text-sm text-gray-600"></label>
+              <label htmlFor="email" className="block mb-2 text-sm text-gray-600"></label>
               <input type="email" id="email" name="em il" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700" required placeholder="이메일 주소" />
             </div>
             <button type="submit" className="w-32 bg-gradient-to-r from-indigo-700 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4">전 송</button>

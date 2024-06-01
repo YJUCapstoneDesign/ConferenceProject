@@ -1,3 +1,5 @@
+import React from 'react';
+
 function OurService() {
     return (
         <div>
@@ -6,7 +8,7 @@ function OurService() {
                     Our Service
                 </h2>
                 <br />
-                <p classNames="block antialiased font-sans text-xl font-normal leading-relaxed text-inherit mt-2 w-full font-nomal !text-gray-500 lg:w-5/12">
+                <p className="block antialiased font-sans text-xl font-normal leading-relaxed text-inherit mt-2 w-full font-nomal !text-gray-500 lg:w-5/12">
                     There are many variations of passages of Lorem Ipsum available, but the majority have suffered
                     alteration
                 </p>

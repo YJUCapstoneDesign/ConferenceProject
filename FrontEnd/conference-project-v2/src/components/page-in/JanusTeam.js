@@ -1,11 +1,10 @@
-import JanusSide from "./JanusSide";
+import JanusSide from "./TeamJanus/JanusSide";
 import "../css/JanusTeam.css";
-import "./Calendar";
-import Calendar from "./Calendar";
-import UserList from "./UserList";
-import BeforeLog from "./BeforeLog";
-import Tutorial from "./Tutorial";
-import Undefined from "./Undefined";
+import UserList from "./TeamJanus/UserList";
+import BeforeLog from "./TeamJanus/BeforeLog";
+import Tutorial from "./TeamJanus/Tutorial";
+import Undefined from "./TeamJanus/Undefined";
+import Calendarbox from "./TeamJanus/Calendarbox";
 
 function JanusTeam() {
   return (
@@ -22,13 +21,7 @@ function JanusTeam() {
               </div>
             </div>
             <div class="flex flex-wrap -m-4">
-              <div class="xl:w-1/4 md:w-1/2 p-4 mb-7">
-                <div class="bg-white p-6 rounded-lg">
-                  <h2 class="tracking-widest text-indigo-500 text-xs font-bold title-font mb-1">CALENDAR</h2>
-                  <h2 class="text-lg text-gray-900 font-medium title-font mb-4">Manage your time here!</h2>
-                  <Calendar/>
-                </div>
-              </div>
+                <Calendarbox/>
                 <BeforeLog/>
                 <Tutorial/>
                 <UserList/>

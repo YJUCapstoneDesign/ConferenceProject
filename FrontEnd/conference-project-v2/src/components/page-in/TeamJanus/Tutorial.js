@@ -1,7 +1,7 @@
 function Tutorial() {
     return (
         // <div class="w-10 xl:w-7/12 mb-12 xl:mb-0 ml-4">
-          <div class="relative flex flex-col min-w-0 break-words bg-white h-custom-height w-custom-size1 mt-4 mb-6 ml-4  shadow-lg rounded" style={{ minHeight: '360px' }}>
+          <div class="relative flex flex-col min-w-0 break-words bg-white h-custom-height w-custom-size1 mt-4 mb-6 ml-4  shadow-lg rounded 2xl:min-custom-height2 xl:min-h-60 xl:h-80">
             <div class="rounded-t mb-0 px-4 py-3 border-0">
               <div class="flex flex-wrap items-center">
                 <div class="relative w-full px-4 max-w-full flex-grow flex-1">

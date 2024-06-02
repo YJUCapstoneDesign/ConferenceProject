@@ -8,24 +8,9 @@ const ChatArea = () => (
 );
 
 const ChatMessages = () => (
-  <div className="h-screen overflow-y-auto p-4 pb-36">
+  <div className="overflow-y-auto p-4">
     <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="..." imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
   </div>
   
 );
@@ -58,9 +43,8 @@ const ChatInput = () => (
 );
 
 const ChatApp = () => (
-  <div className="flex h-screen">
+  <div className="flex">
     <ChatArea />
-
   </div>
 );
 

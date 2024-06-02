@@ -17,7 +17,7 @@ export default function Canvas() {
     '직관',
     '객관적 사실',
     '긍정적 가치'
-  ]
+  ];
   const descriptions = [
     '경험, 지식, 정보와 맞지 않는 것, 부정확한 것, 위험한 것 등을 논리적으로 제시',
     '객관적, 이성적 판단을 기반으로 사고를 정리하고 요약하여 결론을 제시',
@@ -29,7 +29,7 @@ export default function Canvas() {
 
   return (
     <div className="flex flex-col sm:flex-row sm:overflow-hidden">
-      <div className="grid grid-cols-1 mt-24 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-2 gap-4 p-4">
         {colors.map((color, index) => (
           <Card key={index} color={color} title={title[index]} content={descriptions[index]} />
         ))}

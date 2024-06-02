@@ -10,6 +10,7 @@ import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreateRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomExistRequest;
 import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResponse;
 import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResult;
 
@@ -60,5 +61,20 @@ public class RoomService {
 
         // 오류가 없는지 검사하는 로직
         checkExceptionResponse(send);
+    }
+
+    // 방이 있는지 확인하는 코드
+    public Long existRoom(VideoRoomExistRequest request) throws Exception {
+        Mono<VideoRoomResponse> send = janusClient.send(request, VideoRoomResponse.class);
+
+        VideoRoomResponse block = checkExceptionResponse(send);
+        VideoRoomResult response = block.getResponse();
+
+        // 방이 없으면 null 반환
+        if (!response.getExists()) {
+            return null;
+        }
+
+        return response.getRoom();
     }
 }

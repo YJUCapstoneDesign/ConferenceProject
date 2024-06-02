@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreateRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
+import team.broadcast.domain.video_room.dto.janus.request.VideoRoomExistRequest;
 import team.broadcast.domain.video_room.service.RoomService;
 
 @Slf4j
@@ -17,6 +18,19 @@ import team.broadcast.domain.video_room.service.RoomService;
 @Tag(name = "화상회의 API")
 public class RoomController {
     private final RoomService roomService;
+
+    @GetMapping("/exist/{teamId}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "방 조회",
+            description = "방이 있는지 조회하는 코드로 있으면 해당 방아이디를 없으면 null 반환")
+    public Long exist(@PathVariable Long teamId) {
+        try {
+            VideoRoomExistRequest existRequest = VideoRoomExistRequest.create(teamId);
+            return roomService.existRoom(existRequest);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("방 조회에 실패 하였습니다.");
+        }
+    }
 
     @PostMapping("/create/{teamId}")
     @ResponseStatus(HttpStatus.CREATED)

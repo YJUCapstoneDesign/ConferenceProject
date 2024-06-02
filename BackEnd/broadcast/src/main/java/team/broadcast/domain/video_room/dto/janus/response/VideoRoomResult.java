@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 public class VideoRoomResult {
     private Long room;
     private String videoroom;
+    private Boolean exists;
     private Integer error_code;
     private String error;
 }

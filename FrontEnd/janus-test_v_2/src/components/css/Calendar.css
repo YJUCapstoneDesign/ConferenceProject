@@ -1,3 +1,4 @@
 .react-calendar {
   border: none;
+  overflow: hidden;
 }

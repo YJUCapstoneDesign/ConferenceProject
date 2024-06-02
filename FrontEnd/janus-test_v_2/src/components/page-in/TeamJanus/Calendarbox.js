@@ -1,4 +1,6 @@
 import React from "react";
+import MyCalendar from "./Calendar";
+
 
 function Calendarbox() {
   return (
@@ -13,38 +15,10 @@ function Calendarbox() {
       
           <div className="block w-full overflow-x-auto">
             <table className="items-center bg-transparent w-full border-collapse ">
-              <thead>
-                <tr>
-                  <th className="px-8 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                                Content
-                  </th>
-                </tr>
-              </thead>
-      
               <tbody>
                 <tr>
-                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 ">
-                    
-                  </th>
-                </tr>
-                <tr>
-                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
-                   
-                  </th>
-                </tr>
-                <tr>
-                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
-                    
-                  </th>
-                </tr>
-                <tr>
-                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
-                    
-                  </th>
-                </tr>
-                <tr>
-                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
-                    
+                  <th className="border-t-0 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap text-left text-blueGray-700 ">
+                    <MyCalendar/>
                   </th>
                 </tr>
               </tbody>

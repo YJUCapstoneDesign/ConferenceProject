@@ -62,11 +62,7 @@ module.exports = {
   ],
   devServer: {
     server: {
-      type: 'https',
-      options: {
-        key: fs.readFileSync('./keys/key.pem'),
-        cert: fs.readFileSync('./keys/cert.pem'),
-      },
+      
     },
     static: {
       directory: path.resolve(__dirname, 'dist')

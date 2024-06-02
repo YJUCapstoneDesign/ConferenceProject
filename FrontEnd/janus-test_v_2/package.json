@@ -11,6 +11,8 @@
   "author": "hisu",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.588.0",
+    "@aws-sdk/credential-providers": "^3.588.0",
     "@excalidraw/excalidraw": "^0.17.6",
     "@tldraw/tldraw": "^2.1.4",
     "axios": "^1.7.2",

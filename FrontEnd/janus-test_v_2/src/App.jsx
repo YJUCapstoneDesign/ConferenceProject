@@ -13,6 +13,7 @@ const { default: Signup} = require("./components/page-in/signup");
 const { default: RoomService} = require("./components/page-in/RoomService");
 const { default: JanusTeam} = require("./components/page-in/JanusTeam");
 const { default: EntranceRoom} = require("./components/page-in/EntranceRoom");
+const { default: SelectRoom} = require("./components/page-in/SelectRoom");
 
 const App = () => {
   return (
@@ -30,6 +31,7 @@ const App = () => {
           <Route path='Room' element={<RoomService/>} />
           <Route path='/JanusTeam' element={<JanusTeam/>} />
           <Route path='/Entrance' element={<EntranceRoom/>} />
+          <Route path='/Select' element={<SelectRoom/>} />
         </Routes>
   );
 };

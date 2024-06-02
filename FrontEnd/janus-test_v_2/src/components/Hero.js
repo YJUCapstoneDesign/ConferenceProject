@@ -9,7 +9,7 @@ const Hero = () => {
                 <p><br/>The <span>UNMUTE</span>
                 <br />project is a video conference
                 <br />program with various functions.</p><br/>
-                <Link to='/Room' className='button'>Try it now</Link>
+                <Link to='/Select' className='button'>Try it now</Link>
             </div>
         </div>
     );

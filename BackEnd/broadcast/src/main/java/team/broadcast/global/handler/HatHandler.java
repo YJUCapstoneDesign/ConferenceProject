@@ -41,9 +41,9 @@ public class HatHandler extends TextWebSocketHandler {
         // 채팅 부분 코드를 아래에 작성을 해봅시다.
         sessions.forEach(s -> {
             // 아이디가 다른 사람에게 채팅 메시지를 보낸다.
-            if (s.getId().equals(session.getId())) {
-                return;
-            }
+//            if (s.getId().equals(session.getId())) {
+//                return;
+//            }
 
             try {
                 s.sendMessage(new TextMessage(payload));

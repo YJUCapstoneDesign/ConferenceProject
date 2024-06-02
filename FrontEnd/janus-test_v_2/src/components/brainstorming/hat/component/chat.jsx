@@ -2,30 +2,30 @@ import React from 'react';
 
 const ChatArea = () => (
   <div className="flex-1">
-    <ChatHeader name="UNMUTE" />
     <ChatMessages />
+    <ChatInput />
   </div>
-);
-
-const ChatHeader = ({ name }) => (
-  <header className="bg-white p-4 text-gray-700">
-    <h1 className="text-2xl font-semibold">{name}</h1>
-  </header>
 );
 
 const ChatMessages = () => (
   <div className="h-screen overflow-y-auto p-4 pb-36">
-    <IncomingMessage message="Hey Bob, how's it going?" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Hi Alice! I'm good, just finished a great book. How about you?" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="That book sounds interesting! What's it about?" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="It's about an astronaut stranded on Mars, trying to survive. Gripping stuff!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="I'm intrigued! Maybe I'll borrow it from you when you're done?" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Of course! I'll drop it off at your place tomorrow." imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Thanks, you're the best!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Anytime! Let me know how you like it. 😊" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="So, pizza next week, right?" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <OutgoingMessage message="Absolutely! Can't wait for our pizza date. 🍕" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
-    <IncomingMessage message="Hoorayy!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <IncomingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
+    <OutgoingMessage message="Fuck You!!" imageUrl="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato" />
   </div>
   
 );
@@ -60,6 +60,7 @@ const ChatInput = () => (
 const ChatApp = () => (
   <div className="flex h-screen">
     <ChatArea />
+
   </div>
 );
 

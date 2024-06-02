@@ -1,12 +1,11 @@
 import React from 'react';
 
-export default function Card(){
+export default function Card({ color, title, content }) {
   return (
-    <div className="mx-5 min-h-screen grid place-content-center">
-      <div className="bg-white py-8 px-10 text-center rounded-md shadow-lg transform -translate-y-20 sm:-translate-y-24 max-w-xs mx-auto">
-        
-      </div>
+    <div className="bg-white pb-5 px-10 text-center rounded-md shadow-lg transform-translate-y-20 h-full sm:-translate-y-24 max-w-xs mx-auto text-base">
+      <img src={color} alt="Hat" />
+      <p className='mt-2'>{title}</p>
+      <p className="mt-2 text-left">{content}</p>
     </div>
   );
-};
-
+}

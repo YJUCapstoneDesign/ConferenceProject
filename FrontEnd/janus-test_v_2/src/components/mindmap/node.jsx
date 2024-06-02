@@ -9,6 +9,8 @@ import ReactFlow, {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
+import { uploadToS3 } from './FileUploadDownload';
+import { listUploadedFiles, downloadFileFromS3 } from './FileUploadDownload'; 
 
 let initialNodes = [
   { id: '1', position: { x: 300, y: 300 }, data: { label: '1' } },
@@ -23,8 +25,64 @@ export default function App() {
   const [socketData, setSocketData] = useState();
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdges, setSelectedEdges] = useState([]);
+  const [fileList, setFileList] = useState([]);
+
 
   const ws = useRef(null); // 웹소켓 연결을 위한 ref
+
+
+  const handleSaveClick = async () => {
+    const mindMapData = {
+      nodes: initialNodes,
+      edges: initialEdges,
+    };
+
+    const mindMapDataJson = JSON.stringify(mindMapData);
+
+    const uploadResult = await uploadToS3(mindMapDataJson, 'mind');
+
+    setFileList([]); //리스트 초기화
+
+    if (uploadResult.success) {
+      alert('파일 저장 성공!');
+    } else {
+      alert('파일 저장 실패!');
+    }
+  };
+
+  const handleLoadData = async (fileName) => {
+    try {
+      // 파일 목록을 받아옴
+      const files = await listUploadedFiles();
+      console.log('업로드된 파일 목록:', files);
+      
+      // 파일 목록 상태 업데이트
+      setFileList(files);
+    } catch (error) {
+      console.error('데이터 로드 실패:', error);
+    }
+  };
+
+  const handleApplyFile = async (fileName) => {
+    try {
+      const fileContent = await downloadFileFromS3(fileName);
+      const fileContentString = new TextDecoder().decode(fileContent.value);
+      const { nodes: newNodes, edges: newEdges } = JSON.parse(fileContentString);
+      initialNodes = newNodes;
+      initialEdges = newEdges;
+  
+      const newData = {
+        node: initialNodes,
+        edge: initialEdges
+      };
+  
+      sendWebSocketData(newData);
+      setFileList([]); //리스트 초기화
+    } catch (error) {
+      console.error('파일 적용 실패:', error);
+    }
+  };
+  
 
   useEffect(() => {
     ws.current = new WebSocket("ws://localhost:8080/app");
@@ -176,38 +234,27 @@ export default function App() {
     setSelectedEdges(edges);
   };
 
-  // const handleSaveClick = async () => {
-  //   const mindMapData = {
-  //       nodes: initialNodes,
-  //       edges: initialEdges,
-  //   };
-  //   try {
-  //       const response = await fetch("api/mind-map/save", {
-  //           method: "POST",
-  //           headers: {
-  //               "Content-Type": "application/json",
-  //           },
-  //           body: JSON.stringify(mindMapData),
-  //       });
-  //       if (response.ok) {
-  //           console.log("Mind map data sent successfully.");
-  //       } else {
-  //           console.error(
-  //               "Failed to send mind map data:",
-  //               response.statusText
-  //           );
-  //       }
-  //   } catch (error) {
-  //       console.error("Error sending mind map data:", error);
-  //   }
-  // }
-
-
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <button onClick={addNode}>추가 버튼</button>
-      {/* <button onClick={handleSaveClick}>저장 버튼</button> */}
-      {/* <button onClick={loadData}>불러오기 버튼</button> */}
+      <button onClick={handleSaveClick}>저장 버튼</button>
+      <button onClick={handleLoadData}>불러오기 버튼</button>
+      
+      {/* 파일 목록을 표시하는 부분 */}
+      {fileList && fileList.length > 0 && (
+        <div>
+          <h2>파일 목록</h2>
+          <ul>
+            {fileList.map((file, index) => (
+              <li key={index}>
+                {file}
+                <button onClick={() => handleApplyFile(file)}>적용하기</button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+      
       <ReactFlow
         nodes={nodes}
         edges={edges}

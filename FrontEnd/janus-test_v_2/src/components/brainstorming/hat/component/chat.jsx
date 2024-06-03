@@ -65,11 +65,16 @@ const ChatArea = () => {
     <div className="flex flex-col h-full">
       <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
         {messages.map((message, index) => {
-          const isOutgoing = message.startsWith('You:');
+          let isOutgoing = false;
+          let newData = "";
+          if(message[1] === 'M') {
+            newData = message.slice(3, message.length);
+            isOutgoing = true;
+          }
           return (
             <div key={index} className={isOutgoing ? "flex items-end justify-end mb-4" : "flex items-start justify-start mb-4"}>
               {isOutgoing ? (
-                <OutgoingMessage message={message} imageUrl="Your Image URL" />
+                <OutgoingMessage message={newData} imageUrl="Your Image URL" />
               ) : (
                 <IncomingMessage message={message} imageUrl="Opponent's Image URL" />
               )}

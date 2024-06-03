@@ -1,5 +1,5 @@
 import React from 'react';
-import Chat from './component/chat';
+import ChatArea from './component/chat';
 import Card from './component/card';
 import black from './images/black.png';
 import blue from './images/blue.png';
@@ -37,10 +37,10 @@ export default function Canvas() {
   ];
 
   return (
-    <div className="flex flex-row">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 p-4 w-2/5 overflow-hidden">
+    <div className="flex h-screen overflow-hidden">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-1 p-4 w-2/6 h-full overflow-auto">
         {colors.map((color, index) => (
-          <div key={index} className="w-full">
+          <div key={index} className="w-3/4">
             <Card
               color={color}
               title={titles[index]}
@@ -51,8 +51,8 @@ export default function Canvas() {
           </div>
         ))}
       </div>
-      <div className='chat w-screen sm:w-screen overflow-y-auto'>
-        <Chat />
+      <div className='flex-1 overflow-auto'>
+        <ChatArea />
       </div>
     </div>
   );

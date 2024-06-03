@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const IncomingMessage = ({ message, imageUrl }) => (
   <div className="flex items-start mb-4">
@@ -22,9 +22,10 @@ const ChatArea = () => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const [socket, setSocket] = useState(null);
+  const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080/hat');
+    const ws = new WebSocket('ws://172.26.18.132:8080/chat');
 
     ws.onopen = () => {
       console.log('WebSocket 연결됨');
@@ -32,7 +33,7 @@ const ChatArea = () => {
 
     ws.onmessage = (event) => {
       const message = event.data;
-      setMessages(prevMessages => [...prevMessages, message]); 
+      setMessages(prevMessages => [...prevMessages, message]);
     };
 
     setSocket(ws);
@@ -42,10 +43,17 @@ const ChatArea = () => {
     };
   }, []);
 
+  useEffect(() => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  }, [messages]);
+
   const handleMessageSubmit = (e) => {
     e.preventDefault();
     if (messageInput.trim() !== '') {
-      socket.send(messageInput);
+      socket.send(`You: ${messageInput}`);
+      setMessages(prevMessages => [...prevMessages, `You: ${messageInput}`]);
       setMessageInput('');
     }
   };
@@ -55,14 +63,14 @@ const ChatArea = () => {
   };
 
   return (
-    <div className="flex-1">
-      <div className="overflow-y-auto p-4">
+    <div className="flex flex-col h-full">
+      <div ref={chatContainerRef} className="flex-1 overflow-y-auto p-4">
         {messages.map((message, index) => {
-          const isOutgoing = message.startsWith('You:'); 
+          const isOutgoing = message.startsWith('You:');
           return (
-            <div key={index} className={isOutgoing ? "flex items-end justify-end mb-4" : "flex items-start justify-start mb-4"}>
+            <div key={index} className={isOutgoing ? "flex justify-end mb-4" : "flex justify-start mb-4"}>
               {isOutgoing ? (
-                <OutgoingMessage message={message} imageUrl="Your Image URL" />
+                <OutgoingMessage message={message.replace('You: ', '')} imageUrl="Your Image URL" />
               ) : (
                 <IncomingMessage message={message} imageUrl="Opponent's Image URL" />
               )}
@@ -70,7 +78,7 @@ const ChatArea = () => {
           );
         })}
       </div>
-      <form className="fixed bottom-0 left-0 right-0 bg-gray-100 p-4 flex items-center" onSubmit={handleMessageSubmit}>
+      <form className="flex-none bg-gray-100 p-4 flex items-center" onSubmit={handleMessageSubmit}>
         <input
           type="text"
           value={messageInput}

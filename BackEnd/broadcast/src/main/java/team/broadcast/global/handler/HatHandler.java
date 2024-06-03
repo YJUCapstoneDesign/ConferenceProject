@@ -42,7 +42,7 @@ public class HatHandler extends TextWebSocketHandler {
         sessions.forEach(s -> {
             try {
                 // 같은 사람인 경우
-                if (s.getId().equals(payload)) {
+                if (s.getId().equals(session.getId())) {
                     s.sendMessage(new TextMessage("[M]" + payload));
                     return;
                 }

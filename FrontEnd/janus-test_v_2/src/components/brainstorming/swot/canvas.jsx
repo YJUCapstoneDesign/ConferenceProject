@@ -1,49 +1,72 @@
-import React from "react";
+import React, {useState} from "react";
 import './canvas.css';
+import Tile from "./tile/Tile";
+import HiddenLayer from "./layer/HiddenLayer";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
+
+const SIZE = 4;
+
+const TILES = [
+    {
+        id: 1,
+        title: "S",
+        classType: "str",
+        description: "STRENGTHS",
+    },
+
+    {
+        id: 2,
+        title: "W",
+        classType: "weak",
+        description: "WEAKNESSES",
+    },
+
+    {
+        id: 3,
+        title: "O",
+        classType: "oppor",
+        description: "OPPORTUNITIES",
+    },
+
+    {
+        id: 4,
+        title: "T",
+        classType: "ths",
+        description: "THREATS",
+    },
+];
 
 export default function Canvas() {
+    // 16 * 16 2차 배열 기본값 번호 순으로 초기화
+    // Size = 4
+
+    const [tiles, setTiles] = useState(Array.from({length: SIZE * 2}, () => Array.from({length: SIZE * 2}, () => "item" + Math.floor(Math.random() * 100))));
+    
+    const moveCell = (fromRow, fromCol, toRow, toCol) => {
+        setTiles((prevTiles) => {
+            const newTiles = [...prevTiles];
+            const temp = newTiles[toRow][toCol];
+            newTiles[toRow][toCol] = newTiles[fromRow][fromCol];
+            newTiles[fromRow][fromCol] = temp;
+            return newTiles;
+        });
+    };
+    
     return (
         <div className="canvas flex flex-wrap h-full w-full text-center text-white font-bold cursor-auto">
-            <div className="str w-3/6 bg-[#839EFF] flex items-center justify-center relative" onClick={() => {console.log("S")}}>
-                <div className="drop-shadow-md px-12">
-                    <div className="font-bold 2xl:text-12xl xl:text-11xl lg:text-10xl md:text-9xl sm:text-8xl">
-                        <p>S</p>
-                    </div>
-                    <div className="2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm description absolute hidden">
-                        <p>STRENGTHS</p>
-                    </div>
-                </div>
-            </div>
-            <div className="weak w-3/6 bg-[#F99156] flex items-center justify-center relative" onClick={() => {console.log("W")}}>
-                <div className="drop-shadow-md px-12">
-                    <div className="font-bold 2xl:text-12xl xl:text-11xl lg:text-10xl md:text-9xl sm:text-8xl">
-                        <p>W</p>
-                    </div>
-                    <div className="2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-xs description absolute hidden">
-                        <p>WEAKNESSES</p>
-                    </div>
-                </div>
-            </div>
-            <div className="oppor w-3/6 bg-[#8CF35B] flex items-center justify-center relative" onClick={() => {console.log("O")}}>
-                <div className="drop-shadow-md px-12">
-                    <div className="font-bold 2xl:text-12xl xl:text-11xl lg:text-10xl md:text-9xl sm:text-8xl">
-                        <p>O</p>
-                    </div>
-                    <div className="2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm description absolute hidden">
-                        <p>OPPORTUNITIES</p>
-                    </div>
-                </div>
-            </div>
-            <div className="ths w-3/6 bg-[#E968ED] flex items-center justify-center relative" onClick={() => {console.log("T")}}>
-                <div className="drop-shadow-md px-12">
-                    <div className="font-bold 2xl:text-12xl xl:text-11xl lg:text-10xl md:text-9xl sm:text-8xl">
-                        <p>T</p>
-                    </div>
-                    <div className="2xl:text-2xl xl:text-xl lg:text-lg md:text-base sm:text-sm description absolute hidden">
-                        <p>THREATS</p>
-                    </div>
-                </div>
-            </div>
+
+            {TILES.map(tile => 
+                <Tile
+                    key={tile.id}
+                    title={tile.title}
+                    classType={tile.classType}
+                    description={tile.description}
+                />)}
+
+            <DndProvider backend={HTML5Backend}>
+                <HiddenLayer list={tiles} moveCell={moveCell}/>
+            </DndProvider>
         </div>
     )
 }

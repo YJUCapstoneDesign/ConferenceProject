@@ -25,10 +25,10 @@ const ChatArea = () => {
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://172.26.18.132:8080/chat');
+    const ws = new WebSocket('ws://localhost:8080/hat');
 
     ws.onopen = () => {
-      console.log('WebSocket 연결됨');
+      console.log('WebSocket 연결');
     };
 
     ws.onmessage = (event) => {
@@ -52,8 +52,7 @@ const ChatArea = () => {
   const handleMessageSubmit = (e) => {
     e.preventDefault();
     if (messageInput.trim() !== '') {
-      socket.send(`You: ${messageInput}`);
-      setMessages(prevMessages => [...prevMessages, `You: ${messageInput}`]);
+      socket.send(messageInput);
       setMessageInput('');
     }
   };
@@ -68,9 +67,9 @@ const ChatArea = () => {
         {messages.map((message, index) => {
           const isOutgoing = message.startsWith('You:');
           return (
-            <div key={index} className={isOutgoing ? "flex justify-end mb-4" : "flex justify-start mb-4"}>
+            <div key={index} className={isOutgoing ? "flex items-end justify-end mb-4" : "flex items-start justify-start mb-4"}>
               {isOutgoing ? (
-                <OutgoingMessage message={message.replace('You: ', '')} imageUrl="Your Image URL" />
+                <OutgoingMessage message={message} imageUrl="Your Image URL" />
               ) : (
                 <IncomingMessage message={message} imageUrl="Opponent's Image URL" />
               )}

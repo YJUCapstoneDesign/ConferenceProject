@@ -29,7 +29,7 @@ const App = () => {
           <Route path="Login" element={<Signin/>} />
           <Route path='signup' element={<Signup />} />
           <Route path='Room' element={<RoomService/>} />
-          <Route path='/JanusTeam' element={<JanusTeam/>} />
+          <Route path='/JanusTeam/:teamNumber' element={<JanusTeam/>} /> {/* 테스트 시 수정 필요함 /: 를 통해서 동적으로 뒤에 오는 페이지를 구현한다고 함*/}
           <Route path='/Entrance' element={<EntranceRoom/>} />
           <Route path='/Select' element={<SelectRoom/>} />
         </Routes>

@@ -15,8 +15,9 @@ function EntranceRoom() {
     api.post('', data)
       .then(response => {
         console.log(response.data);
+        const teamNumber = response.data;
         alert("회의 입장 성공");
-        navigate("/");
+        navigate(`/JanusTeam/${teamNumber}`);
       })
       .catch(error => {
         console.error('Error creating room:', error);

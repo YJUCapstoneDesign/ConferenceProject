@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 import api from './api';
+import { useNavigate } from 'react-router-dom';
 
 function RoomService() {
+  const [MeetingId, setMeetingId] = useState(null);
   const [MeetingPassword, setMeetingPassword] = useState(null);
+  const navigate = useNavigate();
 
   const CreateRoom = () => {
     const data = {
+      MeetingId: MeetingId,
       MeetingPassword: MeetingPassword
     };
     api.post('', data)
       .then(response => {
+        const teamNumber = response.data;
         console.log(response.data);
-        alert("회의 생성 성공");
+        navigate(`/JanusTeam/${teamNumber}`);
       })
       .catch(error => {
         console.error('Error creating room:', error);
@@ -26,6 +31,10 @@ function RoomService() {
           <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">회의를 시작해보세요!</h1> 
           <p className="text-sm text-gray-600 text-center mt-8 mb-6">간단한 요청사항을 실행한 후 회의를 시작해보세요.</p> 
           <form>
+            <div className="mb-6">
+              <label htmlFor="name" className="block mb-2 text-sm text-gray-600"></label>
+              <input type="password" id="text" name="text" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700"onChange={(e) => setMeetingId(e.target.value)} required placeholder="Meeting id" />
+            </div>
             <div className="mb-6">
               <label htmlFor="name" className="block mb-2 text-sm text-gray-600"></label>
               <input type="password" id="text" name="text" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700"onChange={(e) => setMeetingPassword(e.target.value)} required placeholder="Meeting password" />

@@ -6,12 +6,15 @@ import BeforeLog from "./TeamJanus/BeforeLog";
 import Tutorial from "./TeamJanus/Tutorial";
 import Undefined from "./TeamJanus/Undefined";
 import Calendarbox from "./TeamJanus/Calendarbox";
+import { useParams } from 'react-router-dom';
 
 function JanusTeam() {
+  const { teamNumber } = useParams();
+
   return (
     <div className="wrap bg-slate-50" id="wrap">
       <div className="side-box">
-        <JanusSide />
+        <JanusSide teamNumber={teamNumber} />
       </div>
       <section className="text-gray-600 body-font w-full">
           <div className="container px-5 py-5 mx-auto max-w-full">

@@ -1,6 +1,7 @@
 import React from 'react';
 
 function Sidebar() {
+    
     const OpenPopupMind = () => {
         window.open("/mindmap","마인드 맵","width=900px,height=600px");
     }

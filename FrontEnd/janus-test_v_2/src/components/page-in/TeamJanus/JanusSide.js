@@ -1,7 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function JanusSide() {
+function JanusSide({ teamNumber }) {
+
     const OpenPopupMind = () => {
         window.open("/mindmap","마인드 맵","width=900px,height=600px");
     }
@@ -20,7 +21,7 @@ function JanusSide() {
 
     return (
         <div className="min-h-screen bg-gray-100">
-        <div className="sidebar min-h-screen w-[3.35rem] overflow-hidden border-r hover:w-56 ease-in-out duration-500  hover:bg-white hover:shadow-lg"> {/* hover시 느리게 화면 크기 변경 ease-in-out duration */}
+        <div className="sidebar min-h-screen w-[3.35rem] overflow-hidden border-r hover:w-56 ease-in-out duration-500 hover:bg-white hover:shadow-lg">
           <div className="flex h-screen flex-col justify-between pt-2 pb-6">
             <div>
                 <ul className="mt-6 space-y-2 tracking-wide">
@@ -65,7 +66,7 @@ function JanusSide() {
                     <span className="group-hover:text-gray-700 text-base">WhiteBoard</span>
                     </div>
                 </li>
-                <Link to='/video'>
+                <Link to={`/video/${teamNumber}`}> 
                     <li className="min-w-max cursor-pointer">
                         <div className="group flex items-center space-x-4 rounded-md px-4 py-3 text-gray-600">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="h-5 w-5" fill='currentColor'>

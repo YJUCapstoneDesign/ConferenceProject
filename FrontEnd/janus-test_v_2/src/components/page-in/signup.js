@@ -15,7 +15,7 @@ function Signup() {
   const signup = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post("http://localhost:4000/api/test", {
+      const response = await api.post("http://localhost:8080/api/signup", {
         name,
         email,
         password,

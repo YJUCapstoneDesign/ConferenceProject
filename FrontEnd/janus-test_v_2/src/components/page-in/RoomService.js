@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import api from './api';
 import { useNavigate } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ function RoomService() {
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
+      alert('로그인이 필요합니다.');
       navigate('/Login'); 
       return; 
     }}, []); 

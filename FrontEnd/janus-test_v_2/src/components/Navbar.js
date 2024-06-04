@@ -16,7 +16,7 @@ const Navbar = () => {
       };
 
     return (
-        <div className='header bg-slate-950'>
+        <div className='header'>
             <nav className='navbar'>
                 <a href='/' className='logo'>
                     UNMUTE

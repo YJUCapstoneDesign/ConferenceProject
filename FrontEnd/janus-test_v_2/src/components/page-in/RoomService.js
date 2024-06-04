@@ -7,23 +7,28 @@ function RoomService() {
   const [MeetingPassword, setMeetingPassword] = useState(null);
   const navigate = useNavigate();
 
-  const CreateRoom = () => {
-    const data = {
-      MeetingId: MeetingId,
-      MeetingPassword: MeetingPassword
-    };
-    api.post('', data)
-      .then(response => {
-        const teamNumber = response.data;
-        console.log(response.data);
-        navigate(`/JanusTeam/${teamNumber}`);
-      })
-      .catch(error => {
-        console.error('Error creating room:', error);
-        alert("회의 생성 실패")
-      });
-  };
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) {
+      navigate('/Login'); 
+      return; 
+    }}, []); 
 
+  const CreateRoom = async () => {
+    try{
+      const data = {
+        MeetingId,
+        MeetingPassword,
+      };
+      const response = await api.post('', data);
+      console.log(response.data);
+      const teamNumber = response.data;
+      navigate(`/JanusTeam/${teamNumber}`);
+      } catch (error) {
+      console.error('Error creating room:', error);
+      alert('회의 입장 실패');
+    }
+  };
   return (
     <div className="App animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
       <div className="min-h-screen flex items-center justify-center">

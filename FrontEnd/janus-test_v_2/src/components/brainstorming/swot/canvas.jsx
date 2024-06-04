@@ -1,9 +1,10 @@
-import React, {useState} from "react";
+import React, {Fragment, useState} from "react";
 import './canvas.css';
 import Tile from "./tile/Tile";
 import HiddenLayer from "./layer/HiddenLayer";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
+import AddModal from "./modal/AddModal";
 
 const SIZE = 4;
 
@@ -38,10 +39,16 @@ const TILES = [
 ];
 
 export default function Canvas() {
-    // 16 * 16 2차 배열 기본값 번호 순으로 초기화
-    // Size = 4
+    const [onModal, setOnModal] = useState(false);
 
-    const [tiles, setTiles] = useState(Array.from({length: SIZE * 2}, () => Array.from({length: SIZE * 2}, () => "item" + Math.floor(Math.random() * 100))));
+    const [tiles, setTiles] = useState(Array.from({length: SIZE * 2}, 
+        () => Array.from({length: SIZE * 2}, () => {
+            return {
+                title: "",
+                content: "",
+                area: 0,
+            }; // empty tile
+    })));
     
     const moveCell = (fromRow, fromCol, toRow, toCol) => {
         setTiles((prevTiles) => {
@@ -54,19 +61,23 @@ export default function Canvas() {
     };
     
     return (
-        <div className="canvas flex flex-wrap h-full w-full text-center text-white font-bold cursor-auto">
+        <Fragment>
+            <div className="canvas flex flex-wrap h-full w-full text-center text-white font-bold cursor-auto">
 
-            {TILES.map(tile => 
-                <Tile
-                    key={tile.id}
-                    title={tile.title}
-                    classType={tile.classType}
-                    description={tile.description}
-                />)}
+                {TILES.map(tile => 
+                    <Tile
+                        key={tile.id}
+                        title={tile.title}
+                        classType={tile.classType}
+                        description={tile.description}
+                    />)}
 
-            <DndProvider backend={HTML5Backend}>
-                <HiddenLayer list={tiles} moveCell={moveCell}/>
-            </DndProvider>
-        </div>
+                <DndProvider backend={HTML5Backend}>
+                    <HiddenLayer list={tiles} moveCell={moveCell}/>
+                </DndProvider>
+            </div>
+            <button onClick={() => setOnModal(true)} className=" border-gray-400 border-2 p-4">Add</button>
+            {onModal && <AddModal onClose={() => setOnModal(false)} setDataList={setTiles} />}
+        </Fragment>
     )
 }

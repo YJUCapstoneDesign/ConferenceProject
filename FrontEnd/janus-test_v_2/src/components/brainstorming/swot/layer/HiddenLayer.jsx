@@ -1,10 +1,14 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { useDrag, useDrop } from "react-dnd";
+import { getArea } from '../modal/utils/TileList';
 
-const DraggableCell = ({ row, col, content, moveCell }) => {
+const DraggableCell = ({ row, col, title, content, area, moveCell }) => {
+  if (title === "" && content === "" && area === 0) {
+    return <td className="text-center w-10 h-10"></td>;
+  }
   const [, drag] = useDrag({
     type: "CELL",
-    item: { row, col, content },
+    item: { row, col, title, content, area },
   });
 
   const [, drop] = useDrop({
@@ -12,12 +16,17 @@ const DraggableCell = ({ row, col, content, moveCell }) => {
     drop: (item) => moveCell(item.row, item.col, row, col),
   });
 
+  // 움직인 경우 현재 위치에 따라 area를 반환한다.
+  area = getArea(row, col);
+
   return (
     <td
       ref={(node) => drag(drop(node))}
-      className="border border-black w-10 h-10 text-center"
+      className="text-center w-10 h-10"
     >
-      {content}
+      {title}
+      <div id="tile-content"className='hidden'>{content}</div>
+      <div id="tile-area" className='hidden'>{area}</div>
     </td>
   );
 };
@@ -34,7 +43,9 @@ const HiddenLayer = ({list, moveCell}) => {
               key={colIndex}
               row={rowIndex}
               col={colIndex}
-              content={col}
+              title={col.title}
+              content={col.content}
+              area={col.area}
               moveCell={moveCell}
             />
           ))}

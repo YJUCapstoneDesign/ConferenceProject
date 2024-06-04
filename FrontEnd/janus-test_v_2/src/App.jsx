@@ -15,6 +15,7 @@ const { default: JanusTeam} = require("./components/page-in/JanusTeam");
 const { default: EntranceRoom} = require("./components/page-in/EntranceRoom");
 const { default: SelectRoom} = require("./components/page-in/SelectRoom");
 const { default: CrazyPage } = require("./components/crazyeight/crazy");
+const { default: AboutIn } = require("./components/page-in/AboutIn");
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path='/Entrance' element={<EntranceRoom/>} />
           <Route path='/Select' element={<SelectRoom/>} />
           <Route path='/Crazy' element={<CrazyPage/>} />
+          <Route path='/AboutIn' element={<AboutIn/>} />
         </Routes>
   );
 };

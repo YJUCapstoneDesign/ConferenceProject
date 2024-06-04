@@ -9,7 +9,7 @@ const About = () => {
                         <h2 className="text-3xl font-semibold text-indigo-600 md:text-4xl">About<span className="text-gray-800"><br/>Our Project</span></h2>
                         <p className="mt-2 text-sm text-gray-500 md:text-lg">Our project is a video conference program using AI and brainstorming techniques. We will briefly summarize the meeting contents through AI and help select topics through mind maps. Our goal is to develop a more advanced conference program with these features.</p>
                         <div className="flex justify-center lg:justify-start mt-6">
-                            <a className="px-4 py-3 bg-indigo-600 text-gray-200 text-xs font-semibold rounded-3xl hover:bg-indigo-700" href="/">Learn more</a>
+                            <a className="px-4 py-3 bg-indigo-600 text-gray-200 text-xs font-semibold rounded-3xl hover:bg-indigo-700" href="/AboutIn">Learn more</a>
                         </div>
                     </div>
                 </div>

@@ -14,6 +14,7 @@ const { default: RoomService} = require("./components/page-in/RoomService");
 const { default: JanusTeam} = require("./components/page-in/JanusTeam");
 const { default: EntranceRoom} = require("./components/page-in/EntranceRoom");
 const { default: SelectRoom} = require("./components/page-in/SelectRoom");
+const { default: CrazyPage } = require("./components/crazyeight/crazy");
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
           <Route path='/JanusTeam/:teamNumber' element={<JanusTeam/>} /> {/* 테스트 시 수정 필요함 /: 를 통해서 동적으로 뒤에 오는 페이지를 구현한다고 함*/}
           <Route path='/Entrance' element={<EntranceRoom/>} />
           <Route path='/Select' element={<SelectRoom/>} />
+          <Route path='/Crazy' element={<CrazyPage/>} />
         </Routes>
   );
 };

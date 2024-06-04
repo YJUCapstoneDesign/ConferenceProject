@@ -14,6 +14,7 @@
     "@aws-sdk/client-s3": "^3.588.0",
     "@aws-sdk/credential-providers": "^3.588.0",
     "@excalidraw/excalidraw": "^0.17.6",
+    "@google/generative-ai": "^0.12.0",
     "@tldraw/tldraw": "^2.1.4",
     "axios": "^1.7.2",
     "boxicons": "^2.1.4",

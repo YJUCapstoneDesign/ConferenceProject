@@ -6,12 +6,15 @@ import './VideoComponent.css';
 import Sidebar from "../Sidebar";
 import Janusbutton from "../janusbutton";
 import Chatting from "./chatting/chatting";
+// import { useParams } from 'react-router-dom';
+
 
 const useReference = () => {
   const [reference, setReference] = useState(() => createRef());
   return reference;
 };
-
+// const { teamNumber } = useParams();
+// let myroom = teamNumber;
 let myroom = 12341234; // demo room
 let sfutest = null;
 let username = "username-" + Janus.randomString(5); // 임시 유저네임

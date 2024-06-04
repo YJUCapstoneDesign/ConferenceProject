@@ -1,19 +1,54 @@
-import React from 'react';
+import React, { useState } from 'react';
+import api from './api';
+import { useNavigate } from 'react-router-dom';
 
 function PassWord() {
+  const [email, setEmail] = useState('');
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
+
+  const MissingPassWord = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await api.post("http://localhost:8080/", { 
+        email 
+      });
+      navigate("/Login");
+    } catch (err) {
+      setError(" 존재하지 않는 이메일 입니다! " + (err.response?.data?.message || "알 수 없는 오류"));
+    }
+  };
+
   return (
     <div className="App animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
       <div className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
-          <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">비밀번호를 잊어버리셨나요?</h1> 
-          <p className="text-sm text-gray-600 text-center mt-8 mb-6">걱정하지 마세요. 비밀번호 재설정은 간단합니다.<br/> UNMUTE에 등록하신 이메일 주소만 알려주세요.</p> 
-          <form>
+          <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">비밀번호를 잊어버리셨나요?</h1>
+          <p className="text-sm text-gray-600 text-center mt-8 mb-6">
+            걱정하지 마세요. 비밀번호 재설정은 간단합니다.<br /> UNMUTE에 등록하신 이메일 주소만 알려주세요.
+          </p>
+          <form onSubmit={MissingPassWord}>
             <div className="mb-6">
               <label htmlFor="email" className="block mb-2 text-sm text-gray-600"></label>
-              <input type="email" id="email" name="em il" className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700" required placeholder="이메일 주소" />
+              <input
+                type="email"
+                id="email"
+                name="email"
+                className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700"
+                required
+                placeholder="이메일 주소"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </div>
-            <button type="submit" className="w-32 bg-gradient-to-r from-indigo-700 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4">전 송</button>
+            <button
+              type="submit"
+              className="w-32 bg-gradient-to-r from-indigo-700 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4" onClick={MissingPassWord}
+            >
+              전 송
+            </button>
           </form>
+          {error && <p className="text-red-500 text-center mt-4">{error}</p>}
           <div className="text-center">
             <p className="text-sm">도움이 필요하신가요? <a href="/" className="text-indigo-700">도움말</a></p>
           </div>

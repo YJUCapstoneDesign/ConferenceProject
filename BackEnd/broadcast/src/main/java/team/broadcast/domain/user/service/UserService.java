@@ -1,5 +1,6 @@
 package team.broadcast.domain.user.service;
 
+import jakarta.mail.MessagingException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,9 +17,13 @@ import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
+import team.broadcast.global.mail.MailService;
+import team.broadcast.global.mail.dto.EmailMessage;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -27,6 +32,7 @@ import java.util.UUID;
 public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailService mailService;
 
     @Value("${default.image.address}")
     private String defaultImageAddress;
@@ -131,5 +137,36 @@ public class UserService {
     @Transactional
     public void deleteUser(String email) {
         userRepository.deleteByEmail(email);
+    }
+
+    @Transactional
+    public void sendResetPasswordEmail(String email) {
+        User user = findUserByEmail(email);
+
+        String newPassword = generateRandomPassword(6);
+
+        Map<String, String> html = new HashMap<>();
+        html.put("email", user.getEmail());
+        html.put("password", newPassword);
+
+        EmailMessage message = EmailMessage.builder()
+                .to(user.getEmail())
+                .subject("[UNMUTE] 임시 비밀번호 발급")
+                .build();
+
+        try {
+            mailService.sendMail(message, html);
+        } catch (MessagingException e) {
+            log.error(e.getMessage(), e);
+        }
+
+        // 이메일을 보낸 후 비밀번호 업데이트 처리
+        user.updatePassword(passwordEncoder.encode(newPassword));
+
+        userRepository.save(user); // 비밀번호 업데이트 저장
+    }
+
+    public String generateRandomPassword(int passwordLength) {
+        return RandomStringUtils.random(passwordLength, true, true); // 랜덤한 문자열 반환
     }
 }

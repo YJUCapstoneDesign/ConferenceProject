@@ -62,4 +62,10 @@ public class UserController {
         userService.deleteUser(userDetails.getEmail());
     }
 
+    @PostMapping("/find-pwd")
+    @Operation(summary = "임시비밀번호 발급", description = "비밀번호를 잊어버릴 경우 이메일로 임시 비밀번호를 발급한다.")
+    public void sendResetPassword(@RequestBody String email) {
+        userService.sendResetPasswordEmail(email);
+    }
+
 }

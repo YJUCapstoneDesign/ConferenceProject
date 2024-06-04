@@ -10,6 +10,4 @@ public class EmailMessage {
     private String to;
     //제목
     private String subject;
-    //내용
-    private String message;
 }

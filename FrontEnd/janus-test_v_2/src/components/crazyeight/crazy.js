@@ -8,6 +8,7 @@ const Crazy = () => {
   const intervalRef = useRef(null);
   const [showSummary, setShowSummary] = useState(false); 
   const [triggerSummarize, setTriggerSummarize] = useState(false);
+  const [topic, setTopic] = useState(""); // 주제 입력 상태 추가
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -36,6 +37,8 @@ const Crazy = () => {
     clearInterval(intervalRef.current);
     setTime(480);
     setIsRunning(false);
+    setTopic(""); // 주제 초기화
+    setTexts(Array(8).fill("")); // 텍스트 입력 영역 초기화
   };
 
   const handleTextChange = (index, event) => {
@@ -97,21 +100,43 @@ const Crazy = () => {
           </svg>
         </button>
       </div>
+      {isRunning&& topic ? (<div>{topic}</div>):(<div className="mb-4">
+        <label htmlFor="topic" className="block text-gray-700 text-sm font-bold mb-2">
+        </label>
+        <input
+        placeholder="주제를 입력하세요"
+          type="text"
+          id="topic"
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          value={topic}
+          onChange={(e) => setTopic(e.target.value)}
+        />
+      </div>)}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {Array.from({ length: 8 }, (_, i) => (
           <div
             key={i}
             className="flex flex-col justify-between w-full sm:w-48 h-32 bg-white rounded-lg shadow-lg p-2"
           >
-            <div className="flex-grow flex items-center justify-center">
-              <textarea
-                className="text-black text-center text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
+          
+            <div className={`flex-grow flex items-center justify-center ${isRunning && topic ? '' : 'opacity-50'}`}> 
+              {isRunning && topic ? (<textarea
+                className="text-center text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
                 value={texts[i]}
                 onChange={(event) => handleTextChange(i, event)}
                 placeholder="텍스트를 입력하세요"
-              />
+                disabled={!isRunning || !topic}
+              />) : 
+              (<textarea
+              className="text-center text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
+              value={texts[i]}
+              onChange={(event) => handleTextChange(i, event)}
+              placeholder="주제를 입력하세요"
+              disabled={!isRunning || !topic}
+            />)}
             </div>
-            <span className="text-black text-center text-md text-gray-500 font-semibold">
+            
+            <span className="text-center text-md text-gray-500 font-semibold">
               IDEA-{i + 1} : {texts[i].length}/48자
             </span>
           </div>
@@ -124,12 +149,12 @@ const Crazy = () => {
         요약 하기
       </button>
 
-        {/* showSummary가 true일 때만 GeminiSummarizer 컴포넌트 렌더링 */}
     {showSummary && (
       <GeminiSummarizer
         textToSummarize={texts.join(" ")}
         triggerSummarize={triggerSummarize}
-        onSummaryComplete={handleSummaryComplete} // 추가
+        onSummaryComplete={handleSummaryComplete} 
+        topic={topic}
       />
     )}
     </div>

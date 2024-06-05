@@ -16,7 +16,7 @@ const generationConfig = {
   responseMimeType: "text/plain",
 };
 
-const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete }) => {
+const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete, topic }) => {
   const [response, setResponse] = useState("");
 
   useEffect(() => {
@@ -28,9 +28,8 @@ const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete
             history: [],
           });
 
-          const contentsType = "배틀그라운드 분석";
           const result = await chatSession.sendMessage(
-            `다음 텍스트를 요약해주세요 그리고 주제(${contentsType})에 안맞는 단어는 삭제해 주세요: ${textToSummarize}`
+            `다음 텍스트를 요약해주세요 그리고 주제(${topic})에 안맞는 단어는 삭제해 주세요: ${textToSummarize}`
           );
           setResponse(result.response.text());
 
@@ -50,7 +49,7 @@ const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete
 
   return (
     <div>
-      <h3>요약:</h3>
+      <h3>요약</h3>
       <p>{response}</p>
     </div>
   );

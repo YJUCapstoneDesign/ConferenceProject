@@ -12,7 +12,6 @@ import team.broadcast.domain.user.entity.User;
 @AllArgsConstructor
 public class UserResponse {
     private String username;
-    private String nickname;
     private String imageUrl;
     private String email;
     private String phone;
@@ -21,7 +20,6 @@ public class UserResponse {
     public static UserResponse from(User user) {
         return UserResponse.builder()
                 .username(user.getName())
-                .nickname(user.getNickname())
                 .imageUrl(user.getImageUrl())
                 .email(user.getEmail())
                 .phone(user.getPhone())

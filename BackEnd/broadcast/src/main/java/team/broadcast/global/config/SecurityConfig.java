@@ -6,6 +6,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -171,6 +172,7 @@ public class SecurityConfig {
                 .logoutSuccessHandler(((request, response, authentication) -> {
                     SecurityContextHolder.clearContext();
                     // utf-8 적용
+                    response.setStatus(HttpServletResponse.SC_OK);
                     response.setCharacterEncoding("UTF-8");
                     response.getWriter().println("로그아웃 되었습니다.");
                 })));

@@ -28,6 +28,7 @@ public class LogoutService implements LogoutHandler {
     @Transactional
     public void logout(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.Authentication authentication) {
 
+        log.info("request: {}", request.getHeader("Authorization-refresh"));
         Optional<String> token = jwtService.extractRefreshToken(request);
 
         if (token.isEmpty()) {

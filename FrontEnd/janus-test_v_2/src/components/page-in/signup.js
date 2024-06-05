@@ -4,11 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import api from './api';
 
 function Signup() {
-  const [name, setName] = useState("");
+  const [username, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
-  const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
@@ -16,14 +15,13 @@ function Signup() {
     event.preventDefault();
     try {
       const response = await api.post("http://localhost:8080/api/signup", {
-        name,
+        username,
         email,
         password,
         phone,
-        address,
       });
 
-      if (response.data.message === 'success') {
+      if (response.status === 200) {
         alert("성공");
         navigate("/signin");
       } else {
@@ -45,7 +43,7 @@ function Signup() {
             {error && <div className="text-red-500 text-sm mt-2">{error}</div>}
             <div className="mt-4">
               <label className="block text-gray-700 text-sm font-bold font-mono mb-2">Name</label>
-              <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none" type="text" onChange={(e) => setName(e.target.value)} />
+              <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none" type="text" onChange={(e) => setUserName(e.target.value)} />
             </div>
             <div className="mt-4">
               <label className="block text-gray-700 text-sm font-bold font-mono mb-2">Email</label>
@@ -56,10 +54,6 @@ function Signup() {
                 <label className="block text-gray-700 text-sm font-mono font-bold mb-2">Password</label>
               </div>
               <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none" type="password" onChange={(e) => setPassword(e.target.value)} />
-            </div>
-            <div className="mt-4">
-              <label className="block text-gray-700 text-sm font-bold font-mono mb-2">Address</label>
-              <input className="bg-custom-flesh text-gray-700 focus:outline-none focus:shadow-outline border border-custom-flesh rounded-3xl py-2 px-4 block w-full appearance-none" type="text" onChange={(e) => setAddress(e.target.value)} />
             </div>
             <div className="mt-4">
               <label className="block text-gray-700 text-sm font-bold font-mono mb-2">Phone</label>

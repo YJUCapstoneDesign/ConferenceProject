@@ -52,6 +52,7 @@ export default function Canvas() {
     
     const moveCell = (fromRow, fromCol, toRow, toCol) => {
         setTiles((prevTiles) => {
+            // 서로의 위치를 바꾼다.
             const newTiles = [...prevTiles];
             const temp = newTiles[toRow][toCol];
             newTiles[toRow][toCol] = newTiles[fromRow][fromCol];

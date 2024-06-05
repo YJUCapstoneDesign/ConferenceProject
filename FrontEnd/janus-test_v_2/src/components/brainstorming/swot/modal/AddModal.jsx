@@ -23,7 +23,7 @@ const AddModal = ({onClose, setDataList}) => {
   return (
     <ModalPortal>
       <div className="h-screen w-full fixed bg-[#00000066] left-0 top-0 flex justify-center items-center bg-main-black bg-opacity-70">
-        <div className="container w-[300px] h-[300px] bg-white border-2">
+        <div className="container w-[300px] h-auto bg-white border-2">
           <form onSubmit={submitHandler}>
           <select name="area" id="area" className="w-full py-2">
             <option value={1}>STRENGTHS</option>

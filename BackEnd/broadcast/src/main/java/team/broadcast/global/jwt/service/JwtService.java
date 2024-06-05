@@ -144,6 +144,7 @@ public class JwtService {
      * @NOTE extract the RefreshToken contained in the client request header
      */
     public Optional<String> extractRefreshToken(HttpServletRequest request) {
+        log.info("refresh token: {}", request.getHeader(refreshTokenHeader));
         return Optional.ofNullable(request.getHeader(refreshTokenHeader))
                 .filter(refreshToken -> refreshToken.startsWith(BEARER))
                 .map(refreshToken -> refreshToken.replace(BEARER, ""));

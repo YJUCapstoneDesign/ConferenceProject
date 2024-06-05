@@ -20,7 +20,6 @@ function Signup() {
         password,
         phone,
       });
-
       if (response.status === 200) {
         alert("성공");
         navigate("/signin");
@@ -35,7 +34,7 @@ function Signup() {
   return (
     <div className='Signup'>
       <div className="py-24 animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
-        <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl mb-5">
+        <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl mt-20">
           <div className="hidden lg:block lg:w-1/2 bg-cover" style={{ backgroundImage: "url('https://source.unsplash.com/random/?conference')" }}></div>
           <div className="w-full p-8 lg:w-1/2">
             <a href="/"><p className='text-xs font-mono text-decoration-line: underline mb-5 inline-block'> Back to Website</p></a>

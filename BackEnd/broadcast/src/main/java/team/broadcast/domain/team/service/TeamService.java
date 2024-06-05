@@ -14,6 +14,7 @@ import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.exception.CustomException;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +36,7 @@ public class TeamService {
                 .password(passwordEncoder.encode(request.getPassword())) // 비밀번호 암호화
                 .userList(new ArrayList<>(Collections.singletonList(user)))
                 .role(TeamRole.HOST)
+                .createAt(LocalDateTime.now())
                 .build();
 
         ArrayList<Team> teams = new ArrayList<>(Collections.singletonList(team));

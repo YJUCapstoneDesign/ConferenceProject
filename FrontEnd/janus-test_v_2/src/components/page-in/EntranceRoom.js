@@ -3,25 +3,28 @@ import api from './api';
 import { useNavigate } from 'react-router-dom';
 
 function EntranceRoom() {
-  const [meetingId, setMeetingId] = useState(null);
-  const [meetingPassword, setMeetingPassword] = useState(null);
+  const [teamId, setTeamId] = useState(null);
+  const [password, setPassword] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       alert('로그인이 필요합니다.');
-      navigate('/Login'); 
+      navigate('/Login');   
       return; 
     }}, []); 
 
-  const createRoom = async () => {
+  const createRoom = async (event) => {
+    event.preventDefault();
+
+    console.log(event);
     try {
       const data = { 
-        meetingId, 
-        meetingPassword 
+        teamId, 
+        password, 
       };
-      const response = await api.post('', data);
+      const response = await api.post('http://localhost:8080/api/team/join', data);
       console.log(response.data);
       const teamNumber = response.data;
       alert('회의 입장 성공');
@@ -48,7 +51,7 @@ function EntranceRoom() {
                 id="text"
                 name="text"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700"
-                onChange={(e) => setMeetingId(e.target.value)}
+                onChange={(e) => setTeamId(e.target.value)}
                 required
                 placeholder="Meeting id"
               />
@@ -62,7 +65,7 @@ function EntranceRoom() {
                 id="text"
                 name="text"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-700"
-                onChange={(e) => setMeetingPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Meeting password"
               />

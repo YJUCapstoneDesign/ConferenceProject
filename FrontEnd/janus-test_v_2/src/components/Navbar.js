@@ -12,15 +12,14 @@ const Navbar = () => {
     const closeMenu = () => setClick(false)
     const navigate = useNavigate();
     const LoginStateToken = localStorage.getItem('accessToken')
-    const RefreshToken = JSON.parse(localStorage.getItem('refreshToken'))
+    const RefreshToken = "Bearer " +JSON.parse(localStorage.getItem('refreshToken'))
 
     const logout = async (e) => {
         try {
             const response = await axios.get("http://localhost:8080/api/logout",
                 {
                     headers: {
-                        Authorization:LoginStateToken,
-                        "Authorization-refresh": "Bearer "+ RefreshToken
+                        "Authorization-refresh": RefreshToken
                     }
                 }
             )

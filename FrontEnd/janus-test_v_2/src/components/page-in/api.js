@@ -9,18 +9,19 @@ const api = axios.create({
 // 요청 인터셉터 추가
 api.interceptors.request.use(
   function (config) {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("accessToken");
 
     //요청시 AccessToken 계속 보내주기
     if (!token) {
-      config.headers.accessToken = null;
+      config.headers.Authorization = null;
       config.headers['authorization-refresh'] = null;
       return config;
     }
 
     if (config.headers && token) {
-      const { accessToken, refreshToken } = JSON.parse(token);
-      config.headers.authorization = `Bearer ${accessToken}`;
+      const accessToken = JSON.parse(token);
+      const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+      config.headers.Authorization = `Bearer ${accessToken}`;
       config.headers['authorization-refresh'] = `Bearer ${refreshToken}`;
       return config;
     }
@@ -46,12 +47,12 @@ api.interceptors.response.use(
     if (status === 401) {
       // if (error.response.data.message === "expired") {
         const originalRequest = config;
-        const refreshToken = await localStorage.getItem("refreshToken");
+        const refreshToken = await JSON.parse(localStorage.getItem("refreshToken"));
         // refresh 토큰 요청
         const { data } = await axios.post(
-          `http://localhost:8080`, // refresh 토큰 api 주소
+          `http://localhost:8080/api/team/join`, // refresh 토큰 api 주소
           {},
-          { headers: { 'authorization-refresh': `Bearer ${refreshToken}` } }
+          { headers: { 'Authorization-refresh': `Bearer ${refreshToken}` } }
         );
         // 새로운 토큰 저장
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =

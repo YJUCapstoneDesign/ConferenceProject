@@ -61,7 +61,6 @@ public class OAuthAttributes {
         return User.builder()
                 .platform(socialType.name())
                 .email(oauth2UserInfo.getEmail())
-                .nickname(oauth2UserInfo.getNickname())
                 .imageUrl(oauth2UserInfo.getProfileImageUrl())
                 .admin(UserRole.USER)
                 .build();

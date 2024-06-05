@@ -115,12 +115,12 @@ public class TeamService {
     }
 
     // 현재 참석된 참석자 리스트 조회하기 (참석자 리스트 보내기)
-    public List<String> getUsersNickname(Long teamId) {
+    public List<String> getUsersName(Long teamId) {
         Team team = getTeam(teamId);
 
         return team.getUserList()
                 .stream()
-                .map(User::getNickname)
+                .map(User::getName)
                 .toList();
     }
 }

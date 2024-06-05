@@ -12,10 +12,6 @@ public class GoogleOAuthUserInfo extends OAuthUserInfo {
         return String.valueOf(attributes.get("sub"));
     }
 
-    @Override
-    public String getNickname() {
-        return String.valueOf(attributes.get("name"));
-    }
 
     @Override
     public String getEmail() {

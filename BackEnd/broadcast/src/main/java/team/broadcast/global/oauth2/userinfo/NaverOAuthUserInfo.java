@@ -16,10 +16,6 @@ public class NaverOAuthUserInfo extends OAuthUserInfo {
         return String.valueOf(response.get("id"));
     }
 
-    @Override
-    public String getNickname() {
-        return String.valueOf(response.get("nickname"));
-    }
 
     @Override
     public String getEmail() {

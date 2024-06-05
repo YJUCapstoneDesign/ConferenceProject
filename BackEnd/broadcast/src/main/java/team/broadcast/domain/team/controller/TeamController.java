@@ -49,7 +49,7 @@ public class TeamController {
     @GetMapping("/user-list/{teamId}")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getUserList(@PathVariable Long teamId) {
-        return teamService.getUsersNickname(teamId);
+        return teamService.getUsersName(teamId);
     }
 
     // 팀 아이디로 삭제

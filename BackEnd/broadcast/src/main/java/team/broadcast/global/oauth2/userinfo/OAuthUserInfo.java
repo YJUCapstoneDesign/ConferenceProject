@@ -18,8 +18,6 @@ public abstract class OAuthUserInfo {
 
     public abstract String getId(); // 소셜 식별 값
 
-  public abstract String getNickname();
-
   public abstract String getEmail();
 
   public abstract String getProfileImageUrl();

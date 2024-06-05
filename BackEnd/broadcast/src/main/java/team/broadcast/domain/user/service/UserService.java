@@ -46,8 +46,6 @@ public class UserService {
 
         User newUser = User.builder()
                 .name(userDto.getUsername())
-                // 닉네임 같은 경우 초기에 랜덤한 길이의 문자열로 생성되도록 하였다.
-                .nickname(generateRandomName(15))
                 // 비밀번호를 암호화해서 저장
                 .pwd(passwordEncoder.encode(userDto.getPassword()))
                 .imageUrl(defaultImageAddress)
@@ -68,8 +66,6 @@ public class UserService {
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
         user.changeUserInfo(userDto.getUsername(),
-                userDto.getNickname(),
-                // 업데이트 할 때 암호화할 수 있도록 한다.
                 userDto.getPhone());
 
         userRepository.save(user);
@@ -127,11 +123,6 @@ public class UserService {
     public User findUserByEmail(String email) {
         return userRepository.findByEmail(email)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
-    }
-
-    // 지정한 수 만큼의 길이를 가지는 문자와 숫자로 구성된 랜덤한 이름을 생성
-    public String generateRandomName(int nameLength) {
-        return RandomStringUtils.random(nameLength, true, true);
     }
 
     @Transactional

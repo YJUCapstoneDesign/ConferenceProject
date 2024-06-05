@@ -18,11 +18,6 @@ public class KakaoOauthUserInfo extends OAuthUserInfo {
   }
 
   @Override
-  public String getNickname() {
-    return String.valueOf(profile.get("nickname"));
-  }
-
-  @Override
   public String getEmail() {
     return String.valueOf(account.get("email"));
   }

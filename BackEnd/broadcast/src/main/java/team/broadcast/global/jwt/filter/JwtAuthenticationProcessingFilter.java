@@ -43,6 +43,8 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
                 .filter(jwtService::isTokenValid)
                 .orElse(null);
 
+        log.info("received refresh token: {}", refreshToken);
+
         // 1. RefreshToken 있는 경우
         if (refreshToken != null) {
             checkRefreshTokenAndReIssueAccessToken(response, refreshToken);
@@ -72,7 +74,6 @@ public class JwtAuthenticationProcessingFilter extends OncePerRequestFilter {
 
     public void checkAccessTokenAndAuthentication(HttpServletRequest request, HttpServletResponse response,
                                                   FilterChain filterChain) throws ServletException, IOException {
-        log.info("accessToken header: {}", request.getHeader("Authorization"));
         jwtService.extractAccessToken(request)
                 .filter(jwtService::isTokenValid)
                 .flatMap(jwtService::extractEmail)

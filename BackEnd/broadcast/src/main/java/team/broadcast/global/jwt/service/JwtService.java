@@ -119,6 +119,7 @@ public class JwtService {
      * @return Returns true if this is a valid token, false otherwise.
      */
     public boolean isTokenValid(String token) {
+        log.info("token: {}", token);
         try {
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;

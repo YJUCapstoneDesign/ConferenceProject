@@ -68,6 +68,11 @@ const Navbar = () => {
                             </li>
                         )
                     }
+                    <li className='nav-item1'>
+                        <Link to="#">
+                            <img className='rounded-full w-10 h-10 object-cover' src="https://source.unsplash.com/random/?face" alt="avatar"/>
+                        </Link>
+                    </li>
                 </ul>
             </nav>
         </div>

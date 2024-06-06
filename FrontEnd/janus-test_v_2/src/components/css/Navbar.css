@@ -27,16 +27,22 @@
   cursor: pointer;
 }
 
-.header .navbar img {
+/* .header .navbar img {
   width: 250px;
   height: auto;
-}
+} */
 
 .header .nav-menu {
   display: flex;
 }
 
 .header .nav-item {
+  padding: 1rem;
+  padding-top: 23px;
+  font-weight: 500;
+}
+
+.header .nav-item1 {
   padding: 1rem;
   font-weight: 500;
 }
@@ -63,7 +69,7 @@
 }
 
 
-@media screen and (max-width:940px) {
+@media screen and (max-width:600px) {
   .header {
       max-width: 100%;
       background-color: rgba(0,0,0,.9);
@@ -99,6 +105,6 @@
   }
 
   .header .navbar img {
-      width: 150px;
+      display: none;
   }
 }

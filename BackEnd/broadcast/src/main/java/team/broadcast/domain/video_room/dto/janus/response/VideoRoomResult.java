@@ -13,4 +13,8 @@ public class VideoRoomResult {
     private Boolean exists;
     private Integer error_code;
     private String error;
+
+    public boolean isExists() {
+        return exists;
+    }
 }

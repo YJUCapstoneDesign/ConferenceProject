@@ -5,11 +5,14 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreateRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomExistRequest;
+import team.broadcast.domain.video_room.dto.janus.response.RoomResponse;
 import team.broadcast.domain.video_room.service.RoomService;
+import team.broadcast.global.login.user.CustomUserDetails;
 
 @Slf4j
 @RestController
@@ -23,10 +26,12 @@ public class RoomController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "방 조회",
             description = "방이 있는지 조회하는 코드로 있으면 해당 방아이디를 없으면 null 반환")
-    public Long exist(@PathVariable Long teamId) {
+    public RoomResponse exist(@PathVariable Long teamId,
+                              @AuthenticationPrincipal CustomUserDetails user) {
         try {
             VideoRoomExistRequest existRequest = VideoRoomExistRequest.create(teamId);
-            return roomService.existRoom(existRequest);
+            Long existedRoom = roomService.existRoom(existRequest);
+            return new RoomResponse(existedRoom, user.getUsername());
         } catch (Exception e) {
             throw new IllegalArgumentException("방 조회에 실패 하였습니다.");
         }

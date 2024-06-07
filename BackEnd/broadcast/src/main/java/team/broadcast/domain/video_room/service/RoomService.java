@@ -71,7 +71,7 @@ public class RoomService {
         VideoRoomResult response = block.getResponse();
 
         // 방이 없으면 null 반환
-        if (!response.getExists()) {
+        if (!response.isExists()) {
             return null;
         }
 

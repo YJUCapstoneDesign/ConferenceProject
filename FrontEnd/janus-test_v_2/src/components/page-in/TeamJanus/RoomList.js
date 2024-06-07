@@ -1,22 +1,22 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import api from "../api"; 
+import api from "../api";
 
 function RoomList(props) {
   const [error, setError] = useState('');
-  const [roomId, setRoomId] = useState(null); 
+  const [roomId, setRoomId] = useState(null);
 
-  const CheckRoom = async (event) => {
+  const teamId = props.teamNumber;
+
+  const CreateRoom = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.get(`/exist/${props.teamNumber}`);
-
-      const { existedRoom: roomId } = response.data;
-      setRoomId(roomId);
-      setError('');
-
+      const response = await api.post(`http://localhost:8080/api/room/create/${teamId}`, {
+        teamId, 
+      });
+      setRoomId(response.data); 
+      alert("방 생성 성공");
     } catch (err) {
-      setError("방 조회 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
+      setError("방 생성 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
     }
   };
 
@@ -28,18 +28,13 @@ function RoomList(props) {
             <h3 className="font-semibold text-base text-indigo-500">RoomList</h3>
           </div>
           <div className="relative w-full max-w-full flex-grow flex-1 text-right">
-            <button
-              className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
-              type="button"
-              onClick={CheckRoom}
-            >
-              Check
-            </button>
+            {/* CheckRoom 버튼 삭제 (필요하지 않은 경우) */}
           </div>
           <div className="relative w-32 max-w-full flex-grow flex-1 text-center">
             <button
               className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
               type="button"
+              onClick={CreateRoom}
             >
               Create
             </button>
@@ -60,13 +55,11 @@ function RoomList(props) {
           <tbody>
             <tr>
               <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
-                {roomId ? `Room ID: ${roomId}` : 'No room found'}
               </th>
             </tr>
             {error && (
               <tr>
                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-red-500">
-                  {error}
                 </th>
               </tr>
             )}

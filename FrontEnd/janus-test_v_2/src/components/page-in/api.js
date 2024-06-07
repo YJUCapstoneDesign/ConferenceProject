@@ -14,15 +14,16 @@ api.interceptors.request.use(
     //요청시 AccessToken 계속 보내주기
     if (!token) {
       config.headers.Authorization = null;
-      config.headers['authorization-refresh'] = null;
+      // config.headers['authorization-refresh'] = null;
       return config;
     }
 
     if (config.headers && token) {
       const accessToken = JSON.parse(token);
-      const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+      // 요청마다 refresh token을 보내는 문제가 있었음.
+      // const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
       config.headers.Authorization = `Bearer ${accessToken}`;
-      config.headers['authorization-refresh'] = `Bearer ${refreshToken}`;
+      // config.headers['authorization-refresh'] = `Bearer ${refreshToken}`;
       return config;
     }
     console.log("request start", config);
@@ -52,7 +53,7 @@ api.interceptors.response.use(
         const { data } = await axios.post(
           `http://localhost:8080/api/team/join`, // refresh 토큰 api 주소
           {},
-          { headers: { 'Authorization-refresh': `Bearer ${refreshToken}` } }
+          { headers: { 'authorization-refresh': `Bearer ${refreshToken}` } }
         );
         // 새로운 토큰 저장
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =

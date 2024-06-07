@@ -8,11 +8,14 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
+import team.broadcast.domain.team.exception.TeamErrorCode;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreateRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomExistRequest;
 import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResponse;
 import team.broadcast.domain.video_room.dto.janus.response.VideoRoomResult;
+import team.broadcast.domain.video_room.exception.RoomErrorCode;
+import team.broadcast.global.exception.CustomException;
 
 @Slf4j
 @Service
@@ -72,7 +75,7 @@ public class RoomService {
 
         // 방이 없으면 null 반환
         if (!response.isExists()) {
-            return null;
+            throw new CustomException(RoomErrorCode.ROOM_NOT_FOUND);
         }
 
         return response.getRoom();

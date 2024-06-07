@@ -4,9 +4,10 @@ import "../css/JanusTeam.css"
 import UserList from "./TeamJanus/UserList";
 import BeforeLog from "./TeamJanus/BeforeLog";
 import Tutorial from "./TeamJanus/Tutorial";
-import Undefined from "./TeamJanus/Undefined";
 import Calendarbox from "./TeamJanus/Calendarbox";
 import { useParams } from 'react-router-dom';
+import RoomList from "./TeamJanus/RoomList";
+
 
 function JanusTeam() {
   const { teamNumber } = useParams();
@@ -14,7 +15,7 @@ function JanusTeam() {
   return (
     <div className="wrap bg-slate-50" id="wrap">
       <div className="side-box">
-        <JanusSide teamNumber={teamNumber} />
+        <JanusSide/>   
       </div>
       <section className="text-gray-600 body-font w-full">
           <div className="container px-5 py-5 mx-auto max-w-full">
@@ -29,7 +30,7 @@ function JanusTeam() {
                 <BeforeLog/>
                 <Tutorial/>
                 <UserList/>
-                <Undefined/>
+                <RoomList teamNumber={teamNumber}/>
             </div>
           </div>
         </section>

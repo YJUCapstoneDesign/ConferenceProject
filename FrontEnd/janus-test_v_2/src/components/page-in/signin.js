@@ -23,7 +23,7 @@ const Signin = () => {
             localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
             navigate("/");
         } catch (err) {
-            setError("로그인 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
+            setError("로그인 실패: " + (err.response?.data?.reason || "알 수 없는 오류"));
         }
     };
 

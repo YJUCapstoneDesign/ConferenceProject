@@ -1,5 +1,4 @@
 const React = require("react");
-const { default: VideoPage } = require("./components/pages/VideoPage");
 const { default: MindmapPage } = require("./components/mindmap/node");
 const { default: BoardPage } = require("./components/whiteboard/board");
 const { default: SwotPage } = require("./components/brainstorming/swot/canvas");
@@ -17,11 +16,12 @@ const { default: SelectRoom} = require("./components/page-in/SelectRoom");
 const { default: CrazyPage } = require("./components/crazyeight/crazy");
 const { default: AboutIn } = require("./components/page-in/AboutIn");
 const { default: Mypage } = require("./components/page-in/Mypage");
+const { default: VideoComponent } = require("./components/videoroom/VideoComponent");
 
 const App = () => {
   return (
         <Routes>
-          <Route path="/video" element={<VideoPage />} />
+          <Route path="/video" element={<VideoComponent />} />
           <Route path="/mindmap" element={<MindmapPage />} />
           <Route path="/whiteboard" element={<BoardPage />} />
           <Route path="/swot" element={<SwotPage />} />

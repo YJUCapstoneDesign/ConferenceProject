@@ -24,6 +24,7 @@ const Navbar = () => {
                 }
             )
             if(response.status === 200) {
+                alert("로그아웃 성공")
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
                 navigate("/signin");

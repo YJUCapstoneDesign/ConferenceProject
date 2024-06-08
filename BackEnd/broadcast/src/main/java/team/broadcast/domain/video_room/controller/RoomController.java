@@ -27,44 +27,31 @@ public class RoomController {
     @Operation(summary = "방 조회",
             description = "방이 있는지 조회하는 코드로 있으면 해당 방아이디를 없으면 null 반환")
     public RoomResponse exist(@PathVariable Long teamId,
-                              @AuthenticationPrincipal CustomUserDetails user) {
-        try {
+                              @AuthenticationPrincipal CustomUserDetails user) throws Exception {
             VideoRoomExistRequest existRequest = VideoRoomExistRequest.create(teamId);
             Long existedRoom = roomService.existRoom(existRequest);
             return new RoomResponse(existedRoom, user.getUsername());
-        } catch (Exception e) {
-            throw new IllegalArgumentException("방 조회에 실패 하였습니다.");
-        }
     }
 
     @PostMapping("/create/{teamId}")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "방 생성",
             description = "방 생성은 버튼을 눌렀을 때 할 수 있도록 한다.")
-    public Long createRoom(@PathVariable Long teamId) {
-        try {
+    public Long createRoom(@PathVariable Long teamId) throws Exception {
             VideoRoomCreateRequest createRequest = VideoRoomCreateRequest.builder()
                     .room(teamId)
                     .display(teamId.toString())
                     .build();
 
             return roomService.createRoom(createRequest);
-
-        } catch (Exception e) {
-            throw new IllegalArgumentException("방 생성에 실패 했습니다.");
-        }
     }
 
     @DeleteMapping("/delete/{teamId}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "방 삭제",
             description = "방 삭제는 아이디로 삭제 된다.")
-    public void deleteRoom(@PathVariable Long teamId, @RequestBody String secret) {
-        try {
+    public void deleteRoom(@PathVariable Long teamId, @RequestBody String secret) throws Exception {
             VideoRoomDestroyRequest videoRoomDestroyRequest = VideoRoomDestroyRequest.create(teamId, secret);
             roomService.destroyRoom(videoRoomDestroyRequest);
-        } catch (Exception e) {
-            throw new IllegalArgumentException("방 삭제에 실패 했습니다.");
-        }
     }
 }

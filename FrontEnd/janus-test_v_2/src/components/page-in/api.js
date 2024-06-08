@@ -50,8 +50,8 @@ api.interceptors.response.use(
         const originalRequest = config;
         const refreshToken = await JSON.parse(localStorage.getItem("refreshToken"));
         // refresh 토큰 요청
-        const { data } = await axios.post(
-          `http://localhost:8080/api/team/join`, // refresh 토큰 api 주소
+        const { data } = await axios.get(
+          `http://localhost:8080/api/refresh-token`, // refresh 토큰 api 주소
           {},
           { headers: { 'authorization-refresh': `Bearer ${refreshToken}` } }
         );

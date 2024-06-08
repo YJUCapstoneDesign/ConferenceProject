@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 import team.broadcast.domain.janus.exception.JanusError;
 import team.broadcast.domain.janus.service.JanusClient;
-import team.broadcast.domain.team.exception.TeamErrorCode;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomCreateRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomDestroyRequest;
 import team.broadcast.domain.video_room.dto.janus.request.VideoRoomExistRequest;

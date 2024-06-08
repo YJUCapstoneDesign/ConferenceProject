@@ -1,11 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import api from "../api";
 
 function RoomList(props) {
   const [error, setError] = useState('');
   const [roomId, setRoomId] = useState(null);
+  const [userName, setUserName] = useState(null);
 
   const teamId = props.teamNumber;
+
+  useEffect(() => {
+    const CheckRoom = async () => {
+      try {
+        const response = await api.get(`http://localhost:8080/api/room/exist/${teamId}`);
+        const { roomId, userName } = response.data;
+        setRoomId(roomId);
+        setUserName(userName);
+      } catch (err) {
+        setError("방 조회 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
+      }
+    };
+    CheckRoom();
+  }, [teamId]); 
 
   const CreateRoom = async (event) => {
     event.preventDefault();
@@ -13,7 +28,8 @@ function RoomList(props) {
       const response = await api.post(`http://localhost:8080/api/room/create/${teamId}`, {
         teamId, 
       });
-      setRoomId(response.data); 
+      const { roomId } = response.data;
+      setRoomId(roomId);
       alert("방 생성 성공");
     } catch (err) {
       setError("방 생성 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
@@ -27,10 +43,7 @@ function RoomList(props) {
           <div className="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 className="font-semibold text-base text-indigo-500">RoomList</h3>
           </div>
-          <div className="relative w-full max-w-full flex-grow flex-1 text-right">
-            {/* CheckRoom 버튼 삭제 (필요하지 않은 경우) */}
-          </div>
-          <div className="relative w-32 max-w-full flex-grow flex-1 text-center">
+          <div className="relative w-32 max-w-full flex-grow flex-1 text-right">
             <button
               className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
               type="button"
@@ -53,13 +66,16 @@ function RoomList(props) {
           </thead>
 
           <tbody>
-            <tr>
-              <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
-              </th>
-            </tr>
-            {error && (
+            {roomId ? (
               <tr>
-                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-red-500">
+                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 pl-8 text-indigo-600">
+                  Room ID: {roomId}
+                </th>
+              </tr>
+            ) : (
+              <tr>
+                <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 pl-8">
+                  방을 찾을 수 없습니다.
                 </th>
               </tr>
             )}

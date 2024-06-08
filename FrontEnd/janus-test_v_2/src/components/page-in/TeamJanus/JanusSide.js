@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 function JanusSide({ teamNumber }) {
 
     const OpenPopupMind = () => {
-        window.open("/mindmap","마인드 맵","width=900px,height=600px");
+        window.open(`/mindmap/${teamNumber}`,"마인드 맵","width=900px,height=600px");
     }
 
     const OpenPopupWhite = () => {

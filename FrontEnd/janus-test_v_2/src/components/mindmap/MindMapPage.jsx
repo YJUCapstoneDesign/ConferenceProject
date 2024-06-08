@@ -5,12 +5,12 @@ import ReactFlow, {
   Background,
   useNodesState,
   useEdgesState,
-  addEdge,
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import { uploadToS3 } from './FileUploadDownload';
 import { listUploadedFiles, downloadFileFromS3 } from './FileUploadDownload'; 
+import { useParams } from 'react-router-dom';
 
 let initialNodes = [
   { id: '1', position: { x: 300, y: 300 }, data: { label: '1' } },
@@ -19,7 +19,10 @@ let initialNodes = [
 
 let initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
-export default function App() {
+export default function MindMapPage() {
+
+  const {teamNumber} = useParams();
+
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
   const [socketData, setSocketData] = useState();
@@ -39,7 +42,7 @@ export default function App() {
 
     const mindMapDataJson = JSON.stringify(mindMapData);
 
-    const uploadResult = await uploadToS3(mindMapDataJson, 'mind');
+    const uploadResult = await uploadToS3(mindMapDataJson, 'mind', teamNumber);
 
     setFileList([]); //리스트 초기화
 

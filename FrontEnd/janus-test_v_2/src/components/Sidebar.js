@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Sidebar() {
+function Sidebar({teamNumber}) {
     
     const OpenPopupMind = () => {
-        window.open("/mindmap","마인드 맵","width=900px,height=600px");
+        window.open(`/mindmap/${teamNumber}`,"마인드 맵","width=900px,height=600px");
     }
 
     const OpenPopupWhite = () => {

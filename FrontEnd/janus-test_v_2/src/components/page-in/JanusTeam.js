@@ -15,7 +15,7 @@ function JanusTeam() {
   return (
     <div className="wrap bg-slate-50" id="wrap">
       <div className="side-box">
-        <JanusSide/>   
+        <JanusSide teamNumber={teamNumber}/>   
       </div>
       <section className="text-gray-600 body-font w-full">
           <div className="container px-5 py-5 mx-auto max-w-full">

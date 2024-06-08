@@ -1,5 +1,4 @@
 const React = require("react");
-const { default: MindmapPage } = require("./components/mindmap/node");
 const { default: BoardPage } = require("./components/whiteboard/board");
 const { default: SwotPage } = require("./components/brainstorming/swot/canvas");
 const { default: HatPage } = require("./components/brainstorming/hat/canvas");
@@ -17,12 +16,13 @@ const { default: CrazyPage } = require("./components/crazyeight/crazy");
 const { default: AboutIn } = require("./components/page-in/AboutIn");
 const { default: Mypage } = require("./components/page-in/Mypage");
 const { default: VideoComponent } = require("./components/videoroom/VideoComponent");
+const { default: MindMapPage } = require("./components/mindmap/MindMapPage");
 
 const App = () => {
   return (
         <Routes>
           <Route path="/video" element={<VideoComponent />} />
-          <Route path="/mindmap" element={<MindmapPage />} />
+          <Route path='/mindmap/:teamNumber' element={<MindMapPage/>} />
           <Route path="/whiteboard" element={<BoardPage />} />
           <Route path="/swot" element={<SwotPage />} />
           <Route path="/hat" element={<HatPage />} />

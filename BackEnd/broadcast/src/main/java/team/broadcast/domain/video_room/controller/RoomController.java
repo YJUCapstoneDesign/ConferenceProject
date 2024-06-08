@@ -41,9 +41,13 @@ public class RoomController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "방 생성",
             description = "방 생성은 버튼을 눌렀을 때 할 수 있도록 한다.")
-    public Long createRoom(@PathVariable Long teamId, @RequestBody VideoRoomCreateRequest createRequest) {
+    public Long createRoom(@PathVariable Long teamId) {
         try {
-            createRequest.setRoom(teamId);
+            VideoRoomCreateRequest createRequest = VideoRoomCreateRequest.builder()
+                    .room(teamId)
+                    .display(teamId.toString())
+                    .build();
+
             return roomService.createRoom(createRequest);
 
         } catch (Exception e) {

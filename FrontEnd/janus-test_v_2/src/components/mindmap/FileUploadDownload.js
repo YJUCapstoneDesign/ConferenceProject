@@ -3,7 +3,7 @@ import { S3Client, ListObjectsV2Command, DeleteObjectCommand, PutObjectCommand,L
 
 
 
-export async function uploadToS3(mindMapDataJson, folderName) {
+export async function uploadToS3(mindMapDataJson, folderName, teamId) {
   // AWS S3 관련 설정
   const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
   const region = process.env.REACT_APP_AWS_REGION;
@@ -28,13 +28,13 @@ export async function uploadToS3(mindMapDataJson, folderName) {
   const seconds = String(now.getSeconds()).padStart(2, '0');
 
   const formattedDate = `${year}${"년"}${month}${"월"}${day}${"일"}${hours}${"시"}${minutes}${"분"}${seconds}${"초"}`;
-  const fileName = `${formattedDate}`;
+
 
   try {
     // 새 파일 업로드
     const uploadParams = {
       Bucket: bucketName,
-      Key: folderName ? `${folderName}/${formattedDate}mindmap.json` : 'mindmap.json',
+      Key: folderName ? `${teamId}/${formattedDate}mindmap.json` : 'mindmap.json',
       Body: mindMapDataJson,
       ACL: 'public-read',
     };

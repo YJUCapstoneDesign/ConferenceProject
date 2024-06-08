@@ -58,10 +58,8 @@ api.interceptors.response.use(
         // 새로운 토큰 저장
         const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
           data;
-        await localStorage.multiSet([
-          ["accessToken", newAccessToken],
-          ["refreshToken", newRefreshToken],
-        ]);
+        localStorage.setItem("accessToken", newAccessToken);
+        localStorage.setItem("refreshToken", newRefreshToken);
         originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
         // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
         return axios(originalRequest);

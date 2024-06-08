@@ -23,9 +23,9 @@ const App = () => {
         <Routes>
           <Route path="/video" element={<VideoComponent />} />
           <Route path='/mindmap/:teamNumber' element={<MindMapPage/>} />
-          <Route path="/whiteboard" element={<BoardPage />} />
-          <Route path="/swot" element={<SwotPage />} />
-          <Route path="/hat" element={<HatPage />} />
+          <Route path="/whiteboard/:teamNumber" element={<BoardPage />} />
+          <Route path="/swot/:teamNumber" element={<SwotPage />} />
+          <Route path="/hat/:teamNumber" element={<HatPage />} />
           <Route path="/" element={<Scrollspy />} />
           <Route path="/Pass" element={<PassWord />} />
           <Route path="/OurService" element={<OurService />} />
@@ -35,7 +35,7 @@ const App = () => {
           <Route path='/JanusTeam/:teamNumber' element={<JanusTeam/>} />
           <Route path='/Entrance' element={<EntranceRoom/>} />
           <Route path='/Select' element={<SelectRoom/>} />
-          <Route path='/Crazy' element={<CrazyPage/>} />
+          <Route path='/Crazy/:teamNumber' element={<CrazyPage/>} />
           <Route path='/AboutIn' element={<AboutIn/>} />
           <Route path='/Mypage' element={<Mypage/>}/>
         </Routes>

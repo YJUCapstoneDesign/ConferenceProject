@@ -348,6 +348,8 @@ const VideoComponent = (props) => {
                   " ::: Got a cleanup notification: we are unpublished now :::"
                 );
                 mystream = null;
+
+                cleanupFeeds();
               },
             });
           },
@@ -539,6 +541,7 @@ const VideoComponent = (props) => {
 
           if (!on) {
             delete remoteFeed['remoteTracks'][mid];
+            disconnectFeed(remoteFeed);
             return;
           }
 

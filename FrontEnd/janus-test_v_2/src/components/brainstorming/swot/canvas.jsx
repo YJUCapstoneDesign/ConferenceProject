@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState, useEffect, useRef, useCallback } from "react";
 import './canvas.css';
 import Tile from "./tile/Tile";
 import HiddenLayer from "./layer/HiddenLayer";
@@ -46,19 +46,54 @@ export default function Canvas() {
       }; // empty tile
   })));
 
+  const ws = useRef(null);
+  const [socketData, setSocketData] = useState(null);
+
+  useEffect(() => {
+    ws.current = new WebSocket("ws://localhost:8080/app");
+    console.log("웹소켓 연결됨");
+    
+    ws.current.onmessage = (message) => {
+      setSocketData(JSON.parse(message.data));
+    };
+
+    return () => {
+      ws.current.close();
+    };
+  }, []);
+
+  useEffect(() => {
+    if (socketData) {
+      setTiles(socketData.tiles);
+    }
+  }, [socketData]);
+
+  // 웹소켓 데이터 전송
+  const sendWebSocketData = useCallback((data) => {
+    if (ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(JSON.stringify(data));
+    } else {
+      ws.current.onopen = () => {
+        ws.current.send(JSON.stringify(data));
+      };
+    }
+  }, []);
+
+  // title 이동
   const moveCell = (fromRow, fromCol, toRow, toCol, updatedArea) => {
     setTiles((prevTiles) => {
       const newTiles = [...prevTiles];
       const temp = newTiles[toRow][toCol];
       newTiles[toRow][toCol] = newTiles[fromRow][fromCol];
       newTiles[fromRow][fromCol] = temp;
+      newTiles[toRow][toCol].area = updatedArea;
 
-			newTiles[toRow][toCol].area = updatedArea;
+      sendWebSocketData({ tiles: newTiles });
       return newTiles;
     });
   };
 
-	// tile 업데이트
+  // title 업데이트
   const updateTile = (row, col, newTitle, newContent) => {
     setTiles((prevTiles) => {
       const newTiles = [...prevTiles];
@@ -67,11 +102,13 @@ export default function Canvas() {
         title: newTitle,
         content: newContent,
       };
+
+      sendWebSocketData({ tiles: newTiles });
       return newTiles;
     });
   };
 
-	// tile 삭제
+  // title 삭제
   const deleteTile = (row, col) => {
     setTiles((prevTiles) => {
       const newTiles = [...prevTiles];
@@ -80,13 +117,15 @@ export default function Canvas() {
         content: "",
         area: 0,
       };
+
+      sendWebSocketData({ tiles: newTiles });
       return newTiles;
     });
   };
 
   return (
     <Fragment>
-      <div className="canvas flex flex-wrap h-full w-full text-center text-white font-bold cursor-auto">
+      <div className="canvas flex flex-wrap h-full w-full text-center text-white font-bold cursor-auto relative">
         {TILES.map((tile) => (
           <Tile
             key={tile.id}
@@ -99,8 +138,8 @@ export default function Canvas() {
           <HiddenLayer list={tiles} moveCell={moveCell} updateTile={updateTile} deleteTile={deleteTile} />
         </DndProvider>
       </div>
-      <button onClick={() => setOnModal(true)} className="border-gray-400 border-2 p-4">Add</button>
-      {onModal && <AddModal onClose={() => setOnModal(false)} setDataList={setTiles} />}
+      <button onClick={() => setOnModal(true)} className="add-button">Add</button>
+      {onModal && <AddModal onClose={() => setOnModal(false)} setDataList={setTiles} sendWebSocketData={sendWebSocketData} />}
     </Fragment>
   );
 }

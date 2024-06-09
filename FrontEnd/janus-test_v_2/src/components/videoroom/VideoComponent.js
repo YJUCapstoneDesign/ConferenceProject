@@ -64,9 +64,6 @@ const VideoComponent = (props) => {
       e.returnValue = "";
     });
 
-    window.addEventListener("unload", cleanupFeeds);
-
-
     let servers = [
       // process.env.REACT_APP_JANUS_GATEWAY_HTTP,
       process.env.REACT_APP_JANUS_GATEWAY_HTTPS,
@@ -348,8 +345,6 @@ const VideoComponent = (props) => {
                   " ::: Got a cleanup notification: we are unpublished now :::"
                 );
                 mystream = null;
-
-                cleanupFeeds();
               },
             });
           },
@@ -541,7 +536,6 @@ const VideoComponent = (props) => {
 
           if (!on) {
             delete remoteFeed['remoteTracks'][mid];
-            disconnectFeed(remoteFeed);
             return;
           }
 
@@ -633,19 +627,10 @@ const VideoComponent = (props) => {
           // 원격피드 끊기는 경우 처리
           console.log("다른 사용자 나감 ㅇㅇㅇ");
           disconnectFeed(remoteFeed);
+
+          remoteFeed.detach();
         },
       });
-    }
-
-    function cleanupFeeds() {
-      // Cleanup logic for feeds on unload or component unmount
-      feeds.forEach(feed => {
-        disconnectFeed(feed);
-        if (feed.pluginHandle) {
-          feed.pluginHandle.detach();
-        }
-      });
-      setFeeds([]);
     }
 
     // Helper to parse query string

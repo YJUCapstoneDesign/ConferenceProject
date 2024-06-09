@@ -15,7 +15,7 @@ const useReference = () => {
 };
 // const { teamNumber } = useParams();
 // let myroom = teamNumber;
-let myroom = 12341234; 
+let myroom = 1234; 
 let sfutest = null;
 let username = "username-" + Janus.randomString(5); // 임시 유저네임
 let receivedFileChunk = {};

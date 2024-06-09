@@ -21,7 +21,7 @@ const { default: MindMapPage } = require("./components/mindmap/MindMapPage");
 const App = () => {
   return (
         <Routes>
-          <Route path="/video" element={<VideoComponent />} />
+          <Route path="/video/:teamNumber" element={<VideoComponent />} />
           <Route path='/mindmap/:teamNumber' element={<MindMapPage/>} />
           <Route path="/whiteboard/:teamNumber" element={<BoardPage />} />
           <Route path="/swot/:teamNumber" element={<SwotPage />} />

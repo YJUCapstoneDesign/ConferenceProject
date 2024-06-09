@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import api from "../api";
 
 function RoomList(props) {
@@ -45,7 +46,7 @@ function RoomList(props) {
           </div>
           <div className="relative w-32 max-w-full flex-grow flex-1 text-right">
             <button
-              className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mb-1 ease-linear transition-all duration-150"
+              className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mb-1 ease-linear transition-all duration-150 mr-5"
               type="button"
               onClick={CreateRoom}
             >
@@ -71,6 +72,14 @@ function RoomList(props) {
                 <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 pl-8 text-indigo-600">
                   Room ID: {roomId}
                 </th>
+                <td>
+                  <Link
+                    to={`/video/${roomId}`}
+                    className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded-2xl outline-none focus:outline-none mb-1 ease-linear transition-all duration-150 mt-3 ml-24"
+                  >
+                    Enter
+                  </Link>
+                </td>
               </tr>
             ) : (
               <tr>

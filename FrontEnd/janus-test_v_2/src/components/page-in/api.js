@@ -41,25 +41,28 @@ api.interceptors.response.use(
     return response;
   },
   async (error) => {
+    console.log("error", error);
     const {
       config,
-      response: { status },
-    } = error;
+      response: {status},
+    } = await error;
     if (status === 401) {
       // if (error.response.data.message === "expired") {
         const originalRequest = config;
         const refreshToken = await JSON.parse(localStorage.getItem("refreshToken"));
         // refresh 토큰 요청
-        const { data } = await axios.get(
+        const response = await axios.get(
           `http://localhost:8080/api/refresh-token`, // refresh 토큰 api 주소
-          {},
           { headers: { 'authorization-refresh': `Bearer ${refreshToken}` } }
         );
         // 새로운 토큰 저장
-        const { accessToken: newAccessToken, refreshToken: newRefreshToken } =
-          data;
-        localStorage.setItem("accessToken", newAccessToken);
-        localStorage.setItem("refreshToken", newRefreshToken);
+        const newAccessToken = response.headers['authorization'];
+        const newRefreshToken = response.headers['authorization-refresh'];
+        if (newAccessToken === null || newRefreshToken === null) {
+          return Promise.reject(error);
+        }
+        localStorage.setItem("accessToken", JSON.stringify(newAccessToken));
+        localStorage.setItem("refreshToken", JSON.stringify(newRefreshToken));
         originalRequest.headers.authorization = `Bearer ${newAccessToken}`;
         // 401로 요청 실패했던 요청 새로운 accessToken으로 재요청
         return axios(originalRequest);

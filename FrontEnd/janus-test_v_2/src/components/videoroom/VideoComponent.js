@@ -6,20 +6,13 @@ import './VideoComponent.css';
 import Sidebar from "../Sidebar";
 import Janusbutton from "../janusbutton";
 import Chatting from "./chatting/chatting";
-// import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 
 const useReference = () => {
   const [reference, setReference] = useState(() => createRef());
   return reference;
 };
-// const { teamNumber } = useParams();
-// let myroom = teamNumber;
-let myroom = 1234; 
-let sfutest = null;
-let username = "username-" + Janus.randomString(5); // 임시 유저네임
-let receivedFileChunk = {};
-let localTracks = {};
 
 const VideoComponent = (props) => {
   const [mainStream, setMainStream] = useState({});
@@ -31,6 +24,14 @@ const VideoComponent = (props) => {
   const [activeSpeaker, setActiveSpeaker] = useState(false);
   const [activeSharing, setActiveSharing] = useState(false);
   const [receiveFile, setReceiveFile] = useState(null);
+
+  const { teamNumber } = useParams();
+  let myroom = teamNumber;
+  // let myroom = 1234; 
+  let sfutest = null;
+  let username = "username-" + Janus.randomString(5); // 임시 유저네임
+  let receivedFileChunk = {};
+  let localTracks = {};
 
   const connectFeed = (feed) => {
     setFeeds((prevFeeds) => [...prevFeeds, feed]);

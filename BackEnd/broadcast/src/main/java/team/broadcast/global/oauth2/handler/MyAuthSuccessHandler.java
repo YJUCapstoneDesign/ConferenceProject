@@ -5,9 +5,11 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.oauth2.CustomOAuth2User;
 
@@ -20,6 +22,9 @@ import java.io.IOException;
 public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
+
+    @Value("${client.success-url}")
+    private String successUrl;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -44,12 +49,16 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
         if (userRefreshToken != null) {
             log.info("User RefreshToken={}", userRefreshToken);
             jwtService.sendAccessToken(response, accessToken);
-            return;
+        } else {
+            String refreshToken = jwtService.generateRefreshToken();
+            response.addHeader(jwtService.getRefreshTokenHeader(), "Bearer " + refreshToken);
+            jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
+            jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
         }
 
-        String refreshToken = jwtService.generateRefreshToken();
-        response.addHeader(jwtService.getRefreshTokenHeader(), "Bearer " + refreshToken);
-        jwtService.sendAccessTokenAndRefreshToken(response, accessToken, refreshToken);
-        jwtService.updateRefreshToken(oAuth2User.getEmail(), refreshToken);
+        String targetUri = UriComponentsBuilder.fromUriString(successUrl)
+                .build().toUriString();
+
+        response.sendRedirect(targetUri);
     }
 }

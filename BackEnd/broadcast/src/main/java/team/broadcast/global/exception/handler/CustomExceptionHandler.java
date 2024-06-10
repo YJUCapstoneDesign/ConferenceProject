@@ -46,9 +46,8 @@ public class CustomExceptionHandler {
 
     // 500 error
     @ExceptionHandler({Exception.class})
-    public ResponseEntity<Object> handleAll(RuntimeException e) {
-        log.info(e.getClass().getName());
-        log.error("error", e);
+    public ResponseEntity<Object> handleAll(Exception e) {
+        log.error("error: {}", e.getMessage());
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

@@ -5,6 +5,7 @@ import HiddenLayer from "./layer/HiddenLayer";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import AddModal from "./modal/AddModal";
+import { useParams } from "react-router-dom";
 
 const SIZE = 4;
 
@@ -36,6 +37,9 @@ const TILES = [
 ];
 
 export default function Canvas() {
+
+  const { teamNumber } = useParams();
+
   const [onModal, setOnModal] = useState(false);
   const [tiles, setTiles] = useState(Array.from({ length: SIZE * 2 }, 
     () => Array.from({ length: SIZE * 2 }, () => {
@@ -50,11 +54,11 @@ export default function Canvas() {
   const [socketData, setSocketData] = useState(null);
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080/app");
+    ws.current = new WebSocket("ws://localhost:8080/swot");
     console.log("웹소켓 연결됨");
     
     ws.current.onmessage = (message) => {
-      setSocketData(JSON.parse(message.data));
+      setSocketData(JSON.parse(message.data).data);
     };
 
     return () => {
@@ -70,11 +74,15 @@ export default function Canvas() {
 
   // 웹소켓 데이터 전송
   const sendWebSocketData = useCallback((data) => {
+    const sendData = {
+      id: parseInt(teamNumber),
+      data,
+    }
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify(data));
+      ws.current.send(JSON.stringify(sendData));
     } else {
       ws.current.onopen = () => {
-        ws.current.send(JSON.stringify(data));
+        ws.current.send(JSON.stringify(sendData));
       };
     }
   }, []);

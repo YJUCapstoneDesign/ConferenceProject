@@ -101,7 +101,7 @@ export default function MindMapPage() {
 
   useEffect(() => {
     if (socketData !== undefined) {
-      const parsedSocketData = JSON.parse(socketData);
+      const parsedSocketData = JSON.parse(socketData).data;
       
       setNodes(parsedSocketData.node);
       setEdges(parsedSocketData.edge);
@@ -109,11 +109,15 @@ export default function MindMapPage() {
   }, [socketData]);
 
   const sendWebSocketData = useCallback((data) => {
+    const sendData = {
+      id: parseInt(teamNumber),
+      data,
+    }
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
-      ws.current.send(JSON.stringify(data));
+      ws.current.send(JSON.stringify(sendData));
     } else {
       ws.current.onopen = () => {
-        ws.current.send(JSON.stringify(data));
+        ws.current.send(JSON.stringify(sendData));
       };
     }
   }, []);

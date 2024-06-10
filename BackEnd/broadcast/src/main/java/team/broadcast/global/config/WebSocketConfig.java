@@ -7,6 +7,7 @@ import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import team.broadcast.global.handler.HatHandler;
 import team.broadcast.global.handler.MindMapHandler;
+import team.broadcast.global.handler.SwotHandler;
 
 @Configuration
 @EnableWebSocket
@@ -15,6 +16,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     private final MindMapHandler mindMapHandler;
     private final HatHandler hatHandler;
+    private final SwotHandler swotHandler;
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
@@ -24,6 +26,10 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
         // 생각 모자 소켓 주소 /hat
         registry.addHandler(hatHandler, "/hat")
+                .setAllowedOrigins("*");
+
+        // swot 소켓 주소 /swot
+        registry.addHandler(swotHandler, "/swot")
                 .setAllowedOrigins("*");
     }
 }

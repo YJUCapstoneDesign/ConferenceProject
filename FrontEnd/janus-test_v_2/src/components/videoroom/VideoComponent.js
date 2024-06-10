@@ -14,6 +14,12 @@ const useReference = () => {
   return reference;
 };
 
+// let myroom = 1234; 
+let sfutest = null;
+let username = "username-" + Janus.randomString(5); // 임시 유저네임
+let receivedFileChunk = {};
+let localTracks = {};
+
 const VideoComponent = (props) => {
   const [mainStream, setMainStream] = useState({});
   const [feeds, setFeeds] = useState([]);
@@ -27,11 +33,6 @@ const VideoComponent = (props) => {
 
   const { teamNumber } = useParams();
   let myroom = teamNumber;
-  // let myroom = 1234; 
-  let sfutest = null;
-  let username = "username-" + Janus.randomString(5); // 임시 유저네임
-  let receivedFileChunk = {};
-  let localTracks = {};
 
   const connectFeed = (feed) => {
     setFeeds((prevFeeds) => [...prevFeeds, feed]);

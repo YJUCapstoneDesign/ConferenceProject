@@ -115,7 +115,7 @@ const Chatting = (props) => {
     <>
     <div className="transform scale-0 group-hover:scale-100 absolute 
                   transition duration-500 ease-in-out origin-bottom min-w-10 new_chat">
-      <div className="w-80 rounded-[7px] border bg-white border-blue-gray-200 chat_content">
+      <div className="w-80 rounded-[7px] border bg-white border-blue-gray-200 chat_content max-h-96 overflow-y-scroll">
         {renderChatData}  
       </div>
       {/*채팅 input*/}

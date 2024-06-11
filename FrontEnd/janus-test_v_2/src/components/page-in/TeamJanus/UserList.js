@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import api from "../api";
 
-function UserList() {
+function UserList(props) {
     const [userList, setUserList] = useState([]);
+
+    const teamId = props.teamNumber;
 
     const CheckedList = async () => {
       try {
-        const response = await api.get('/api/team/user-list');
+        const response = await api.get(`/api/team/user-list/${teamId}`);
         setUserList(response.data);
       } catch (error) {
         console.log("팀원이 없습니다.");

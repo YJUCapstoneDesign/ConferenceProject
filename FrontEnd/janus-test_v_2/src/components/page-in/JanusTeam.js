@@ -29,7 +29,7 @@ function JanusTeam() {
                 <Calendarbox/>
                 <BeforeLog/>
                 <Tutorial/>
-                <UserList/>
+                <UserList teamNumber={teamNumber} />
                 <RoomList teamNumber={teamNumber}/>
             </div>
           </div>

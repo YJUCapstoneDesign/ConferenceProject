@@ -391,7 +391,7 @@ const VideoComponent = (props) => {
             publishOwnFeed(false); // 오디오 꺼서 다시 보냄
           } else {
             // // 오디오 켜서 다시 보낼 수도 있음 publishOwnFeed(true);
-            alert("WebRTC error... " + JSON.stringify(error));
+            alert("WebRTC error...1 " + JSON.stringify(error));
             publishOwnFeed(true);
           }
         },
@@ -703,7 +703,7 @@ const VideoComponent = (props) => {
           sfutest.send({ message: { audio: true, video: true }, jsep: jsep });
         },
         error: function (error) {
-          alert("WebRTC error... " + JSON.stringify(error));
+          alert("WebRTC error...2 " + JSON.stringify(error));
         },
       });
     } else {
@@ -721,7 +721,7 @@ const VideoComponent = (props) => {
           sfutest.send({ message: { audio: true, video: true }, jsep: jsep });
         },
         error: function (error) {
-          alert("WebRTC error... " + JSON.stringify(error));
+          alert("WebRTC error...3 " + JSON.stringify(error));
         },
       });
     }

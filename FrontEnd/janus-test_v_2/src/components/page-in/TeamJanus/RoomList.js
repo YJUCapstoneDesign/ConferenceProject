@@ -12,7 +12,7 @@ function RoomList(props) {
   useEffect(() => {
     const CheckRoom = async () => {
       try {
-        const response = await api.get(`http://localhost:8080/api/room/exist/${teamId}`);
+        const response = await api.get(`/api/room/exist/${teamId}`);
         const { roomId, userName } = response.data;
         setRoomId(roomId);
         setUserName(userName);

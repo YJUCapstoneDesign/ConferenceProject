@@ -6,7 +6,7 @@ function UserList() {
 
     const CheckedList = async () => {
       try {
-        const response = await api.get('http://localhost:8080');
+        const response = await api.get('/api/team/user-list');
         setUserList(response.data);
       } catch (error) {
         console.log("팀원이 없습니다.");

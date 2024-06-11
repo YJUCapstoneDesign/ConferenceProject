@@ -68,11 +68,14 @@ module.exports = {
       directory: path.resolve(__dirname, 'dist')
     },
     proxy: [
-      {
-        context: ['/api'],
-        target: 'http://localhost:8080',
-        changeOrigin: true,
-      }
+        { 
+          context: ['/api'],
+          target: 'http://localhost:8080/api',
+          changeOrigin: true,
+          secure: false,
+          ws: true,
+          pathRewrite: { '^/api': '' }
+        }
     ],
     port: 3030,
     historyApiFallback: true,

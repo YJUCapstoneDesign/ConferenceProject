@@ -13,7 +13,7 @@ function PassWord() {
       const response = await api.post("http://localhost:8080/", { 
         email 
       });
-      navigate("/Login");
+      navigate("/signin");
     } catch (err) {
       setError(" 존재하지 않는 이메일 입니다! " + (err.response?.data?.message || "알 수 없는 오류"));
     }

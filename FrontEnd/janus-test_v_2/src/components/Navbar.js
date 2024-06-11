@@ -4,7 +4,7 @@ import { FaBars, FaTimes } from 'react-icons/fa'
 import { Link as RouterLink } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import './css/Navbar.css'
-import axios from 'axios';
+import api from '../components/page-in/api'
 
 const Navbar = () => {
     const [click, setClick] = useState(false)
@@ -16,7 +16,7 @@ const Navbar = () => {
 
     const logout = async (e) => {
         try {
-            const response = await axios.get("http://localhost:8080/api/logout",
+            const response = await api.get("/api/logout",
                 {
                     headers: {
                         "Authorization-refresh": RefreshToken

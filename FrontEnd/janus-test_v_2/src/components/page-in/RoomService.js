@@ -24,7 +24,7 @@ function RoomService() {
         teamId,
         password,
       };
-      const response = await api.post('http://localhost:8080/api/team/create', data);
+      const response = await api.post('/api/team/create', data);
       console.log(response.data);
       const teamNumber = response.data;
       navigate(`/JanusTeam/${teamNumber}`);

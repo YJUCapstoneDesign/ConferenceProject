@@ -11,7 +11,7 @@ function EntranceRoom() {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) {
       alert('로그인이 필요합니다.');
-      navigate('/Login');   
+      navigate('/signin');   
       return; 
     }}, []); 
 
@@ -24,7 +24,7 @@ function EntranceRoom() {
         teamId, 
         password, 
       };
-      const response = await api.post('http://localhost:8080/api/team/join', data);
+      const response = await api.post('/api/team/join', data);
       console.log(response.data);
       const teamNumber = response.data;
       alert('회의 입장 성공');

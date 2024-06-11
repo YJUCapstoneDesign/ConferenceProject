@@ -96,7 +96,7 @@ function Signup() {
   const signup = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post("http://localhost:8080/api/signup", {
+      const response = await api.post("/api/signup", {
         username,
         email,
         password,

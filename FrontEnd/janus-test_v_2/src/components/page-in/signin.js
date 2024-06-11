@@ -14,7 +14,7 @@ const Signin = () => {
     const login = async (event) => {
         event.preventDefault();
         try {
-            const response = await api.post("http://localhost:8080/api/login", {
+            const response = await api.post("/api/login", {
                 email,
                 password,
             });

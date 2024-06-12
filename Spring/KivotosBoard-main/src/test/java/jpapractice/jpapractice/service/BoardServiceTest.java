@@ -48,7 +48,6 @@ public class BoardServiceTest {
           .name("name" + i)
           .age(17)
           .email("testemail" + i + "@test.test")
-          .type(1)
           .build();
 
       Student saveStudent = memberRepository.saveStudent(student);

@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Entity
 @Table(name = "student_default_information")
@@ -23,6 +26,9 @@ public class Student {
   @Column(name = "student_email")
   private String email;
 
+  @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Club> clubs = new ArrayList<>();
+
   public void changeAge(int age) {
     this.age = age;
   }
@@ -34,38 +40,17 @@ public class Student {
   @Override
   public String toString() {
     return "Student [id=" + id + ", name=" + name + ", age=" + age
-        + ", email=" + email + "]";
+            + ", email=" + email + "]";
   }
 
   public Student() {
   }
 
   @Builder
-  public Student(Long id, String name, int age, String email, int type) {
+  public Student(Long id, String name, int age, String email) {
     this.id = id;
     this.name = name;
     this.age = age;
     this.email = email;
   }
-
-  // @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE)
-  // private List<Post> posts = new ArrayList<>();
-
-  // @OneToOne(mappedBy = "student", fetch = FetchType.LAZY)
-  // private Account account;
-
-  // @OneToOne(mappedBy = "student", fetch = FetchType.LAZY)
-  // private Momotalk momotalkAccount;
-
-  // @Override
-  // public String toString() {
-  // return "Student [id=" + id + ", name=" + name + ", age=" + age + ", email=" +
-  // email + ", school=" + school
-  // + ", club=" + club + ", position=" + position + ", type=" + type + ", posts="
-  // + posts + ", account="
-  // + account + ", momotalkAccount=" + momotalkAccount + "]";
-  // }
-  // toString 메서드를 오버라이딩 해서 필드 전체를 리턴시키면 객체타입 필드들에 의해서 select 문 연산이 시작된다.
-
-
 }

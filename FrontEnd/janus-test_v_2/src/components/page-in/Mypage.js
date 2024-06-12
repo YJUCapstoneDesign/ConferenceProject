@@ -1,6 +1,8 @@
 import React, { useRef, useState, useEffect } from "react";
 import api from './api';
 
+const baseURL = process.env.REACT_SPRING_SERVER
+
 function Mypage() {
   const profileImageRef = useRef(null);
   const [userInfo, setUserInfo] = useState({
@@ -15,11 +17,17 @@ function Mypage() {
     const fetchUserInfo = async () => {
       try {
         const response = await api.get("/api/profile");
+        
+        let imageUrl = response.data.imageUrl;
+        // "/로 시작하는 지 확인"
+        if (response.data.imageUrl.startsWith("/") === true) {
+            imageUrl = baseURL + response.data.imageUrl;
+        }
         setUserInfo({
           name: response.data.username,
           phone: response.data.phone,
           email: response.data.email,
-          profileImageUrl: response.data.imageUrl, 
+          profileImageUrl: imageUrl, 
         });
       } catch (error) {
         console.error("Error fetching user info:", error);

@@ -1,17 +1,45 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-scroll';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './css/Navbar.css';
 import api from '../components/page-in/api';
 
+const baseURL = process.env.REACT_SPRING_SERVER;
+
 const Navbar = () => {
   const [click, setClick] = useState(false);
+  const [image, setImage] = useState(null);
   const handleClick = () => setClick(!click);
   const closeMenu = () => setClick(false);
   const navigate = useNavigate();
   const LoginStateToken = localStorage.getItem('accessToken');
-  const RefreshToken = "Bearer " + JSON.parse(localStorage.getItem('refreshToken'));
+  const RefreshToken = "Bearer " + JSON.parse(localStorage.getItem('refreshToken'));  
+
+  useEffect(() => {
+    if (LoginStateToken) {
+      getProfileImage();
+    }}, []);
+
+  const getProfileImage = async () => {
+    try {
+      const response = await api.get('/api/profile', {
+        headers: {
+          Authorization: LoginStateToken,
+        },
+      });
+      if (response.status === 200) {
+        
+        let imageUrl = response.data.imageUrl;
+        if (response.data.imageUrl.startsWith('/') === true) {
+          imageUrl = baseURL + response.data.imageUrl;
+        }
+        setImage(imageUrl);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
   const logout = async () => {
     try {
@@ -75,15 +103,17 @@ const Navbar = () => {
               <RouterLink to='/signin'>Login</RouterLink>
             </li>
           )}
+          {LoginStateToken && (
           <li className='nav-item1'>
-            <RouterLink to='/Mypage'>
-              <img
-                className='rounded-full w-10 h-10 object-cover'
-                src='https://source.unsplash.com/random/?face'
-                alt='avatar'
-              />
-            </RouterLink>
-          </li>
+          <RouterLink to='/Mypage'>
+            <img
+              className='rounded-full w-10 h-10 object-cover'
+              src={image ? image : 'https://source.unsplash.com/random/?face'}
+              alt='avatar'
+            />
+          </RouterLink>
+        </li>
+          )}
         </ul>
       </nav>
     </div>

@@ -10,7 +10,8 @@ function PassWord() {
     const confirmed = window.confirm("정말 초기화 하시겠습니까?");
     if (confirmed) {
       try {
-        const response = await axios.post("http://localhost:8080/api/find-pwd", email);
+        const data = { email: email };
+        const response = await axios.post("http://localhost:8080/api/find-pwd", data);
       } catch (err) {
         setError("존재하지 않는 이메일 입니다!");
       }

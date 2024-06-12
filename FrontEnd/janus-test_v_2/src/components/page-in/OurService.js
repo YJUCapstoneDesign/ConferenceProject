@@ -7,7 +7,7 @@ function OurService() {
             <NavIn />
             <div className="mt-10 w-full flex flex-col items-center">
                 <div className="mb-4 md:mb-0 w-full max-w-screen-md relative flex justify-center items-center" style={{ height: '24em' }}>
-                    <div className="absolute inset-0 w-full h-full z-10" style={{ backgroundImage: 'url(https://source.unsplash.com/random/?conference)', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+                    <div className="absolute inset-0 w-full h-full z-10" style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1612832164313-ac0d7e07b5ce?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D)', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
                     <img src="https://source.unsplash.com/random/?conference" className="absolute inset-0 w-full h-full z-0 object-cover" alt="Conference" />
                     <div className="p-4 absolute bottom-0 left-0 z-20 bg-black bg-opacity-50 w-full">
                         <div className="px-4 py-1 bg-indigo-800 text-gray-200 inline-flex items-center justify-center mb-2">Our Service</div>

@@ -26,7 +26,7 @@ function RoomList(props) {
   const CreateRoom = async (event) => {
     event.preventDefault();
     try {
-      const response = await api.post(`http://localhost:8080/api/room/create/${teamId}`, {
+      const response = await api.post(`/api/room/create/${teamId}`, {
         teamId, 
       });
       const { roomId } = response.data;

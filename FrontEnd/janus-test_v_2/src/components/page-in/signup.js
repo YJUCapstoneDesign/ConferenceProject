@@ -118,7 +118,7 @@ function Signup() {
     <div className='Signup'>
       <div className="py-24 animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
         <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl mt-20">
-          <div className="hidden lg:block lg:w-1/2 bg-cover" style={{ backgroundImage: "url('https://source.unsplash.com/random/?conference')" }}></div>
+          <div className="hidden lg:block lg:w-1/2 bg-cover" style={{ backgroundImage: "url('https://images.unsplash.com/photo-1626125345510-4603468eedfb?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}></div>
           <div className="w-full p-8 lg:w-1/2">
             <a href="/"><p className='text-xs font-mono text-decoration-line: underline mb-5 inline-block'> Back to Website</p></a>
             <h2 className="text-2xl font-bold text-gray-700 font-mono text-left">Signup!</h2>

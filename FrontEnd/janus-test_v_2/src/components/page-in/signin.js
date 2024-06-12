@@ -33,7 +33,7 @@ const Signin = () => {
         <div className='Sign-in'>
             <div className="py-32 animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
                 <div className="flex bg-white rounded-lg shadow-lg overflow-hidden mx-auto max-w-sm lg:max-w-4xl mb-5">
-                    <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage: "url('https://source.unsplash.com/random/?conference')"}}></div>
+                    <div className="hidden lg:block lg:w-1/2 bg-cover" style={{backgroundImage: "url('https://images.unsplash.com/photo-1477281765962-ef34e8bb0967?q=80&w=3866&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')"}}></div>
                     <div className="w-full p-8 lg:w-1/2">
                         <a href="/"><p className='text-xs font-mono text-decoration-line: underline mb-5 inline-block'> Back to Website</p></a>
                         <h2 className="text-2xl font-bold text-gray-700 font-mono text-left">Welcome!</h2>

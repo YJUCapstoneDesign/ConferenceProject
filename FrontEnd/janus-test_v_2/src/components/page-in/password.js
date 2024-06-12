@@ -1,21 +1,19 @@
 import React, { useState } from 'react';
-import api from './api';
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function PassWord() {
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
-  const navigate = useNavigate();
 
   const MissingPassWord = async (event) => {
     event.preventDefault();
-    try {
-      const response = await api.post("http://localhost:8080/", { 
-        email 
-      });
-      navigate("/signin");
-    } catch (err) {
-      setError(" 존재하지 않는 이메일 입니다! " + (err.response?.data?.message || "알 수 없는 오류"));
+    const confirmed = window.confirm("정말 초기화 하시겠습니까?");
+    if (confirmed) {
+      try {
+        const response = await axios.post("http://localhost:8080/api/find-pwd", email);
+      } catch (err) {
+        setError("존재하지 않는 이메일 입니다!");
+      }
     }
   };
 
@@ -27,7 +25,6 @@ function PassWord() {
           <p className="text-sm text-gray-600 text-center mt-8 mb-6">
             걱정하지 마세요. 비밀번호 재설정은 간단합니다.<br /> UNMUTE에 등록하신 이메일 주소만 알려주세요.
           </p>
-          <form onSubmit={MissingPassWord}>
             <div className="mb-6">
               <label htmlFor="email" className="block mb-2 text-sm text-gray-600"></label>
               <input
@@ -43,11 +40,11 @@ function PassWord() {
             </div>
             <button
               type="submit"
-              className="w-32 bg-gradient-to-r from-indigo-700 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4" onClick={MissingPassWord}
+              className="w-32 bg-gradient-to-r from-indigo-700 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mt-4 mb-4"
+              onClick={MissingPassWord}
             >
               전 송
             </button>
-          </form>
           {error && <p className="text-red-500 text-center mt-4">{error}</p>}
           <div className="text-center">
             <p className="text-sm">도움이 필요하신가요? <a href="/" className="text-indigo-700">도움말</a></p>

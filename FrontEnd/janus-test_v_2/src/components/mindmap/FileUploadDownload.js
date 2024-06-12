@@ -83,7 +83,7 @@ export async function listUploadedFiles() {
   try {
     const listParams = {
       Bucket: bucketName,
-      Prefix: 'mind/', // 'mind' 폴더 안의 파일들만을 가져오도록 설정
+      Prefix: `${teamId}/`, // 'mind' 폴더 안의 파일들만을 가져오도록 설정
     };
 
     const command = new ListObjectsV2Command(listParams);

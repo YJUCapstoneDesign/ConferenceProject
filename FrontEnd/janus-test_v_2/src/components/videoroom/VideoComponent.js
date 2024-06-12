@@ -548,6 +548,15 @@ const VideoComponent = (props) => {
 
           Janus.log(`Created remote ${track.kind} stream:`, stream);
 
+          // TODO: 아래 코드에 대해 확인이 필요하다.
+          // setFeeds((prev) => {
+          //   let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
+          //   let newFeed = [...prev];
+          //   newFeed[findIndex].stream = stream;
+          //   newFeed[findIndex].hark = createSpeechEvents(stream);
+          //   return newFeed;
+          // });
+          
           setFeeds((prev) => {
             let findIndex = prev.findIndex((f) => f.rfid === remoteFeed.rfid);
             if (findIndex === -1) {
@@ -769,7 +778,7 @@ const VideoComponent = (props) => {
     <>
       <div id="wrap">
         <div className="side-box">
-          <Sidebar />
+          <Sidebar teamNumber={teamNumber} />
         </div>
         {/* <div className="ml-4 mt-4 inline-block"><RecordPage /></div> */}
         <div className="main-box">

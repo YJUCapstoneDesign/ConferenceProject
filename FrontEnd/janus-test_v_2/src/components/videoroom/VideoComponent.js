@@ -9,11 +9,6 @@ import Chatting from "./chatting/chatting";
 import { useParams } from 'react-router-dom';
 
 
-const useReference = () => {
-  const [reference, setReference] = useState(() => createRef());
-  return reference;
-};
-
 // let myroom = 1234; 
 let sfutest = null;
 let username = "username-" + Janus.randomString(5); // 임시 유저네임
@@ -58,13 +53,17 @@ const VideoComponent = (props) => {
     });
   };
 
+  // 세로고침 방지
+  const preventClose = (e) => {
+      // 경고 메시지를 설정합니다.
+      e.preventDefault();
+      e.returnValue = "";
+  }
+
 
   useEffect(() => {
     // 윈도우 새로고침 방지
-    window.addEventListener("beforeunload", function (e) {
-      e.preventDefault();
-      e.returnValue = "";
-    });
+    window.addEventListener("beforeunload", preventClose);
 
     let servers = [
       // process.env.REACT_APP_JANUS_GATEWAY_HTTP,
@@ -648,6 +647,10 @@ const VideoComponent = (props) => {
     function getQueryStringValue(name) {
       // 쿼리스트링에서 룸네임 찾기
       return myroom;
+    }
+  
+    return () => {
+      window.removeEventListener('beforeunload', preventClose);
     }
   }, []);
 

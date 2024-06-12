@@ -151,6 +151,7 @@ public class SecurityConfig {
                         .requestMatchers("/app", "/swot", "/hat").permitAll()
                         // rest api
                         .requestMatchers("/images/**",
+                                "/api/find-pwd",
                                 "/api/mind-map/**",
                                 "/oauth2/**",
                                 "/api/refresh-token", //refresh token 발급 api 허용

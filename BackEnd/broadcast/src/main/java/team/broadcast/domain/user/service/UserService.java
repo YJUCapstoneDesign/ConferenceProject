@@ -132,6 +132,7 @@ public class UserService {
 
     @Transactional
     public void sendResetPasswordEmail(String email) {
+        log.info("email={}", email);
         User user = findUserByEmail(email);
 
         String newPassword = generateRandomPassword(6);

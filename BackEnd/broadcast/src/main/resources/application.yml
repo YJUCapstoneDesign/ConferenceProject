@@ -13,5 +13,5 @@ default:
   image:
     address: "/images/profile/anonymous.png"
 client:
-  success-url: "https://127.0.0.1:3030"
-  fail-url: "https://127.0.0.1:3030/signin"
+  success-url: "http://127.0.0.1:3030"
+  fail-url: "http://127.0.0.1:3030/signin"

@@ -153,7 +153,7 @@ public class SecurityConfig {
                         .requestMatchers("/images/**",
                                 "/api/mind-map/**",
                                 "/oauth2/**",
-                                "/api/refresh-token",
+                                "/api/refresh-token", //refresh token 발급 api 허용
                                 "/api/signup", "/",
                                 "/v3/**", "/swagger-ui/**", "/api-docs",
                                 "/favicon.ico").permitAll()

@@ -94,6 +94,7 @@ public class JwtService {
      * @NOTE RefreshToken is stored in DB so that when this RefreshToken expires, it can be reissued again.
      */
     public void sendAccessTokenAndRefreshToken(HttpServletResponse response, String accessToken, String refreshToken) {
+        log.info("Sending access token and refresh token");
         response.setStatus(HttpServletResponse.SC_OK);
         response.addHeader(accessTokenHeader, accessToken);
         response.addHeader(refreshTokenHeader, refreshToken);

@@ -46,7 +46,7 @@ api.interceptors.response.use(
     const {
       config,
       response: {status},
-    } = await error;
+    } = error;
     if (status === 401) {
       // if (error.response.data.message === "expired") {
         const originalRequest = config;

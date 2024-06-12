@@ -243,11 +243,11 @@ export default function MindMapPage() {
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <button onClick={addNode}>추가 버튼</button>
-      <button onClick={handleSaveClick}>저장 버튼</button>
-      <button onClick={handleLoadData}>불러오기 버튼</button>
+      <button onClick={addNode} className='middle none center mr-4 rounded-lg bg-slate-50 py-3 px-6 font-sans text-xs font-bold uppercase text-black shadow-md transition-all hover:shadow-lg border-1 border-neutral-950 hover:shadow-neutral-500 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>추가</button>
+      <button onClick={handleSaveClick} className='middle none center mr-4 rounded-lg bg-slate-50 py-3 px-6 font-sans text-xs font-bold uppercase text-black shadow-md  transition-all hover:shadow-lg border-1 border-neutral-950 hover:shadow-neutral-500 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>저장</button>
+      <button onClick={handleLoadData} className='middle none center mr-4 rounded-lg bg-slate-50 py-3 px-6 font-sans text-xs font-bold uppercase text-black shadow-md  transition-all hover:shadow-lg border-1 border-neutral-950 hover:shadow-neutral-500 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>불러오기</button>
       
-      {/* 파일 목록을 표시하는 부분 */}
+      {/* 파일 목록을 표시하는 부분 */} 
       {fileList && fileList.length > 0 && (
         <div>
           <h2>파일 목록</h2>

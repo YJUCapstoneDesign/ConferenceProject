@@ -7,7 +7,7 @@ function UserList(props) {
     const teamId = props.teamNumber;
 
     const CheckedList = async () => {
-      try {
+      try { 
         const response = await api.get(`/api/team/user-list/${teamId}`);
         setUserList(response.data);
       } catch (error) {
@@ -47,9 +47,9 @@ function UserList(props) {
             <tbody>
               {userList.map((user,index) => (
                 <tr key={index}>
-                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700">
+                  <th className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left text-blueGray-700 pt-6 text-indigo-600">
                     <p className="ml-2">
-                      {user.name}
+                      {user}
                     </p>
                   </th>
                 </tr>

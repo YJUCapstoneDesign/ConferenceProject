@@ -7,15 +7,15 @@ function Sidebar({teamNumber}) {
     }
 
     const OpenPopupWhite = () => {
-        window.open("/whiteboard","화이트보드","width=900px,height=600px");
+        window.open(`/whiteboard/${teamNumber}`,"화이트보드","width=900px,height=600px");
     }
 
     const OpenPopupSWOT = () => {
-        window.open("/swot","SWOT","width=900px,height=600px");
+        window.open(`/swot/${teamNumber}`,"SWOT","width=900px,height=600px");
     }
     
     const OpenPopupHat = () => {
-        window.open("/hat","hat","width=900px,height=600px");
+        window.open(`/hat/${teamNumber}`,"hat","width=900px,height=600px");
     }
 
     return (

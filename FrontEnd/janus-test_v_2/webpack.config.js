@@ -45,7 +45,7 @@ module.exports = {
   },
   output: {
     filename: 'app.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'build'),
     publicPath: '/',
   },
   plugins: [
@@ -65,7 +65,7 @@ module.exports = {
       
     },
     static: {
-      directory: path.resolve(__dirname, 'dist')
+      directory: path.resolve(__dirname, 'build')
     },
     proxy: [
         { 

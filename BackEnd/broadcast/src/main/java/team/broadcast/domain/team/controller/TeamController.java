@@ -45,7 +45,7 @@ public class TeamController {
     }
 
     // 버튼 입력시 팀 인원 리스트 불러오기
-    // 이 때 팀 닉네임 리스트를 불러온다.
+    // 이 때 팀 이름 리스트를 불러온다.
     @GetMapping("/user-list/{teamId}")
     @ResponseStatus(HttpStatus.OK)
     public List<String> getUserList(@PathVariable Long teamId) {

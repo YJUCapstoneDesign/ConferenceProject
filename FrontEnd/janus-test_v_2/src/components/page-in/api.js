@@ -1,8 +1,9 @@
 import axios from "axios";
 
+const baseURL = process.env.REACT_SPRING_SERVER;
 // url 호출 시 기본 값 셋팅
 const api = axios.create({
-  baseURL: process.env.REACT_SPRING_SERVER,
+  baseURL: baseURL,
   headers: { "Content-type": "application/json" }, // 헤더에 데이터 타입 json으로 담기
 });
 
@@ -51,14 +52,15 @@ api.interceptors.response.use(
         const originalRequest = config;
         const refreshToken = await JSON.parse(localStorage.getItem("refreshToken"));
         // refresh 토큰 요청
-        const response = await api.get(
-          "/api/refresh-token", // refresh 토큰 api 주소
+        const response = await axios.get(
+          baseURL+"/api/refresh-token", // refresh 토큰 api 주소
           { headers: { 'authorization-refresh': `Bearer ${refreshToken}` } }
         );
-        // 새로운 토큰 저장
+        
         const newAccessToken = response.headers['authorization'];
         const newRefreshToken = response.headers['authorization-refresh'];
-        if (newAccessToken === null || newRefreshToken === null) {
+        if (newAccessToken === null || newRefreshToken === null 
+          || newAccessToken === undefined || newRefreshToken === undefined) {
           return Promise.reject(error);
         }
         localStorage.setItem("accessToken", JSON.stringify(newAccessToken));

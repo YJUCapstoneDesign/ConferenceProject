@@ -17,6 +17,8 @@ let initialNodes = [
   { id: '2', position: { x: 200, y: 400 }, data: { label: '2' } },
 ];
 
+const baseURL = process.env.REACT_WEBSOCKET_SERVER;
+
 let initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 export default function MindMapPage() {
@@ -88,7 +90,7 @@ export default function MindMapPage() {
   
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080/app");
+    ws.current = new WebSocket(`${baseURL}/app`);
     console.log("웹소켓 연결됨");
     ws.current.onmessage = (message) => { // 서버에서 메시지가 오면 실행
       setSocketData(message.data);

@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 
 const SIZE = 4;
 
+const baseURL = process.env.REACT_WEBSOCKET_SERVER
+
 const TILES = [
   {
     id: 1,
@@ -54,7 +56,7 @@ export default function Canvas() {
   const [socketData, setSocketData] = useState(null);
 
   useEffect(() => {
-    ws.current = new WebSocket("ws://localhost:8080/swot");
+    ws.current = new WebSocket(`${baseURL}/swot`);
     console.log("웹소켓 연결됨");
     
     ws.current.onmessage = (message) => {

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 
+const baseURL = process.env.REACT_WEBSOCKET_SERVER;
+
 const IncomingMessage = ({ message, imageUrl }) => (
   <div className="flex items-start mb-4">
     <img src={imageUrl} alt="User Avatar" className="w-10 h-10 rounded-full mr-3" />
@@ -25,7 +27,7 @@ const ChatArea = () => {
   const chatContainerRef = useRef(null);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:8080/hat');
+    const ws = new WebSocket(`${baseURL}/hat`);
 
     ws.onopen = () => {
       console.log('WebSocket 연결');

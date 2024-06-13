@@ -15,9 +15,9 @@ function UserList(props) {
       }
     };
 
-    // useEffect(() => {
-    //   CheckedList();
-    // }, []);
+    useEffect(() => {
+      CheckedList();
+    }, []);
 
     return (
       <div className="relative flex flex-col min-w-0 break-words bg-white h-custom-height w-custom-size5 mt-4 mb-6 ml-4 shadow-lg rounded 2xl:min-custom-height2 xl:min-h-60 xl:h-custom-height4">

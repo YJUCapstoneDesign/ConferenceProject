@@ -25,9 +25,9 @@ const VideoComponent = (props) => {
   const [activeSpeaker, setActiveSpeaker] = useState(false);
   const [activeSharing, setActiveSharing] = useState(false);
   const [receiveFile, setReceiveFile] = useState(null);
-
-  const { teamNumber } = useParams();
-  let myroom = teamNumber;
+  // const [userList, setUserList] = useState([]);
+  // const { teamNumber } = useParams();
+  // let myroom = teamNumber;
 
   const connectFeed = (feed) => {
     setFeeds((prevFeeds) => [...prevFeeds, feed]);
@@ -59,6 +59,21 @@ const VideoComponent = (props) => {
       e.preventDefault();
       e.returnValue = "";
   }
+
+  const CheckedList = async () => {
+    try { 
+      const response = await api.get(`/api/team/user-list/${teamNumber}`);
+      setUserList(response.data);
+    } catch (error) {
+      console.log(teamNumber);
+      console.log("팀원이 없습니다.");
+    }
+  };
+
+  useEffect(() => {
+    console.log(userList);
+    CheckedList();
+  }, []);
 
 
   useEffect(() => {

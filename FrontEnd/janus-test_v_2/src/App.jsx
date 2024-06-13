@@ -17,6 +17,7 @@ const { default: AboutIn } = require("./components/page-in/AboutIn");
 const { default: Mypage } = require("./components/page-in/Mypage");
 const { default: VideoComponent } = require("./components/videoroom/VideoComponent");
 const { default: MindMapPage } = require("./components/mindmap/MindMapPage");
+const { default: ProfileEdit } = require("./components/page-in/ProfileEdit");
 
 const App = () => {
   return (
@@ -38,6 +39,7 @@ const App = () => {
           <Route path='/Crazy/:teamNumber' element={<CrazyPage/>} />
           <Route path='/AboutIn' element={<AboutIn/>} />
           <Route path='/Mypage' element={<Mypage/>}/>
+          <Route path='/ProfileEdit' element={<ProfileEdit/>} />
         </Routes>
   );
 };

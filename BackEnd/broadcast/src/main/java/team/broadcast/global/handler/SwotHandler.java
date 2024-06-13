@@ -8,7 +8,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import team.broadcast.global.exception.handler.dto.WebsocketData;
+import team.broadcast.global.handler.dto.WebsocketRoom;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,9 +47,9 @@ public class SwotHandler extends TextWebSocketHandler {
 
         log.info("received text message: {}", payload);
 
-        WebsocketData websocketData = objectMapper.readValue(payload, WebsocketData.class);
+        WebsocketRoom websocketRoom = objectMapper.readValue(payload, WebsocketRoom.class);
 
-        Long roomId = websocketData.getId();
+        Long roomId = websocketRoom.getId();
 
         if (!sessionMap.containsKey(roomId)) {
             sessionMap.put(roomId, new HashSet<>());

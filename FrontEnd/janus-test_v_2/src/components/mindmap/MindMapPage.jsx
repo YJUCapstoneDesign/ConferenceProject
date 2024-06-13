@@ -103,6 +103,7 @@ export default function MindMapPage() {
     };
 
     ws.current.onmessage = (message) => { // 서버에서 메시지가 오면 실행
+      console.log("message: ", message.data);
       setSocketData(message.data);
     };
 
@@ -114,13 +115,14 @@ export default function MindMapPage() {
   useEffect(() => {
     if (socketData !== undefined) {
       const parsedSocketData = JSON.parse(socketData).data;
-      
+      console.log("parsedSocketData: ", parsedSocketData);
       setNodes(parsedSocketData.node);
       setEdges(parsedSocketData.edge);
     }
   }, [socketData]);
 
   const sendWebSocketData = useCallback((data) => {
+    console.log("sendWebSocketData: ", data);
     const sendData = {
       id: parseInt(teamNumber),
       type: "MSG",
@@ -146,7 +148,7 @@ export default function MindMapPage() {
 
     const newData = {
       node: newNodes,
-      edge: initialEdges
+      edge: edges
     };
 
     sendWebSocketData(newData);

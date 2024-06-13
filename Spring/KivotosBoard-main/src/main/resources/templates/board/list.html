@@ -61,7 +61,7 @@
           <a th:href="@{|../${postInfo.id}|}"
              th:text="|${postInfo.postSubject} [${postInfo.commentCount}]|"></a>
         </td>
-        <td th:text="${postInfo.name}"></td>
+        <td th:text="${postInfo.studentName}"></td>
         <td th:text="${#temporals.format(postInfo.postDate, 'yyyy-MM-dd HH:mm')}"></td>
       </tr>
       </tbody>

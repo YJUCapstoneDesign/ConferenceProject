@@ -32,6 +32,12 @@ public class UserController {
         return "success";
     }
 
+    // 로그인 후
+    @GetMapping("/image")
+    public String image(@AuthenticationPrincipal CustomUserDetails user) {
+        return userService.getUserImage(user.getUser());
+    }
+
     @GetMapping("/profile")
     @Operation(summary = "회원 정보 상세조회", description = "회원의 정보를 상세 조회 API")
     public UserResponse getUser(@AuthenticationPrincipal CustomUserDetails user) {

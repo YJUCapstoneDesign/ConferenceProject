@@ -3,6 +3,7 @@ package jpapractice.jpapractice.controller;
 import jpapractice.jpapractice.domain.Club;
 import jpapractice.jpapractice.dto.board.ClubDto;
 import jpapractice.jpapractice.service.ClubService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,9 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 import java.util.List;
 
 @Controller
+@Slf4j
 @RequestMapping("/clubs")
 public class ClubController {
 
@@ -34,8 +37,9 @@ public class ClubController {
 
     @PostMapping("/add")
     public String addClub(@ModelAttribute ClubDto clubDto,
+                          Principal principal,
                           @RequestParam("image") MultipartFile image) throws IOException {
-        clubService.saveClub(clubDto, image);
-        return "redirect:/clubs";
+        clubService.saveClub(clubDto, image, principal.getName());
+        return "redirect:/";
     }
 }

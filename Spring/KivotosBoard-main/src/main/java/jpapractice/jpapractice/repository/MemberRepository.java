@@ -1,49 +1,10 @@
 package jpapractice.jpapractice.repository;
 
-import jakarta.persistence.EntityManager;
-import java.util.Optional;
-import jpapractice.jpapractice.domain.Account;
 import jpapractice.jpapractice.domain.Student;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-@Repository
-public class MemberRepository {
+import java.util.Optional;
 
-  private final EntityManager em;
-
-  @Autowired
-  public MemberRepository(EntityManager em) {
-    this.em = em;
-  }
-
-  public Student saveStudent(Student student) {
-
-    em.persist(student);
-
-    return student;
-  }
-
-  public Account saveAccount(Account account) {
-
-    em.persist(account);
-
-    return account;
-
-  }
-
-  public Optional<Account> accountFindById(String id) {
-    Account result = em.find(Account.class, id);
-    // System.out.println(result);
-    return Optional.ofNullable(result);
-  }
-
-  public void removeStudentInfo(Account account) {
-    Student student = account.getStudent();
-    em.remove(student);
-  }
-
-  public void unregistMember(Account account) {
-    em.remove(account);
-  }
+public interface MemberRepository extends JpaRepository<Student, Long> {
+    Optional<Student> findByAccountId(String accountId);
 }

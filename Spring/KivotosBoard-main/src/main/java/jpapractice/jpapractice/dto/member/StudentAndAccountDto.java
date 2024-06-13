@@ -23,7 +23,7 @@ public class StudentAndAccountDto {
   private String email;
 
   @NotEmpty(message = "아이디는 필수 항목 입니다.")
-  @Size(min = 8, max = 25)
+  @Size(min = 8, max = 25, message = "아이디 길이는 최소 8에서 25 사이여야합니다.")
   private String accountId;
 
   @NotEmpty(message = "비밀번호는 필수 항목 입니다.")

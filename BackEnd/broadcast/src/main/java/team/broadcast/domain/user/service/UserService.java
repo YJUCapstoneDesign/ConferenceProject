@@ -115,6 +115,10 @@ public class UserService {
         }
     }
 
+    public String getUserImage(User user) {
+        return user.getImageUrl();
+    }
+
     public User findUser(Long userId) {
         return userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));

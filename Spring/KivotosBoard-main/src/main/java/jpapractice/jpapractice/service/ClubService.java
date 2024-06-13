@@ -1,8 +1,11 @@
 package jpapractice.jpapractice.service;
 
 import jpapractice.jpapractice.domain.Club;
+import jpapractice.jpapractice.domain.Student;
 import jpapractice.jpapractice.dto.board.ClubDto;
 import jpapractice.jpapractice.repository.ClubRepository;
+import jpapractice.jpapractice.repository.MemberRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
@@ -15,21 +18,23 @@ import java.nio.file.Paths;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ClubService {
-
-    @Autowired
-    private ClubRepository clubRepository;
+    private final ClubRepository clubRepository;
+    private final MemberRepository memberRepository;
 
     // static 디렉토리 하위에 images 디렉토리 설정
     private static final String UPLOAD_DIR = "static/images/";
 
-    public Club saveClub(ClubDto clubDto, MultipartFile image) throws IOException {
+    public Club saveClub(ClubDto clubDto, MultipartFile image, String accountId) throws IOException {
         String imagePath = saveImage(image);
+        Student student = memberRepository.findByAccountId(accountId).orElseThrow();
 
         Club club = Club.builder()
                 .name(clubDto.getName())
                 .description(clubDto.getDescription())
                 .imageUrl(imagePath)
+                .student(student)
                 .build();
 
         return clubRepository.save(club);

@@ -1,8 +1,10 @@
 package jpapractice.jpapractice.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,47 +12,56 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name = "student_default_information")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Student {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "student_id")
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "student_id")
+    private Long id;
 
-  @Column(name = "student_name")
-  private String name;
+    @Column(name = "student_account_id", unique = true, nullable = false)
+    private String accountId;
 
-  @Column(name = "student_age")
-  private int age;
+    @Column(name = "student_password", nullable = false)
+    private String passwd;
 
-  @Column(name = "student_email")
-  private String email;
+    @Column(name = "student_name")
+    private String name;
 
-  @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Club> clubs = new ArrayList<>();
+    @Column(name = "student_age")
+    private int age;
 
-  public void changeAge(int age) {
-    this.age = age;
-  }
+    @Column(name = "student_email")
+    private String email;
 
-  public void changeEmail(String email) {
-    this.email = email;
-  }
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Club> clubs = new ArrayList<>();
 
-  @Override
-  public String toString() {
-    return "Student [id=" + id + ", name=" + name + ", age=" + age
-            + ", email=" + email + "]";
-  }
+    public void changePasswd(String passwd) {
+        this.passwd = passwd;
+    }
 
-  public Student() {
-  }
+    public void changeAge(int age) {
+        this.age = age;
+    }
 
-  @Builder
-  public Student(Long id, String name, int age, String email) {
-    this.id = id;
-    this.name = name;
-    this.age = age;
-    this.email = email;
-  }
+    public void changeEmail(String email) {
+        this.email = email;
+    }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "id=" + id +
+                ", accountId=" + accountId +
+                ", passwd='" + passwd + '\'' +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", email='" + email + '\'' +
+                ", clubs=" + clubs +
+                '}';
+    }
 }

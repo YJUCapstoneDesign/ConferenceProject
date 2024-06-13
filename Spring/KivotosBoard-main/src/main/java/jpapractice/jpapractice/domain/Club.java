@@ -1,12 +1,17 @@
 package jpapractice.jpapractice.domain;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
 @Table(name = "clubs")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Club {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,15 +30,4 @@ public class Club {
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
-
-    public Club() {}
-
-    @Builder
-    public Club(Long id, String name, String description, String imageUrl, Student student) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.imageUrl = imageUrl;
-        this.student = student;
-    }
 }

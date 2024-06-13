@@ -1,9 +1,11 @@
 package jpapractice.jpapractice.repository;
 
-import jpapractice.jpapractice.domain.Club;
+import jpapractice.jpapractice.domain.Comment;
 import jpapractice.jpapractice.domain.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ClubRepository extends JpaRepository<Club, Long> {
+import java.util.List;
+
+public interface CommentRepository extends JpaRepository<Comment, Long> {
     void deleteByStudent(Student student);
 }

@@ -23,7 +23,7 @@ const Navbar = () => {
 
   const getProfileImage = async () => {
     try {
-      const response = await api.get('/api/profile', {
+      const response = await api.get('/api/image', {
         headers: {
           Authorization: LoginStateToken,
         },

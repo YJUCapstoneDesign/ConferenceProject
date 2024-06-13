@@ -138,6 +138,9 @@ public class UserService {
     public void sendResetPasswordEmail(String email) {
         log.info("email={}", email);
         User user = findUserByEmail(email);
+        if (user.getPlatform() != null) {
+            throw new CustomException(UserErrorCode.USER_NOT_FOUND);
+        }
 
         String newPassword = generateRandomPassword(6);
 

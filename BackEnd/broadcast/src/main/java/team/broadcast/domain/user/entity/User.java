@@ -47,7 +47,7 @@ public class User {
     @Column(name = "USER_PLATFORM", length = 10)
     private String platform;
 
-    @Column(name = "USER_TOKEN")
+    @Column(name = "USER_TOKEN", unique = true)
     private String token;
 
     @ManyToMany(fetch = FetchType.LAZY)

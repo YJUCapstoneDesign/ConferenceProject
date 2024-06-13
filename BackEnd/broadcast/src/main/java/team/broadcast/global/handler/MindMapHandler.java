@@ -28,7 +28,6 @@ public class MindMapHandler extends TextWebSocketHandler {
 
         Map map = gson.fromJson("""
                 {
-                "data":{
                 "node":[
                 {
                 "id":"1",
@@ -59,7 +58,7 @@ public class MindMapHandler extends TextWebSocketHandler {
                 }
                 ]
                 }
-                }""", Map.class);
+                """, Map.class);
         rooms.put(0L,
                 new WebsocketRoom(0L, null, map)
         );
@@ -93,28 +92,41 @@ public class MindMapHandler extends TextWebSocketHandler {
 
         // 들어온 경우 초기 데이터를 준다.
         if (websocketRoom.isEnter()) {
-            session.sendMessage(new TextMessage(toJson(rooms.getOrDefault(roomId, rooms.get(0L)).getData())));
+            WebsocketRoom resRoom = rooms.get(roomId);
+            if (resRoom == null) {
+                resRoom = new WebsocketRoom(roomId, null, rooms.get(0L).getData());
+            }
+            resRoom.addSession(session);
+            rooms.put(roomId, resRoom);
+            session.sendMessage(new TextMessage(toJson(resRoom.getData())));
             return;
         }
 
         log.info("received message: {}", payload);
         log.info("stored room data: {}", toJson(websocketRoom.getData()));
-        // 이미 들어와 있는 경우 최신 데이터를 업데이트하고 보낼 수 있도록 한다.
-        websocketRoom.addSession(session);
-        rooms.put(roomId, websocketRoom);
 
+        // 이미 들어와 있는 경우 최신 데이터를 업데이트하고 보낼 수 있도록 한다.
+        updateRoomById(roomId, websocketRoom);
+
+        log.info("rooms session : {}", rooms.get(roomId).getSessions().stream().toList());
 
         // 최신 데이터를 현재 접속되어 있는 사용자에게 모두 뿌려준다.
-        sendMessage(roomId, users, payload);
+        sendMessage(roomId, users);
     }
 
-    private void sendMessage(Long roomId, Set<WebSocketSession> sessions, String payload) throws IOException {
+    private void sendMessage(Long roomId, Set<WebSocketSession> sessions) throws IOException {
         for (WebSocketSession session : sessions) {
             // 방아이디가 같은 사람만 보낸다.
             if (rooms.get(roomId).getSessions().contains(session)) {
-                session.sendMessage(new TextMessage(payload));
+                session.sendMessage(new TextMessage(toJson(rooms.get(roomId).getData())));
             }
         }
+    }
+
+    private void updateRoomById(Long roomId, WebsocketRoom websocketRoom) {
+        WebsocketRoom findRoom = rooms.get(roomId);
+        findRoom.setData(websocketRoom.getData());
+        rooms.put(roomId, findRoom);
     }
 
     private String toJson(Map<String, Object> data) {

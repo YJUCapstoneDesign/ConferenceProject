@@ -46,7 +46,7 @@
 <div class="album py-5 bg-light">
   <div class="container">
     <div th:if="${#authorization.expression('isAuthenticated()')}" class="mb-3">
-      <a href="/clubs/add" class="btn btn-primary">동아리 추가</a>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addClubModal">동아리 개설</button>
     </div>
     <div class="row">
       <div class="col-md-4" th:each="club : ${clubs}">
@@ -55,16 +55,86 @@
           <div class="card-body">
             <h5 class="card-title" th:text="${club.name}">Club Name</h5>
             <p class="card-text" th:text="${club.description}">Club Description</p>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" th:attr="data-bs-target='|#joinClubModal-${club.id}|'">가입</button>
           </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Add Club Modal -->
+<div class="modal fade" id="addClubModal" tabindex="-1" aria-labelledby="addClubModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addClubModalLabel">동아리 개설</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="addClubForm" th:action="@{/clubs/add}" method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="clubName" class="form-label">동아리 이름</label>
+            <input type="text" class="form-control" id="clubName" name="name" required>
+          </div>
+          <div class="mb-3">
+            <label for="clubDescription" class="form-label">동아리 설명</label>
+            <textarea class="form-control" id="clubDescription" name="description" rows="3" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label for="clubImage" class="form-label">동아리 이미지</label>
+            <input class="form-control" type="file" id="clubImage" name="image" required>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+        <button type="button" class="btn btn-primary" onclick="submitAddClubForm()">개설</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Join Club Modals -->
+<div th:each="club : ${clubs}">
+  <div class="modal fade" th:id="'joinClubModal-' + ${club.id}" tabindex="-1" aria-labelledby="joinClubModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="joinClubModalLabel" th:text="'동아리 가입: ' + ${club.name}">동아리 가입</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form th:action="@{/clubs/join/{clubId}(clubId=${club.id})}" method="post">
+            <div class="mb-3">
+              <label for="memberName" class="form-label">회원 이름</label>
+              <input type="text" class="form-control" id="memberName" name="memberName" required>
+            </div>
+            <div class="mb-3">
+              <label for="memberEmail" class="form-label">회원 이메일</label>
+              <input type="email" class="form-control" id="memberEmail" name="memberEmail" required>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+              <button type="submit" class="btn btn-primary">가입</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <footer class="py-5 bg-dark">
   <div class="container">
     <p class="m-0 text-center text-white">Copyright © Your Website 2023</p>
   </div>
 </footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  function submitAddClubForm() {
+    document.getElementById('addClubForm').submit();
+  }
+</script>
 </body>
 </html>

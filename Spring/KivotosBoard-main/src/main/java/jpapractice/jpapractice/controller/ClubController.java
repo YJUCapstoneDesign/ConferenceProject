@@ -3,6 +3,7 @@ package jpapractice.jpapractice.controller;
 import jpapractice.jpapractice.domain.Club;
 import jpapractice.jpapractice.dto.board.ClubDto;
 import jpapractice.jpapractice.service.ClubService;
+import jpapractice.jpapractice.service.MemberService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,9 @@ public class ClubController {
 
     @Autowired
     private ClubService clubService;
+
+    @Autowired
+    private MemberService memberService;
 
     @GetMapping
     public String getClubs(Model model) {
@@ -41,5 +45,11 @@ public class ClubController {
                           @RequestParam("image") MultipartFile image) throws IOException {
         clubService.saveClub(clubDto, image, principal.getName());
         return "redirect:/";
+    }
+
+    @PostMapping("/join/{clubId}")
+    public String joinClub(@PathVariable Long clubId, Principal principal) {
+        memberService.joinClub(principal.getName(), clubId);
+        return "redirect:/clubs";
     }
 }

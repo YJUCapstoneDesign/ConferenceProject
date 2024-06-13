@@ -22,12 +22,10 @@ import java.util.Optional;
 public class MemberService {
 
     private final MemberRepository memberRepository;
-
     private final PostRepository boardRepository;
     private final CommentRepository commentRepository;
     private final PasswordEncoder passwordEncoder;
     private final ClubRepository clubRepository;
-
 
     @Transactional
     public String registMember(StudentAndAccountDto studentAndAccountDto) {
@@ -56,7 +54,6 @@ public class MemberService {
                 .age(student.getAge())
                 .email(student.getEmail())
                 .build();
-
     }
 
     @Transactional
@@ -72,7 +69,6 @@ public class MemberService {
         studentAndAccountDto.setAge(student.getAge());
         studentAndAccountDto.setName(student.getName());
         return studentAndAccountDto;
-
     }
 
     @Transactional
@@ -111,4 +107,11 @@ public class MemberService {
         memberRepository.delete(student);
     }
 
+    @Transactional
+    public void joinClub(String accountId, Long clubId) {
+        Student student = memberRepository.findByAccountId(accountId).orElseThrow();
+        Club club = clubRepository.findById(clubId).orElseThrow();
+        student.setClub(club.getName());
+        memberRepository.save(student);
+    }
 }

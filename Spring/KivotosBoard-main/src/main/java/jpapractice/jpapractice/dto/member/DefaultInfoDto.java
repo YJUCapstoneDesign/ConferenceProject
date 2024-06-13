@@ -12,23 +12,23 @@ public class DefaultInfoDto {
   private String studentName;
   private int age;
   private String email;
-  private String schoolName;
+  private String clubName;
 
   @Override
   public String toString() {
     return "DefaultInfoDto [id=" + id + ", studentName=" + studentName
         + ", age=" + age + ", email=" + email
-        + ", schoolName=" + schoolName + "]";
+        + ", schoolName=" + clubName + "]";
   }
 
   @Builder
   public DefaultInfoDto(String id, String studentName, int age,
-      String email, String schoolName) {
+      String email, String clubName) {
     this.id = id;
     this.studentName = studentName;
     this.age = age;
     this.email = email;
-    this.schoolName = schoolName;
+    this.clubName = clubName;
   }
 
 }

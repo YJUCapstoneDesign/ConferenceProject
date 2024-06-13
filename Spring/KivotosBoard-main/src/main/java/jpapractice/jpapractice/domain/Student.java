@@ -1,15 +1,13 @@
 package jpapractice.jpapractice.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "student_default_information")
 @Builder
@@ -27,6 +25,9 @@ public class Student {
 
     @Column(name = "student_password", nullable = false)
     private String passwd;
+
+    @Column(name = "club")
+    private String club;
 
     @Column(name = "student_name")
     private String name;
@@ -58,6 +59,7 @@ public class Student {
                 "id=" + id +
                 ", accountId=" + accountId +
                 ", passwd='" + passwd + '\'' +
+                ", club=" + club +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", email='" + email + '\'' +

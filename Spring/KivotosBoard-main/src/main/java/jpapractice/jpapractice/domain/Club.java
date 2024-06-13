@@ -1,12 +1,12 @@
 package jpapractice.jpapractice.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.Collection;
 
 @Getter
+@Setter
 @Entity
 @Table(name = "clubs")
 @Builder
@@ -30,4 +30,8 @@ public class Club {
     @ManyToOne
     @JoinColumn(name = "student_id", nullable = false)
     private Student student;
+
+    public void updateStudent(Student student) {
+        this.student = student;
+    }
 }

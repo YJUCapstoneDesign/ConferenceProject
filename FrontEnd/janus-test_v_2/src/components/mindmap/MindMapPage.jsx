@@ -13,13 +13,14 @@ import { listUploadedFiles, downloadFileFromS3 } from './FileUploadDownload';
 import { useParams } from 'react-router-dom';
 
 let initialNodes = [
-  { id: '1', position: { x: 300, y: 300 }, data: { label: '1' } },
-  { id: '2', position: { x: 200, y: 400 }, data: { label: '2' } },
+
 ];
 
 const baseURL = process.env.REACT_WEBSOCKET_SERVER;
 
-let initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+let initialEdges = [
+
+];
 
 export default function MindMapPage() {
 
@@ -46,7 +47,7 @@ export default function MindMapPage() {
 
     const uploadResult = await uploadToS3(mindMapDataJson, 'mind', teamNumber);
 
-    setFileList([]); //리스트 초기화
+    setFileList([]);
 
     if (uploadResult.success) {
       alert('파일 저장 성공!');
@@ -92,6 +93,15 @@ export default function MindMapPage() {
   useEffect(() => {
     ws.current = new WebSocket(`${baseURL}/app`);
     console.log("웹소켓 연결됨");
+
+    ws.current.onopen = () => {
+      ws.current.send(
+        JSON.stringify(
+          { id: parseInt(teamNumber), type: "ENTER" }
+        )
+      );
+    };
+
     ws.current.onmessage = (message) => { // 서버에서 메시지가 오면 실행
       setSocketData(message.data);
     };
@@ -113,6 +123,7 @@ export default function MindMapPage() {
   const sendWebSocketData = useCallback((data) => {
     const sendData = {
       id: parseInt(teamNumber),
+      type: "MSG",
       data,
     }
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {

@@ -258,10 +258,17 @@ export default function MindMapPage() {
 
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <button onClick={addNode} className='middle none center mr-4 rounded-lg bg-slate-50 py-3 px-6 font-sans text-xs font-bold uppercase text-black shadow-md transition-all hover:shadow-lg border-1 border-neutral-950 hover:shadow-neutral-500 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>추가</button>
-      <button onClick={handleSaveClick} className='middle none center mr-4 rounded-lg bg-slate-50 py-3 px-6 font-sans text-xs font-bold uppercase text-black shadow-md  transition-all hover:shadow-lg border-1 border-neutral-950 hover:shadow-neutral-500 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>저장</button>
-      <button onClick={handleLoadData} className='middle none center mr-4 rounded-lg bg-slate-50 py-3 px-6 font-sans text-xs font-bold uppercase text-black shadow-md  transition-all hover:shadow-lg border-1 border-neutral-950 hover:shadow-neutral-500 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none'>불러오기</button>
-      
+      <div className="inline-flex shadow-sm rounded-sm mt-1 ml-1" role="group">
+      <button onClick={addNode} className='px-4 py-2 text-sm font-semibold text-gray-900 rounded-s-lg bg-transparent border hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700 transition-colors duration-500 ease-in-out'>
+        Add
+      </button>
+      <button onClick={handleSaveClick} className='px-4 py-2 text-sm font-semibold text-gray-900 bg-transparent border-t border-b hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700 transition-colors duration-500 ease-in-out'>
+        Save
+      </button>
+      <button onClick={handleLoadData} className='px-4 py-2 text-sm font-semibold text-gray-900 rounded-e-lg bg-transparent hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700 transition-colors duration-500 ease-in-out'>
+        Load
+      </button>
+      </div>
       {/* 파일 목록을 표시하는 부분 */} 
       {fileList && fileList.length > 0 && (
         <div>

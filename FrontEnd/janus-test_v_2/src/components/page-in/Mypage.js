@@ -71,8 +71,8 @@ function Mypage() {
       <div className="bg-white rounded-lg shadow-xl pb-8">
         <div className="w-full h-[250px]">
           <img
-            src="https://vojislavd.com/ta-template-demo/assets/img/profile-background.jpg"
-            className="w-full h-full rounded-tl-lg rounded-tr-lg"
+            src="https://images.unsplash.com/photo-1582192903020-8a5e59dcdcf2?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+            className="object-cover w-full h-full rounded-tl-lg rounded-tr-lg"
             alt="Background"
           />
         </div>
@@ -90,7 +90,7 @@ function Mypage() {
           />
           <div className="flex items-center space-x-2 mt-2">
             <p className="text-2xl">{userInfo.name}</p>
-            <span className="bg-blue-500 rounded-full p-1" title="Verified">
+            <span className="bg-indigo-500 rounded-full p-1" title="Verified">
               <svg xmlns="http://www.w3.org/2000/svg" className="text-gray-100 h-2.5 w-2.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="4" d="M5 13l4 4L19 7"></path>
               </svg>
@@ -99,7 +99,7 @@ function Mypage() {
         </div>
         <div className="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
           <div className="flex items-center space-x-4 mt-2">
-            <button className="flex items-center bg-blue-600 hover:bg-blue-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100">
+            <button className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100">
               <span>Edit Profile</span>
             </button>
           </div>

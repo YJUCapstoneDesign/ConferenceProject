@@ -104,7 +104,7 @@ const Crazy = () => {
         <label htmlFor="topic" className="block text-gray-700 text-sm font-bold mb-2">
         </label>
         <input
-        placeholder="주제를 입력하세요"
+        placeholder="Please enter a topic"
           type="text"
           id="topic"
           className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -121,32 +121,32 @@ const Crazy = () => {
           
             <div className={`flex-grow flex items-center justify-center ${isRunning && topic ? '' : 'opacity-50'}`}> 
               {isRunning && topic ? (<textarea
-                className="text-center text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
+                className="text-left text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
                 value={texts[i]}
                 onChange={(event) => handleTextChange(i, event)}
-                placeholder="텍스트를 입력하세요"
+                placeholder="Enter your idea"
                 disabled={!isRunning || !topic}
               />) : 
               (<textarea
-              className="text-center text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
+              className="text-left text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
               value={texts[i]}
               onChange={(event) => handleTextChange(i, event)}
-              placeholder="주제를 입력하세요"
+              placeholder="Enter your idea"
               disabled={!isRunning || !topic}
             />)}
             </div>
             
-            <span className="text-center text-md text-gray-500 font-semibold">
-              IDEA-{i + 1} : {texts[i].length}/48자
+            <span className="text-right text-sm text-gray-300 font-semibold">
+              {texts[i].length}/48 length
             </span>
           </div>
         ))}
       </div>
       <button
-        className="inline-block w-24 h-8 mt-2.5 text-xs text-white font-bold py-2 px-4 rounded-full bg-gradient-to-r from-pink-500 to-purple-800 border border-transparent transform hover:scale-110 hover:border-white transition-transform duration-3000 ease-in-out"
+        className="inline-block w-24 h-8 mt-8 text-xs text-white font-bold py-2 px-4 rounded-full bg-gradient-to-r from-pink-500 to-purple-800 border border-transparent transform hover:scale-110 hover:border-white transition-transform duration-3000 ease-in-out"
         onClick={handleSummarize}
       >
-        요약 하기
+        Summarize
       </button>
 
     {showSummary && (

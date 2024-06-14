@@ -126,40 +126,4 @@ public class MemberService {
         memberRepository.delete(student);
     }
 
-    @Transactional
-    public void joinClub(String accountId, Long clubId) {
-        Student student = memberRepository.findByAccountId(accountId)
-                .orElseThrow(() -> new DataNotFoundException("Student not found"));
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new DataNotFoundException("Club not found"));
-
-        if (student.getClubs().contains(club)) {
-            throw new IllegalArgumentException("Already a member of this club");
-        }
-
-        student.getClubs().add(club);
-        memberRepository.save(student);
-    }
-
-    @Transactional
-    public void deleteClub(String accountId, Long clubId) {
-        Student student = memberRepository.findByAccountId(accountId)
-                .orElseThrow(() -> new DataNotFoundException("Student not found"));
-        Club club = clubRepository.findById(clubId)
-                .orElseThrow(() -> new DataNotFoundException("Club not found"));
-
-        student.getClubs().remove(club);
-        club.getStudents().remove(student);
-
-        // 클럽에 더 이상 멤버가 없으면 클럽 삭제, 그렇지 않으면 저장
-        if (club.getStudents().isEmpty()) {
-            clubRepository.delete(club);
-        } else {
-            clubRepository.save(club);
-        }
-
-        // 학생의 클럽 목록을 업데이트하고 저장
-        memberRepository.save(student);
-    }
-
 }

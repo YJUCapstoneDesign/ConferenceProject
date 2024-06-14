@@ -56,7 +56,7 @@
             <h5 class="card-title" th:text="${club.name}">Club Name</h5>
             <p class="card-text" th:text="${club.description}">Club Description</p>
             <div class="flex-fill justify-content-between">
-              <form th:action="@{/clubs/join/{clubId}(clubId=${club.id})}" method="post">
+              <form th:action="@{/clubs/join/{clubId}(clubId=${club.id})  }" method="post">
                 <button type="submit" class="btn btn-success">가입</button>
               </form>
               <form th:action="@{/clubs/delete/{clubId}(clubId=${club.id})}" method="get">

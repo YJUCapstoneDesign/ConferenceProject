@@ -24,8 +24,6 @@ public class ClubController {
     @Autowired
     private ClubService clubService;
 
-    @Autowired
-    private MemberService memberService;
 
     @GetMapping
     public String getClubs(Model model) {
@@ -51,7 +49,7 @@ public class ClubController {
     @PostMapping("/join/{clubId}")
     public String joinClub(@PathVariable Long clubId, Principal principal) {
         try {
-            memberService.joinClub(principal.getName(), clubId);
+            clubService.joinClub(principal.getName(), clubId);
         } catch (Exception e) {
             log.error(e.getMessage());
         }
@@ -62,7 +60,17 @@ public class ClubController {
     public String deleteClub(@PathVariable Long clubId, Principal principal) {
         try {
             String accountId = principal.getName();
-            memberService.deleteClub(accountId, clubId);
+            clubService.deleteClub(accountId, clubId);
+        } catch (DataNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return "redirect:/";
+    }
+
+    @PostMapping("/update/{clubId}")
+    public String updateClub(@PathVariable Long clubId, @ModelAttribute ClubDto clubDto, Model model) {
+        try {
+            clubService.updateClub(clubId, clubDto);
         } catch (DataNotFoundException e) {
             log.error(e.getMessage());
         }

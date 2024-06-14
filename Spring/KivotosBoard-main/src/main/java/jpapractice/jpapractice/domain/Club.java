@@ -3,7 +3,9 @@ package jpapractice.jpapractice.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Getter
 @Setter
@@ -27,11 +29,18 @@ public class Club {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToOne
-    @JoinColumn(name = "student_id", nullable = false)
-    private Student student;
 
-    public void updateStudent(Student student) {
-        this.student = student;
+    @ManyToMany(mappedBy = "clubs")
+    @Builder.Default
+    private List<Student> students = new ArrayList<>();
+
+    public void addStudent(Student student) {
+        students.add(student);
+        student.getClubs().add(this); // 양방향 연관관계 설정
+    }
+
+    public void removeStudent(Student student) {
+        students.remove(student);
+        student.getClubs().remove(this);
     }
 }

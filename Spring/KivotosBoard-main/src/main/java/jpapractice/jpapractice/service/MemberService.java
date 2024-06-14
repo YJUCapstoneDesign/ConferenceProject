@@ -11,11 +11,10 @@ import jpapractice.jpapractice.repository.CommentRepository;
 import jpapractice.jpapractice.repository.MemberRepository;
 import jpapractice.jpapractice.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +53,16 @@ public class MemberService {
                 .age(student.getAge())
                 .email(student.getEmail())
                 .build();
+    }
+
+    public List<Club> findClubs(String accountId) {
+        Optional<Student> result = memberRepository.findByAccountId(accountId);
+        if (result.isEmpty()) {
+            throw new DataNotFoundException("account not found");
+        }
+
+        Student student = result.get();
+        return new ArrayList<>(student.getClubs());
     }
 
     @Transactional
@@ -101,17 +110,56 @@ public class MemberService {
         Student student = memberRepository.findByAccountId(accountId)
                 .orElseThrow(() -> new DataNotFoundException("계정을 찾을 수 없습니다."));
 
-        clubRepository.deleteByStudent(student);
         commentRepository.deleteByStudent(student);
+
+        // 연관된 게시글 삭제
         boardRepository.deleteByStudent(student);
+
+        List<Club> clubs = student.getClubs();
+
+        for (Club club : clubs) {
+            student.getClubs().remove(club);
+            clubRepository.delete(club);
+        }
+
+        // 최종적으로 학생 삭제
         memberRepository.delete(student);
     }
 
     @Transactional
     public void joinClub(String accountId, Long clubId) {
-        Student student = memberRepository.findByAccountId(accountId).orElseThrow();
-        Club club = clubRepository.findById(clubId).orElseThrow();
-        student.setClub(club.getName());
+        Student student = memberRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new DataNotFoundException("Student not found"));
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new DataNotFoundException("Club not found"));
+
+        if (student.getClubs().contains(club)) {
+            throw new IllegalArgumentException("Already a member of this club");
+        }
+
+        student.getClubs().add(club);
         memberRepository.save(student);
     }
+
+    @Transactional
+    public void deleteClub(String accountId, Long clubId) {
+        Student student = memberRepository.findByAccountId(accountId)
+                .orElseThrow(() -> new DataNotFoundException("Student not found"));
+        Club club = clubRepository.findById(clubId)
+                .orElseThrow(() -> new DataNotFoundException("Club not found"));
+
+        student.getClubs().remove(club);
+        club.getStudents().remove(student);
+
+        // 클럽에 더 이상 멤버가 없으면 클럽 삭제, 그렇지 않으면 저장
+        if (club.getStudents().isEmpty()) {
+            clubRepository.delete(club);
+        } else {
+            clubRepository.save(club);
+        }
+
+        // 학생의 클럽 목록을 업데이트하고 저장
+        memberRepository.save(student);
+    }
+
 }

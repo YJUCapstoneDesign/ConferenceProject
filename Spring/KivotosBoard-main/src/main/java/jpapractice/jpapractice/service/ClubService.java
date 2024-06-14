@@ -14,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -33,10 +34,16 @@ public class ClubService {
                 .name(clubDto.getName())
                 .description(clubDto.getDescription())
                 .imageUrl(imagePath)
-                .student(student)
                 .build();
 
-        return clubRepository.save(club);
+        club.addStudent(student); // 클럽에 학생 추가
+        student.addClub(club); // 학생에 클럽 추가
+
+
+        Club saved = clubRepository.save(club); // 클럽 저장
+        memberRepository.save(student); // 학생 저장 (사실상 필요없을 수 있음, 클럽 저장시 cascade에 의해 저장될 수 있음)
+
+        return saved;
     }
 
     public List<Club> getAllClubs() {

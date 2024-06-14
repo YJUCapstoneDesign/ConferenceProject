@@ -1,5 +1,6 @@
 package jpapractice.jpapractice.controller;
 
+import jpapractice.jpapractice.customException.DataNotFoundException;
 import jpapractice.jpapractice.domain.Club;
 import jpapractice.jpapractice.dto.board.ClubDto;
 import jpapractice.jpapractice.service.ClubService;
@@ -49,7 +50,22 @@ public class ClubController {
 
     @PostMapping("/join/{clubId}")
     public String joinClub(@PathVariable Long clubId, Principal principal) {
-        memberService.joinClub(principal.getName(), clubId);
-        return "redirect:/clubs";
+        try {
+            memberService.joinClub(principal.getName(), clubId);
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return "redirect:/";
+    }
+
+    @GetMapping("/delete/{clubId}")
+    public String deleteClub(@PathVariable Long clubId, Principal principal) {
+        try {
+            String accountId = principal.getName();
+            memberService.deleteClub(accountId, clubId);
+        } catch (DataNotFoundException e) {
+            log.error(e.getMessage());
+        }
+        return "redirect:/";
     }
 }

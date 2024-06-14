@@ -3,7 +3,9 @@ package jpapractice.jpapractice.controller;
 import jakarta.validation.Valid;
 
 import java.security.Principal;
+import java.util.List;
 
+import jpapractice.jpapractice.domain.Club;
 import jpapractice.jpapractice.dto.member.DefaultInfoDto;
 import jpapractice.jpapractice.dto.member.PasswordDto;
 import jpapractice.jpapractice.dto.member.StudentAndAccountDto;
@@ -67,7 +69,9 @@ public class MemberController {
     public String myPage(@PathVariable("account") String account,
                          Model model) {
         DefaultInfoDto result = memberService.findInfo(account);
+        List<Club> clubs = memberService.findClubs(account);
         model.addAttribute("info", result);
+        model.addAttribute("clubs", clubs);
         return "member/mypage";
     }
     // @PathVariable(parameter이름) 으로 값을 가져올수 있다.

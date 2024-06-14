@@ -50,6 +50,7 @@ public class Post {
     @JoinColumn(name = "student_id")
     private Student student;
 
+    @Builder.Default
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE)
     private List<Comment> comments = new ArrayList<>();
 

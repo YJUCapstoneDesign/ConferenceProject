@@ -20,6 +20,15 @@
       background-color: #f5f5f5;
     }
 
+    ul {
+      padding: 0;
+      display: flex;
+    }
+
+    li {
+      list-style: none;
+    }
+
     #mainContent {
       margin-bottom: 40px;
     }
@@ -81,7 +90,11 @@
         </tr>
         <tr>
           <td>동아리</td>
-          <td th:text="${info.clubName}"></td>
+          <td>
+            <ul>
+              <li th:each="club : ${clubs}" th:text="${club.getName()}"></li>
+            </ul>
+          </td>
         </tr>
         </tbody>
       </table>

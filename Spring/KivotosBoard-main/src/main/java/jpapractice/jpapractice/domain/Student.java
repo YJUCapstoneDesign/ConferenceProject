@@ -9,8 +9,9 @@ import java.util.List;
 @Getter
 @Setter
 @Entity
-@Table(name = "student_default_information")
+@Table(name = "student")
 @Builder
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 public class Student {
@@ -26,9 +27,6 @@ public class Student {
     @Column(name = "student_password", nullable = false)
     private String passwd;
 
-    @Column(name = "club")
-    private String club;
-
     @Column(name = "student_name")
     private String name;
 
@@ -38,7 +36,13 @@ public class Student {
     @Column(name = "student_email")
     private String email;
 
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+            name = "student_club",
+            joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "club_id")
+    )
+    @Builder.Default
     private List<Club> clubs = new ArrayList<>();
 
     public void changePasswd(String passwd) {
@@ -53,17 +57,7 @@ public class Student {
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", accountId=" + accountId +
-                ", passwd='" + passwd + '\'' +
-                ", club=" + club +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                ", clubs=" + clubs +
-                '}';
+    public void addClub(Club club) {
+        clubs.add(club);
     }
 }

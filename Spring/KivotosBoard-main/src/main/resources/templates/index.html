@@ -55,8 +55,14 @@
           <div class="card-body">
             <h5 class="card-title" th:text="${club.name}">Club Name</h5>
             <p class="card-text" th:text="${club.description}">Club Description</p>
-            <button type="button" class="btn btn-success" data-bs-toggle="modal" th:attr="data-bs-target='|#joinClubModal-${club.id}|'">가입</button>
-          </div>
+            <div class="flex-fill justify-content-between">
+              <form th:action="@{/clubs/join/{clubId}(clubId=${club.id})}" method="post">
+                <button type="submit" class="btn btn-success">가입</button>
+              </form>
+              <form th:action="@{/clubs/delete/{clubId}(clubId=${club.id})}" method="get">
+                <button type="submit" class="btn-danger btn">삭제</button>
+              </form>
+            </div>
         </div>
       </div>
     </div>
@@ -90,36 +96,6 @@
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
         <button type="button" class="btn btn-primary" onclick="submitAddClubForm()">개설</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Join Club Modals -->
-<div th:each="club : ${clubs}">
-  <div class="modal fade" th:id="'joinClubModal-' + ${club.id}" tabindex="-1" aria-labelledby="joinClubModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="joinClubModalLabel" th:text="'동아리 가입: ' + ${club.name}">동아리 가입</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form th:action="@{/clubs/join/{clubId}(clubId=${club.id})}" method="post">
-            <div class="mb-3">
-              <label for="memberName" class="form-label">회원 이름</label>
-              <input type="text" class="form-control" id="memberName" name="memberName" required>
-            </div>
-            <div class="mb-3">
-              <label for="memberEmail" class="form-label">회원 이메일</label>
-              <input type="email" class="form-control" id="memberEmail" name="memberEmail" required>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-              <button type="submit" class="btn btn-primary">가입</button>
-            </div>
-          </form>
-        </div>
       </div>
     </div>
   </div>

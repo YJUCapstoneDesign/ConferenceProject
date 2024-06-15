@@ -25,9 +25,8 @@ const VideoComponent = (props) => {
   const [activeSpeaker, setActiveSpeaker] = useState(false);
   const [activeSharing, setActiveSharing] = useState(false);
   const [receiveFile, setReceiveFile] = useState(null);
-  // const [userList, setUserList] = useState([]);
-  // const { teamNumber } = useParams();
-  // let myroom = teamNumber;
+  const { teamNumber } = useParams();
+  let myroom = teamNumber;
 
   const connectFeed = (feed) => {
     setFeeds((prevFeeds) => [...prevFeeds, feed]);
@@ -70,10 +69,6 @@ const VideoComponent = (props) => {
     }
   };
 
-  useEffect(() => {
-    console.log(userList);
-    CheckedList();
-  }, []);
 
 
   useEffect(() => {

@@ -4,7 +4,7 @@ import {
   GetObjectCommand,
 } from "@aws-sdk/client-s3";
 
-export async function getTeamFilesText(teamId) {
+export async function getTeamFilesText(teamId,topic) {
   // AWS S3 관련 설정
   const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
   const region = process.env.REACT_APP_AWS_REGION;
@@ -23,7 +23,7 @@ export async function getTeamFilesText(teamId) {
     // 1. 파일 목록 가져오기
     const listParams = {
       Bucket: bucketName,
-      Prefix: `${teamId}/crazy/`, // ${teamId} 폴더 안의 파일들만을 가져오도록 설정
+      Prefix: `${teamId}/crazy/${topic}/`, // ${teamId} 폴더 안의 파일들만을 가져오도록 설정
     };
 
     const command = new ListObjectsV2Command(listParams);

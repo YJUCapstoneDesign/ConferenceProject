@@ -5,18 +5,20 @@ import { useParams } from 'react-router-dom';
 function BeforeLog() {
   const [logTexts, setLogTexts] = useState([]); 
   const { teamNumber } = useParams();
+  const [topic, setTopic] = useState();
 
-  useEffect(() => {
+    
     const fetchLogText = async () => {
       try {
-        const texts = await getTeamFilesText(teamNumber);
+        const texts = await getTeamFilesText(teamNumber,topic);
         setLogTexts(texts);
       } catch (error) {
         console.error("로그 불러오기 실패:", error);
       }
     };
-    fetchLogText();
-  }, [teamNumber]); 
+
+
+ 
 
   return (
     // <div class="w-10 xl:w-7/12 mb-12 xl:mb-0 ml-4">
@@ -27,7 +29,7 @@ function BeforeLog() {
             <h3 className="font-semibold text-base text-indigo-500">Previous Log</h3>
           </div>
           <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-            <button className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
+            <button onClick={fetchLogText} className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
               See All
             </button>
           </div>
@@ -39,7 +41,9 @@ function BeforeLog() {
           <thead>
             <tr>
               <th className="px-8 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                Content
+                <input onChange={(e)=>
+		              setTopic(e.target.value)}>
+                </input>
               </th>
             </tr>
           </thead>

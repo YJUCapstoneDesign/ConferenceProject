@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { uploadToS3 } from './FileUploadDownload';
+import { useParams } from 'react-router-dom';
 
 const apiKey = process.env.REACT_APP_GEMINI_API_KEY; 
 const genAI = new GoogleGenerativeAI(apiKey);
@@ -20,6 +21,7 @@ const generationConfig = {
 const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete, topic ,onSummaryUpload}) => {
   const [response, setResponse] = useState("");
   const [isSummarizing, setIsSummarizing] = useState(false); // 요약 진행 여부 상태 추가
+  const { teamNumber } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -32,7 +34,7 @@ const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete
           });
 
           const result = await chatSession.sendMessage(
-            `다음 텍스트를 요약해주세요 그리고 주제(${topic})에 안맞는 단어는 삭제해 주세요 그리고 요약한 단어만 출력해주세요: ${textToSummarize}`
+            `다음 텍스트를 요약해주세요 그리고 주제(${topic})에 안맞는 문장은 삭제해 주세요 그리고 각문장으로만 출력해주세요: ${textToSummarize}`
           );
           setResponse(result.response.text());
 
@@ -40,7 +42,7 @@ const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete
           if (onSummaryComplete) {
             onSummaryComplete();
             
-            const uploadResult = await uploadToS3(result.response.text(),'2222');
+            const uploadResult = await uploadToS3(result.response.text(),teamNumber,topic);
             if (uploadResult.success) {
               alert('파일 저장 성공!');
             } else {

@@ -1,7 +1,7 @@
 import { S3Client, ListObjectsV2Command, DeleteObjectCommand, PutObjectCommand,ListObjectsCommand,GetObjectCommand } from "@aws-sdk/client-s3";
 
 
-export async function uploadToS3(crazyJson, teamId) {
+export async function uploadToS3(crazyJson, teamId,topic) {
   // AWS S3 관련 설정
   const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
   const region = process.env.REACT_APP_AWS_REGION;
@@ -32,7 +32,7 @@ export async function uploadToS3(crazyJson, teamId) {
     // 새 파일 업로드
     const uploadParams = {
       Bucket: bucketName,
-      Key: `${teamId}/crazy/${formattedDate}crazy.txt`,
+      Key: `${teamId}/crazy/${topic}/${formattedDate}crazy.txt`,
       Body: crazyJson,
       ACL: 'public-read',
     };
@@ -41,7 +41,7 @@ export async function uploadToS3(crazyJson, teamId) {
     // S3 버킷에 있는 파일 목록 조회
     const listParams = {
       Bucket: bucketName,
-      Prefix: `${teamId}/crazy/`,
+      Prefix: `${teamId}/crazy/${topic}/`,
     };
     const listCommand = new ListObjectsCommand(listParams);
     const { Contents } = await s3Client.send(listCommand);

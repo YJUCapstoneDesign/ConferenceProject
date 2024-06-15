@@ -8,7 +8,7 @@ const Crazy = () => {
   const intervalRef = useRef(null);
   const [showSummary, setShowSummary] = useState(false); 
   const [triggerSummarize, setTriggerSummarize] = useState(false);
-  const [topic, setTopic] = useState(""); // 주제 입력 상태 추가
+  const [topic, setTopic] = useState(""); 
 
   const formatTime = (seconds) => {
     const minutes = Math.floor(seconds / 60);
@@ -37,8 +37,8 @@ const Crazy = () => {
     clearInterval(intervalRef.current);
     setTime(480);
     setIsRunning(false);
-    setTopic(""); // 주제 초기화
-    setTexts(Array(8).fill("")); // 텍스트 입력 영역 초기화
+    setTopic(""); 
+    setTexts(Array(8).fill("")); 
   };
 
   const handleTextChange = (index, event) => {
@@ -51,19 +51,15 @@ const Crazy = () => {
   };
 
   const handleSummarize = () => {
-    // 요약 요청 전에 triggerSummarize 상태를 false로 초기화
     setTriggerSummarize(false); 
-    // 요약 컴포넌트 표시
     setShowSummary(true);
-    // 약 100밀리초 후에 triggerSummarize를 true로 설정하여 요약 요청
     setTimeout(() => {
       setTriggerSummarize(true); 
     }, 100);
   };
 
-  // GeminiSummarizer 컴포넌트에서 요약이 완료된 후 호출될 함수
   const handleSummaryComplete = () => {
-    setTriggerSummarize(false); // 요약 완료 후 다시 false로 변경
+    setTriggerSummarize(false); 
   };
 
   return (
@@ -106,7 +102,7 @@ const Crazy = () => {
           </svg>
         </button>
       </div>
-      {isRunning&& topic ? (<div>{topic}</div>):(<div className="mb-4">
+      {isRunning && topic ? (<div>{topic}</div>):(<div className="mb-4">
         <label htmlFor="topic" className="block text-gray-700 text-sm font-bold mb-2">
         </label>
         <input
@@ -126,20 +122,13 @@ const Crazy = () => {
           >
           
             <div className={`flex-grow flex items-center justify-center ${isRunning && topic ? '' : 'opacity-50'}`}> 
-              {isRunning && topic ? (<textarea
+              <textarea
                 className="text-left text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
                 value={texts[i]}
                 onChange={(event) => handleTextChange(i, event)}
                 placeholder="Enter your idea"
                 disabled={!isRunning || !topic}
-              />) : 
-              (<textarea
-              className="text-left text-sm font-semibold w-full h-full resize-none bg-transparent border-none placeholder-slate-600"
-              value={texts[i]}
-              onChange={(event) => handleTextChange(i, event)}
-              placeholder="Enter your idea"
-              disabled={!isRunning || !topic}
-            />)}
+              />
             </div>
             
             <span className="text-right text-sm text-gray-300 font-semibold">
@@ -148,12 +137,14 @@ const Crazy = () => {
           </div>
         ))}
       </div>
-      <button
-        className="inline-block w-24 h-8 mt-8 text-xs text-white font-bold py-2 px-4 rounded-full bg-gradient-to-r from-pink-500 to-purple-800 border border-transparent transform hover:scale-110 hover:border-white transition-transform duration-3000 ease-in-out"
-        onClick={handleSummarize}
-      >
-        Summarize
-      </button>
+      {time === 0 && (
+        <button
+          className="inline-block w-24 h-8 mt-8 text-xs text-white font-bold py-2 px-4 rounded-full bg-gradient-to-r from-pink-500 to-purple-800 border border-transparent transform hover:scale-110 hover:border-white transition-transform duration-3000 ease-in-out"
+          onClick={handleSummarize}
+        >
+          Summarize
+        </button>
+      )}
 
     {showSummary && (
       <GeminiSummarizer

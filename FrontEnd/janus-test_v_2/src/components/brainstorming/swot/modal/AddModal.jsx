@@ -13,7 +13,7 @@ const AddModal = ({ onClose, setDataList, sendWebSocketData }) => {
     area = parseInt(document.getElementById('area').value);
     setDataList((prev) => {
       const updatedList = updateArea(prev, title, content, area);
-      sendWebSocketData(updatedList);
+      sendWebSocketData({ tiles: updatedList });
       return updatedList;
     });
 

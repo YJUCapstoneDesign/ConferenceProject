@@ -61,8 +61,7 @@ export default function Canvas() {
     };
     
     ws.current.onmessage = (message) => {
-      console.log("웹소켓 메시지 받음", message.data);
-      setSocketData(JSON.parse(message.data));
+      setSocketData(JSON.parse(message.data).tiles);
     };
 
     return () => {
@@ -81,7 +80,7 @@ export default function Canvas() {
     const sendData = {
       id: parseInt(teamNumber),
       type: "MSG",
-      data: data.tiles,
+      data,
     }
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify(sendData));

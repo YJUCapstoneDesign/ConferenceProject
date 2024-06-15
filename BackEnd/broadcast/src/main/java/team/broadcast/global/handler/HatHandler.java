@@ -8,7 +8,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -17,6 +19,7 @@ public class HatHandler extends TextWebSocketHandler {
 
     // 현재 연결된 유저 세션들
     private final Set<WebSocketSession> sessions = new HashSet<>();
+    private final Map<Long, Set<WebSocketSession>> sessionMap = new HashMap<>();
 
     // 소켓 연결 뒤
     @Override

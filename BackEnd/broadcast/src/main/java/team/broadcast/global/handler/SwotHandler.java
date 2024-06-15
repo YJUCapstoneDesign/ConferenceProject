@@ -108,9 +108,11 @@ public class SwotHandler extends TextWebSocketHandler {
                 });
     }
 
-    // 아래 코드 수정할 수 있도록 한다.
+    // 아래 코드 수정 가능하도록 한다.
     private String generateInitialJson() {
         final int SIZE = 4;
+
+        Map<String, Object> data = new HashMap<>();
 
         List<List<Map<String, Object>>> dataList = new ArrayList<>();
 
@@ -126,6 +128,8 @@ public class SwotHandler extends TextWebSocketHandler {
             dataList.add(innerList);
         }
 
-        return gson.toJson(dataList);
+        data.put("tiles", dataList);
+
+        return gson.toJson(data);
     }
 }

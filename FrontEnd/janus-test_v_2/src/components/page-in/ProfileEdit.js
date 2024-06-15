@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import api from './api';
 import NavIn from "./InNavbar";
+import { useNavigate } from 'react-router-dom';
 
 function ProfileEdit() {
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     username: '',
     phone: ''
@@ -24,9 +26,8 @@ function ProfileEdit() {
           'Content-Type': 'application/json'
         }
       });
-      if (response.status === 200) {
         alert('프로필 수정 완료');
-      }
+        navigate('/Mypage');
     } catch (error) {
       console.error('프로필 수정 실패!', error);
     }

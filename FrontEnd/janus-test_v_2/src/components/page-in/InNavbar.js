@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import '../css/Navbar.css'
 
-const Navbar = () => {
+const InNavbar = () => {
     const [click, setClick] = useState(false)
     const handleClick = () => setClick(!click)
     // const closeMenu = () => setClick(false)
@@ -24,4 +24,4 @@ const Navbar = () => {
     )
 }
 
-export default Navbar
+export default InNavbar

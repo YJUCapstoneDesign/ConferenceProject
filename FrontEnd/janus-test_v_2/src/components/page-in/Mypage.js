@@ -1,5 +1,7 @@
 import React, { useRef, useState, useEffect } from "react";
 import api from './api';
+import { Link } from 'react-router-dom';
+import NavIn from "./InNavbar";
 
 const baseURL = process.env.REACT_SPRING_SERVER
 
@@ -67,8 +69,9 @@ function Mypage() {
   };
 
   return (
-    <div className="h-full bg-gray-200 p-8">
-      <div className="bg-white rounded-lg shadow-xl pb-8">
+    <div className="h-full bg-white p-8">
+      <NavIn/>
+      <div className="mt-20 bg-white rounded-lg shadow-xl pb-8">
         <div className="w-full h-[250px]">
           <img
             src="https://images.unsplash.com/photo-1582192903020-8a5e59dcdcf2?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
@@ -99,9 +102,9 @@ function Mypage() {
         </div>
         <div className="flex-1 flex flex-col items-center lg:items-end justify-end px-8 mt-2">
           <div className="flex items-center space-x-4 mt-2">
-            <button className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100">
+            <Link to="/ProfileEdit" className="flex items-center bg-indigo-600 hover:bg-indigo-700 text-gray-100 px-4 py-2 rounded text-sm space-x-2 transition duration-100">
               <span>Edit Profile</span>
-            </button>
+            </Link>
           </div>
         </div>
       </div>

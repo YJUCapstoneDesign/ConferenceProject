@@ -8,6 +8,10 @@ const AddModal = ({ onClose, setDataList, sendWebSocketData }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
+    if (!title || !content) {
+      alert('제목과 내용을 모두 입력해주세요.');
+      return;
+    }
 
     let area = 0;
     area = parseInt(document.getElementById('area').value);

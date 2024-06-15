@@ -62,8 +62,7 @@ public class SwotHandler extends TextWebSocketHandler {
             return;
         }
 
-        log.info("received message: {}", payload);
-        log.info("stored room data: {}", toJson(websocketRoom.getData()));
+        log.info("received room data: {}", toJson(websocketRoom.getData()));
 
         // 이미 들어와 있는 경우 최신 데이터를 업데이트하고 보낼 수 있도록 한다.
         updateRoomById(roomId, websocketRoom);

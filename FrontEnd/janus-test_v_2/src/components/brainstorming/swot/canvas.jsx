@@ -43,14 +43,7 @@ export default function Canvas() {
   const { teamNumber } = useParams();
 
   const [onModal, setOnModal] = useState(false);
-  const [tiles, setTiles] = useState(Array.from({ length: SIZE * 2 }, 
-    () => Array.from({ length: SIZE * 2 }, () => {
-      return {
-        title: "",
-        content: "",
-        area: 0,
-      }; // empty tile
-  })));
+  const [tiles, setTiles] = useState([]);
 
   const ws = useRef(null);
   const [socketData, setSocketData] = useState(null);
@@ -68,7 +61,8 @@ export default function Canvas() {
     };
     
     ws.current.onmessage = (message) => {
-      setSocketData(JSON.parse(message.data).data);
+      console.log("웹소켓 메시지 받음", message.data);
+      setSocketData(JSON.parse(message.data));
     };
 
     return () => {
@@ -78,7 +72,7 @@ export default function Canvas() {
 
   useEffect(() => {
     if (socketData) {
-      setTiles(socketData.tiles);
+      setTiles(socketData);
     }
   }, [socketData]);
 
@@ -87,7 +81,7 @@ export default function Canvas() {
     const sendData = {
       id: parseInt(teamNumber),
       type: "MSG",
-      data,
+      data: data.tiles,
     }
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {
       ws.current.send(JSON.stringify(sendData));
@@ -153,9 +147,11 @@ export default function Canvas() {
             description={tile.description}
           />
         ))}
+        {tiles &&
         <DndProvider backend={HTML5Backend}>
           <HiddenLayer list={tiles} moveCell={moveCell} updateTile={updateTile} deleteTile={deleteTile} />
         </DndProvider>
+      }
       </div>
       <button onClick={() => setOnModal(true)} className="add-button">Add</button>
       {onModal && <AddModal onClose={() => setOnModal(false)} setDataList={setTiles} sendWebSocketData={sendWebSocketData} />}

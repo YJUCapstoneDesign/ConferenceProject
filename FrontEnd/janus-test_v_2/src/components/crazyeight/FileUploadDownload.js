@@ -1,9 +1,7 @@
 import { S3Client, ListObjectsV2Command, DeleteObjectCommand, PutObjectCommand,ListObjectsCommand,GetObjectCommand } from "@aws-sdk/client-s3";
 
 
-
-
-export async function uploadToS3(mindMapDataJson, teamId) {
+export async function uploadToS3(crazyJson, teamId) {
   // AWS S3 관련 설정
   const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
   const region = process.env.REACT_APP_AWS_REGION;
@@ -34,8 +32,8 @@ export async function uploadToS3(mindMapDataJson, teamId) {
     // 새 파일 업로드
     const uploadParams = {
       Bucket: bucketName,
-      Key: `${teamId}/mind/${formattedDate}mindmap.json`,
-      Body: mindMapDataJson,
+      Key: `${teamId}/crazy/${formattedDate}crazy.txt`,
+      Body: crazyJson,
       ACL: 'public-read',
     };
     const uploadCommand = new PutObjectCommand(uploadParams);
@@ -43,7 +41,7 @@ export async function uploadToS3(mindMapDataJson, teamId) {
     // S3 버킷에 있는 파일 목록 조회
     const listParams = {
       Bucket: bucketName,
-      Prefix: `${teamId}/mind/`,
+      Prefix: `${teamId}/crazy/`,
     };
     const listCommand = new ListObjectsCommand(listParams);
     const { Contents } = await s3Client.send(listCommand);
@@ -62,69 +60,5 @@ export async function uploadToS3(mindMapDataJson, teamId) {
   } catch (error) {
     console.error('파일 업로드 실패:', error);
     return { success: false, error };
-  }
-}
-
-export async function listUploadedFiles(teamId) {
-  // AWS S3 관련 설정
-  const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
-  const region = process.env.REACT_APP_AWS_REGION;
-  const accessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
-
-  const s3Client = new S3Client({
-    region,
-    credentials: {
-      accessKeyId: accessKeyId,
-      secretAccessKey: secretAccessKey,
-    },
-  });
-
-  try {
-    const listParams = {
-      Bucket: bucketName,
-      Prefix: `${teamId}/mind/`, // ${teamId} 폴더 안의 파일들만을 가져오도록 설정
-    };
-
-    const command = new ListObjectsV2Command(listParams);
-    const response = await s3Client.send(command);
-
-    // 업로드된 파일 목록 반환
-    return response.Contents.map((object) => object.Key);
-  } catch (error) {
-    console.error('파일 목록 불러오기 실패:', error);
-    return { success: false, error };
-  }
-}
-
-export async function downloadFileFromS3(fileName) {
-  // AWS S3 관련 설정
-  const bucketName = process.env.REACT_APP_AWS_BUCKET_NAME;
-  const region = process.env.REACT_APP_AWS_REGION;
-  const accessKeyId = process.env.REACT_APP_AWS_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.REACT_APP_AWS_SECRET_ACCESS_KEY;
-
-  const s3Client = new S3Client({
-    region,
-    credentials: {
-      accessKeyId: accessKeyId,
-      secretAccessKey: secretAccessKey,
-    },
-  });
-
-  try {
-    const downloadParams = {
-      Bucket: bucketName,
-      Key: fileName,
-    };
-
-    const command = new GetObjectCommand(downloadParams);
-    const response = await s3Client.send(command);
-    
-    // 파일 내용 반환
-    return await response.Body.getReader().read();
-  } catch (error) {
-    console.error('파일 다운로드 실패:', error);
-    throw error;
   }
 }

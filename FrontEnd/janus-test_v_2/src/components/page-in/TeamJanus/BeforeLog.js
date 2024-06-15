@@ -16,8 +16,6 @@ function BeforeLog() {
         console.error("로그 불러오기 실패:", error);
       }
     };
-
-
  
 
   return (
@@ -28,11 +26,6 @@ function BeforeLog() {
           <div className="relative w-full px-4 max-w-full flex-grow flex-1">
             <h3 className="font-semibold text-base text-indigo-500">Previous Log</h3>
           </div>
-          <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
-            <button onClick={fetchLogText} className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150" type="button">
-              See All
-            </button>
-          </div>
         </div>
       </div>
 
@@ -40,11 +33,20 @@ function BeforeLog() {
         <table className="items-center bg-transparent w-full border-collapse ">
           <thead>
             <tr>
-              <th className="px-8 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
-                <input onChange={(e)=>
-		              setTopic(e.target.value)}>
-                </input>
-              </th>
+            <th className="pl-8 bg-blueGray-50 text-blueGray-500 align-middle border border-solid border-blueGray-100 py-2 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left">
+              <div className="flex items-center justify-between">
+                <input 
+                  className="block w-full h-9 p-2 text-gray-900 border border-gray-300 rounded-lg bg-gray-50 text-xs focus:ring-blue-500 focus:border-blue-500" 
+                  onChange={(e) => setTopic(e.target.value)}
+                />
+              <div className="relative w-full px-4 max-w-full flex-grow flex-1 text-right">
+                <button onClick={fetchLogText} className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded outline-none focus:outline-none mb-1 ease-linear transition-all duration-150" type="button">
+                   See All
+                </button>
+              </div>
+            </div>
+            </th>
+
             </tr>
           </thead>
 

@@ -214,10 +214,9 @@ export default function MindMapPage() {
       </div>
       {fileList.length > 0 && (
         <div>
-          <h2>파일 목록</h2>
-          <ul>
+          <ul className='border border-gray-200 rounded-2xl shadow-md'>
             {fileList.map((file, index) => (
-              <li key={index}>
+              <li key={index} className='px-4 py-2 bg-white hover:bg-sky-100 hover:text-sky-900 border-b last:border-none border-gray-200 transition-all duration-300 ease-in-out text-gray-500'>
                 {file}
                 <button onClick={() => handleApplyFile(file)}>적용하기</button>
               </li>

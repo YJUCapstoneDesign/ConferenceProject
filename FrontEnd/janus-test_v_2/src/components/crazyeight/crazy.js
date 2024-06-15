@@ -51,8 +51,14 @@ const Crazy = () => {
   };
 
   const handleSummarize = () => {
-    setShowSummary(true); 
-    setTriggerSummarize(true); 
+    // 요약 요청 전에 triggerSummarize 상태를 false로 초기화
+    setTriggerSummarize(false); 
+    // 요약 컴포넌트 표시
+    setShowSummary(true);
+    // 약 100밀리초 후에 triggerSummarize를 true로 설정하여 요약 요청
+    setTimeout(() => {
+      setTriggerSummarize(true); 
+    }, 100);
   };
 
   // GeminiSummarizer 컴포넌트에서 요약이 완료된 후 호출될 함수

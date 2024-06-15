@@ -13,7 +13,7 @@ import { listUploadedFiles, downloadFileFromS3 } from './FileUploadDownload';
 import { useParams } from 'react-router-dom';
 
 let initialNodes = [
-
+  
 ];
 
 const baseURL = process.env.REACT_WEBSOCKET_SERVER;
@@ -45,9 +45,9 @@ export default function MindMapPage() {
 
     const mindMapDataJson = JSON.stringify(mindMapData);
 
-    const uploadResult = await uploadToS3(mindMapDataJson, 'mind', teamNumber);
+    const uploadResult = await uploadToS3(mindMapDataJson,teamNumber);
 
-    setFileList([]);
+    setFileList([]); //리스트 초기화
 
     if (uploadResult.success) {
       alert('파일 저장 성공!');
@@ -56,11 +56,10 @@ export default function MindMapPage() {
     }
   };
 
-  const handleLoadData = async (fileName) => {
+  const handleLoadData = async () => {
     try {
       // 파일 목록을 받아옴
-      const files = await listUploadedFiles();
-      console.log('업로드된 파일 목록:', files);
+      const files = await listUploadedFiles(teamNumber);
       
       // 파일 목록 상태 업데이트
       setFileList(files);

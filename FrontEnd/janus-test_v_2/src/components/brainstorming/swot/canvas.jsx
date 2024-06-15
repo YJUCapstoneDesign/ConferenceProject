@@ -58,6 +58,14 @@ export default function Canvas() {
   useEffect(() => {
     ws.current = new WebSocket(`${baseURL}/swot`);
     console.log("웹소켓 연결됨");
+
+    ws.current.onopen = () => {
+      ws.current.send(
+        JSON.stringify(
+          { id: parseInt(teamNumber), type: "ENTER" }
+        )
+      );
+    };
     
     ws.current.onmessage = (message) => {
       setSocketData(JSON.parse(message.data).data);
@@ -78,6 +86,7 @@ export default function Canvas() {
   const sendWebSocketData = useCallback((data) => {
     const sendData = {
       id: parseInt(teamNumber),
+      type: "MSG",
       data,
     }
     if (ws.current && ws.current.readyState === WebSocket.OPEN) {

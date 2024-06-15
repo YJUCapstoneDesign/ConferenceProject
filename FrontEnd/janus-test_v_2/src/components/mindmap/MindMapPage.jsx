@@ -113,7 +113,7 @@ export default function MindMapPage() {
 
   useEffect(() => {
     if (socketData !== undefined) {
-      const parsedSocketData = JSON.parse(socketData).data;
+      const parsedSocketData = JSON.parse(socketData);
       console.log("parsedSocketData: ", parsedSocketData);
       setNodes(parsedSocketData.node);
       setEdges(parsedSocketData.edge);

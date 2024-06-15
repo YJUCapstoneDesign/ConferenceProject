@@ -23,16 +23,13 @@ const Navbar = () => {
 
   const getProfileImage = async () => {
     try {
-      const response = await api.get('/api/image', {
-        headers: {
-          Authorization: LoginStateToken,
-        },
-      });
+      const response = await api.get('/api/image');
       if (response.status === 200) {
         
-        let imageUrl = response.data.imageUrl;
-        if (response.data.imageUrl.startsWith('/') === true) {
-          imageUrl = baseURL + response.data.imageUrl;
+        let imageUrl = response.data;
+        console.log(imageUrl);
+        if (imageUrl.startsWith('/') === true) {
+          imageUrl = baseURL + response.data;
         }
         setImage(imageUrl);
       }

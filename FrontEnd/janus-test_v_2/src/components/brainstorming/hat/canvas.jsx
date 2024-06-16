@@ -40,9 +40,9 @@ export default function Canvas() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-1 mr-10 p-4 w-2/6 h-full overflow-auto">
+      <div className="flex flex-wrap gap-1 mr-10 p-4 sm:w-2/6 md:w-2/6 lg:w-3/12 xl:w-1/4 2xl:w-1/5 h-full overflow-auto">
         {colors.map((color, index) => (
-          <div key={index} className="w-3/4">
+          <div key={index} className="w-full sm:w-1/2 md:w-1/2">
             <Card
               color={color}
               title={titles[index]}

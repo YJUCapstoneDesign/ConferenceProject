@@ -2,7 +2,7 @@ import React, { useCallback, useState, useRef } from "react";
 import GeminiSummarizer from "./gemini"; 
 
 const Crazy = () => {
-  const [time, setTime] = useState(3);
+  const [time, setTime] = useState(20);
   const [isRunning, setIsRunning] = useState(false);
   const [texts, setTexts] = useState(Array(8).fill(""));
   const intervalRef = useRef(null);

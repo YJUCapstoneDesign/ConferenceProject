@@ -66,7 +66,7 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler, WebMv
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
+        registry.addResourceHandler("/**") // 해당 경로 변경 감지
                 .addResourceLocations("file:src/main/resources/static/");
     }
 }

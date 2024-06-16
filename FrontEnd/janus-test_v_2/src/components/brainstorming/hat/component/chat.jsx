@@ -80,9 +80,9 @@ const ChatArea = ({roomId}) => {
           return (
             <div key={index} className={isOutgoing ? "flex items-end justify-end mb-4" : "flex items-start justify-start mb-4"}>
               {isOutgoing ? (
-                <OutgoingMessage message={newData} imageUrl="Your Image URL" />
+                <OutgoingMessage message={newData} imageUrl="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png" />
               ) : (
-                <IncomingMessage message={message} imageUrl="Opponent's Image URL" />
+                <IncomingMessage message={message} imageUrl="../images/human.png" />
               )}
             </div>
           );

@@ -21,7 +21,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MyAuthSuccessHandler implements AuthenticationSuccessHandler, WebMvcConfigurer {
+public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
 
@@ -62,11 +62,5 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler, WebMv
                 .build().toUriString();
 
         response.sendRedirect(targetUri);
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**") // 해당 경로 변경 감지
-                .addResourceLocations("file:src/main/resources/static/");
     }
 }

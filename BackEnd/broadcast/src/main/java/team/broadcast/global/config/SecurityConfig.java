@@ -25,6 +25,8 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.jwt.filter.CustomExceptionFilter;
@@ -44,7 +46,7 @@ import java.util.List;
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfig implements WebMvcConfigurer {
     private final OAuth2UserService oAuth2UserService;
     private final JwtService jwtService;
     private final LoginService loginService;
@@ -130,6 +132,12 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("file:src/main/resources/static/");
+    }
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.formLogin(AbstractHttpConfigurer::disable); // form login 비활성화
@@ -150,7 +158,7 @@ public class SecurityConfig {
                         // websocket
                         .requestMatchers("/app", "/swot", "/hat").permitAll()
                         // rest api
-                        .requestMatchers("/images/**", "/images/profile/**" ,
+                        .requestMatchers("/images/**", "/images/profile/**",
                                 "/api/find-pwd",
                                 "/api/mind-map/**",
                                 "/oauth2/**",

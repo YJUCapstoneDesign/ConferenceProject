@@ -8,7 +8,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.dto.UpdateUser;
@@ -20,13 +19,8 @@ import team.broadcast.global.exception.CustomException;
 import team.broadcast.global.mail.MailService;
 import team.broadcast.global.mail.dto.EmailMessage;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @Slf4j

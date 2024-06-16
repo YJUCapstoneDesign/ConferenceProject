@@ -32,6 +32,7 @@ function RoomList(props) {
       const { roomId } = response.data;
       setRoomId(roomId);
       alert("방 생성 성공");
+      window.location.reload();
     } catch (err) {
       setError("방 생성 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
     }

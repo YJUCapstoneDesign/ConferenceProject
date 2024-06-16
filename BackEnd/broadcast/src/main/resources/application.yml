@@ -11,8 +11,6 @@ springdoc:
   show-login-endpoint: true
 default:
   image:
-#   서버 경로 프로젝트 위치로 지정
-    upload-address: "C:/GitWorkspace/organization/ConferenceProject/BackEnd/broadcast"
     address: "/images/profile/anonymous.png"
 client:
   success-url: "http://127.0.0.1:3030"

@@ -25,8 +25,6 @@ import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.jwt.filter.CustomExceptionFilter;
@@ -46,7 +44,7 @@ import java.util.List;
 @Configuration
 @EnableWebSocket
 @RequiredArgsConstructor
-public class SecurityConfig implements WebMvcConfigurer {
+public class SecurityConfig {
     private final OAuth2UserService oAuth2UserService;
     private final JwtService jwtService;
     private final LoginService loginService;
@@ -130,12 +128,6 @@ public class SecurityConfig implements WebMvcConfigurer {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Override
-    public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/**")
-                .addResourceLocations("file:src/main/resources/static/");
     }
 
     @Bean

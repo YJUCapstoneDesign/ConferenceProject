@@ -58,11 +58,11 @@ public class UserController {
                 passwordUpdate.getCurrentPassword(), passwordUpdate.getNewPassword());
     }
 
-    @PutMapping("/update/profileImage")
-    @Operation(summary = "프로필 이미지 수정", description = "이미지 경로를 통해 프로필 이미지 수정")
-    public Long updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, MultipartFile profileImage) {
-        return userService.updateProfileImage(userDetails.getId(), profileImage);
-    }
+//    @PutMapping("/update/profileImage")
+//    @Operation(summary = "프로필 이미지 수정", description = "이미지 경로를 통해 프로필 이미지 수정")
+//    public Long updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, MultipartFile profileImage) {
+//        return userService.updateProfileImage(userDetails.getId(), profileImage);
+//    }
 
     @DeleteMapping("/delete")
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API")

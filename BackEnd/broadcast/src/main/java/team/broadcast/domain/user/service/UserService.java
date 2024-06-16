@@ -39,9 +39,6 @@ public class UserService {
     @Value("${default.image.address}")
     private String defaultImageAddress;
 
-    @Value("${default.image.upload-address}")
-    private String uploadDir;
-
     @Transactional
     public Long createUser(SignupUser userDto) {
         // 이메일 중복 검사.
@@ -100,26 +97,6 @@ public class UserService {
         userRepository.save(findUser);
     }
 
-    @Transactional
-    public Long updateProfileImage(Long userId, MultipartFile file) {
-        // 파일 이름을 랜덤으로 지은다.
-        String imageFileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-        Path destinationFilePath = Paths.get(uploadDir, "/src/main/resources/static/images/profile/", imageFileName);
-
-        try {
-            file.transferTo(destinationFilePath.toFile());
-
-            User user = userRepository.findById(userId)
-                    .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
-
-            user.updateImageUrl("/images/profile/" + imageFileName);
-            userRepository.save(user);
-            return user.getId();
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            throw new RuntimeException(e);
-        }
-    }
 
     public String getUserImage(User user) {
         return user.getImageUrl();

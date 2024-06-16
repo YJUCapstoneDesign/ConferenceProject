@@ -11,7 +11,7 @@ function PassWord() {
     if (confirmed) {
       try {
         const data = { email: email };
-        const response = await axios.post("http://localhost:8080/api/find-pwd", data);
+        const response = await axios.post("/api/find-pwd", data);
       } catch (err) {
         setError("존재하지 않는 이메일 입니다!");
       }

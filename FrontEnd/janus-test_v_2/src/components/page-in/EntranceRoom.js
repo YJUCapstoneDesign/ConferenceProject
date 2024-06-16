@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import api from './api';
 import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 function EntranceRoom() {
   const [teamId, setTeamId] = useState(null);
@@ -39,6 +40,10 @@ function EntranceRoom() {
     <div className="App animated-background h-screen bg-gradient-to-r from-blue-500 via-blue-500 to-indigo-500">
       <div className="min-h-screen flex items-center justify-center">
         <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
+        <Link to={'/Select'}>
+              <p className='text-xs font-semibold text-decoration-line: underline inline-block'> <svg             xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" style={{ fill: 'rgba(0, 0, 0, 1)', transform: '', msFilter: '' }}>  
+              <path d="M12.707 17.293L8.414 13H18v-2H8.414l4.293-4.293-1.414-1.414L4.586 12l6.707 6.707z"></path>
+            </svg></p></Link>
           <h1 className="text-2xl font-semibold text-center text-gray-500 mt-8 mb-6">회의를 시작해보세요!</h1>
           <p className="text-sm text-gray-600 text-center mt-8 mb-6">회의 아이디와 비밀번호를 입력하여 회의에 입장하세요!</p>
           <form>

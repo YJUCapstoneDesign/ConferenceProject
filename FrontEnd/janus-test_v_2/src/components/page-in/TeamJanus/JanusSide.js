@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function JanusSide({teamNumber}) {
 
@@ -68,6 +69,17 @@ function JanusSide({teamNumber}) {
                     </svg>
                     <span className="group-hover:text-gray-700 text-base">WhiteBoard</span>
                     </div>
+                </li>
+                <li className="min-w-max cursor-pointer">
+                    <Link to="/">
+                        <div className="group flex items-center space-x-4 rounded-md px-4 py-3 mb-2 text-gray-600">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" style={{ fill: 'rgba(0, 0, 0, 1)', transform: '', msFilter: '' }}>
+                                    <path d="M16 13v-2H7V8l-5 4 5 4v-3z"></path>
+                                    <path d="M20 3h-9c-1.103 0-2 .897-2 2v4h2V5h9v14h-9v-4H9v4c0 1.103.897 2 2 2h9c1.103 0 2-.897 2-2V5c0-1.103-.897-2-2-2z"></path>
+                                </svg>
+                            <span className="group-hover:text-gray-700 text-base">Back to Website</span>
+                        </div>
+                    </Link>
                 </li>
                 </ul>
             </div>

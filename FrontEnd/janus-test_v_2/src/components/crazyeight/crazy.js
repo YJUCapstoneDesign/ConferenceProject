@@ -2,7 +2,7 @@ import React, { useCallback, useState, useRef } from "react";
 import GeminiSummarizer from "./gemini"; 
 
 const Crazy = () => {
-  const [time, setTime] = useState(480);
+  const [time, setTime] = useState(3);
   const [isRunning, setIsRunning] = useState(false);
   const [texts, setTexts] = useState(Array(8).fill(""));
   const intervalRef = useRef(null);
@@ -44,6 +44,9 @@ const Crazy = () => {
   const handleTextChange = (index, event) => {
     const newTexts = [...texts];
     const newValue = event.target.value;
+    if (time === 0) {
+      return; 
+    }
     if (newValue.length <= 48) {
       newTexts[index] = newValue;
       setTexts(newTexts);
@@ -54,7 +57,7 @@ const Crazy = () => {
     setTriggerSummarize(false); 
     setShowSummary(true);
     setTimeout(() => {
-      setTriggerSummarize(true); 
+      setTriggerSummarize(true);
     }, 100);
   };
 
@@ -66,7 +69,7 @@ const Crazy = () => {
     <div className="flex flex-col items-center justify-center min-h-screen bg-bgcolor p-4">
       <div className="text-black text-6xl mb-4">{formatTime(time)}</div>
       <div className="flex space-x-2 mb-4">
-        <button className="text-white text-2xl" onClick={handleStartPause}>
+        <button className="text-white text-2xl" onClick={handleStartPause}disabled={!topic || time === 0} >
           {isRunning ? (
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +130,7 @@ const Crazy = () => {
                 value={texts[i]}
                 onChange={(event) => handleTextChange(i, event)}
                 placeholder="Enter your idea"
-                disabled={!isRunning || !topic}
+                disabled={!isRunning || !topic || time === 0} 
               />
             </div>
             

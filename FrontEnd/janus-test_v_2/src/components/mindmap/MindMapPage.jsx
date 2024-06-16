@@ -28,6 +28,12 @@ export default function MindMapPage() {
   const [selectedEdges, setSelectedEdges] = useState([]);
 
   const ws = useRef(null);
+  const initBgColor = '#1A192B';
+
+  const styles = {
+    height: '100%',
+    backgroundColor: initBgColor,
+  };
 
   const handleSaveClick = async () => {
     const mindMapData = {
@@ -200,15 +206,15 @@ export default function MindMapPage() {
   }, [nodes, edges, sendWebSocketData]);
 
   return (
-    <div style={{ width: '100vw', height: '100vh' }}>
+    <div style={{ width: '100vw', height: '100vh', backgroundColor:'#1A192B'}}>
       <div className="inline-flex shadow-sm rounded-sm mt-1 ml-1" role="group">
-        <button onClick={addNode} className='px-4 py-2 text-sm font-semibold text-gray-900 rounded-s-lg bg-transparent border hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700 transition-colors duration-500 ease-in-out'>
+        <button onClick={addNode} className='px-4 py-2 text-sm font-semibold text-gray-900 rounded-s-lg bg-transparent border hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white bg-white transition-colors duration-500 ease-in-out'>
           Add
         </button>
-        <button onClick={handleSaveClick} className='px-4 py-2 text-sm font-semibold text-gray-900 bg-transparent border-t border-b hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700 transition-colors duration-500 ease-in-out'>
+        <button onClick={handleSaveClick} className='px-4 py-2 text-sm font-semibold text-gray-900 bg-transparent border-t border-b hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white bg-white transition-colors duration-500 ease-in-out'>
           Save
         </button>
-        <button onClick={handleLoadData} className='px-4 py-2 text-sm font-semibold text-gray-900 rounded-e-lg bg-transparent border hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white dark:border-white dark:text-white dark:hover:text-white dark:hover:bg-gray-700 dark:focus:bg-gray-700 transition-colors duration-500 ease-in-out'>
+        <button onClick={handleLoadData} className='px-4 py-2 text-sm font-semibold text-gray-900 rounded-e-lg bg-transparent border hover:bg-gray-900 hover:text-white focus:z-10 focus:ring-2 focus:ring-gray-500 focus:bg-gray-900 focus:text-white b  g-white transition-colors duration-500 ease-in-out'>
           Load
         </button>
       </div>
@@ -224,23 +230,26 @@ export default function MindMapPage() {
           </ul>
         </div>
       )}
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onNodeDragStop={onNodeDragStop}
-        onNodesDelete={onNodesDelete}
-        onNodeClick={(_, node) => setSelectedNodes([node])}
-        onNodeDoubleClick={onNodeDoubleClick}
-        onConnect={onEdgesConnect}
-        onEdgeClick={(_, edge) => setSelectedEdges([edge])}
-        onEdgesDelete={onEdgesDelete}
-      >
-        <Controls />
-        <MiniMap />
-        <Background variant="dots" gap={12} size={1} />
-      </ReactFlow>
+      <div style={{ height: 'calc(100% - 50px)' }}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onNodeDragStop={onNodeDragStop}
+          onNodesDelete={onNodesDelete}
+          onNodeClick={(_, node) => setSelectedNodes([node])}
+          onNodeDoubleClick={onNodeDoubleClick}
+          onConnect={onEdgesConnect}
+          style={styles}
+          onEdgeClick={(_, edge) => setSelectedEdges([edge])}
+          onEdgesDelete={onEdgesDelete}
+        >
+          <Controls />
+          <MiniMap />
+          {/* <Background variant="dots" gap={12} size={1} /> */}
+        </ReactFlow>
+      </div>
     </div>
   );
 }

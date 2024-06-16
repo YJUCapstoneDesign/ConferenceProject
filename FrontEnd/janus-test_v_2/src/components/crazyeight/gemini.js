@@ -34,7 +34,18 @@ const GeminiSummarizer = ({ textToSummarize, triggerSummarize, onSummaryComplete
           });
 
           const result = await chatSession.sendMessage(
-            `다음 텍스트를 요약해주세요 그리고 주제(${topic})에 안맞는 문장은 삭제해 주세요 그리고 각문장으로만 출력해주세요: ${textToSummarize}`
+            `나는 요약을 원한다 주제와 그 주제에 대한 데이터를 받아서 입력된 데이터가 무엇인지와 각 데이터 중 가장 적합한 데이터와 그 이유를 작성한다.  
+            간단하게 각 한줄 씩 작성한다
+
+            -- 사용자 입력 --
+            주제 : [${topic} 
+             데이터 : [${textToSummarize}]
+
+            -- 출력 형식 --
+            입력된 데이터 : [위 데이터 다시 입력]
+            최적의 선택 :[] 
+            그 이유 : [] 
+            `
           );
           setResponse(result.response.text());
 

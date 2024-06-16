@@ -26,6 +26,7 @@ export default function MindMapPage() {
   const [fileList, setFileList] = useState([]);
   const [selectedNodes, setSelectedNodes] = useState([]);
   const [selectedEdges, setSelectedEdges] = useState([]);
+  const [lastAddedNode, setLastAddedNode] = useState(null);
 
   const ws = useRef(null);
   const initBgColor = '#1A192B';
@@ -121,21 +122,42 @@ export default function MindMapPage() {
   }, [teamNumber]);
 
   const addNode = useCallback(() => {
+    const baseNode = selectedNodes.length > 0 ? selectedNodes[0] : lastAddedNode;
+    const position = baseNode
+      ? {
+          x: baseNode.position.x + Math.random() * 200 - 50,
+          y: baseNode.position.y + Math.random() * 200 - 50,
+        }
+      : { x: Math.random() * window.innerWidth / 2, y: Math.random() * window.innerHeight / 2 };
+
     const newNode = {
       id: (nodes.length + 1).toString(),
-      position: { x: Math.random() * window.innerWidth, y: Math.random() * window.innerHeight },
+      position,
       data: { label: "New Node" },
     };
     const newNodes = [...nodes, newNode];
     setNodes(newNodes);
 
+    // Automatically add an edge if a node was selected
+    let newEdges = [...edges];
+    if (selectedNodes.length === 1) {
+      const newEdge = {
+        id: `e${selectedNodes[0].id}-${newNode.id}`,
+        source: selectedNodes[0].id,
+        target: newNode.id,
+      };
+      newEdges = [...edges, newEdge];
+      setEdges(newEdges);
+    }
+
     const newData = {
       node: newNodes,
-      edge: edges
+      edge: newEdges
     };
 
     sendWebSocketData(newData);
-  }, [nodes, edges, sendWebSocketData]);
+    setLastAddedNode(newNode);
+  }, [nodes, edges, selectedNodes, lastAddedNode, sendWebSocketData]);
 
   const onNodeDragStop = useCallback((e, dragNode) => {
     const updatedNodes = nodes.map(node => node.id === dragNode.id ? dragNode : node);

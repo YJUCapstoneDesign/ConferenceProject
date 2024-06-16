@@ -12,6 +12,3 @@ springdoc:
 default:
   image:
     address: "/images/profile/anonymous.png"
-client:
-  success-url: "http://127.0.0.1:3030"
-  fail-url: "http://127.0.0.1:3030/signin"

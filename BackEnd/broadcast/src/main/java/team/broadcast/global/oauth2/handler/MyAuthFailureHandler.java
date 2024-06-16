@@ -6,11 +6,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
-import org.springframework.web.util.UriComponentsBuilder;
 import team.broadcast.global.exception.ErrorResponse;
 
 import java.io.IOException;
@@ -21,9 +19,6 @@ import java.io.IOException;
 public class MyAuthFailureHandler implements AuthenticationFailureHandler {
 
     private final ObjectMapper objectMapper;
-
-    @Value("${client.fail-url}")
-    private String failUrl;
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
@@ -41,10 +36,5 @@ public class MyAuthFailureHandler implements AuthenticationFailureHandler {
 
         log.error(exception.getMessage());
         objectMapper.writeValue(response.getWriter(), errorResponse);
-
-        String targetUri = UriComponentsBuilder.fromUriString(failUrl)
-                .build().toUriString();
-
-        response.sendRedirect(targetUri);
     }
 }

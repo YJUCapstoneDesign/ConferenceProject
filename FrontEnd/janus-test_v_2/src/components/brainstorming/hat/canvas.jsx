@@ -7,8 +7,10 @@ import green from './images/green.png';
 import red from './images/red.png';
 import white from './images/white.png';
 import yellow from './images/yellow.png';
+import { useParams } from 'react-router-dom';
 
 export default function Canvas() {
+  const {teamNumber} = useParams();
   const colors = [black, blue, green, red, white, yellow];
   const titles = [
     '비판적 사고',
@@ -52,7 +54,7 @@ export default function Canvas() {
         ))}
       </div>
       <div className='flex-1 overflow-auto'>
-        <ChatArea />
+        <ChatArea roomId={teamNumber} />
       </div>
     </div>
   );

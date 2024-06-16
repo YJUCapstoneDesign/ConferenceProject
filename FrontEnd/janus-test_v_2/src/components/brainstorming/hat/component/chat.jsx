@@ -20,7 +20,7 @@ const OutgoingMessage = ({ message, imageUrl }) => (
   </div>
 );
 
-const ChatArea = () => {
+const ChatArea = ({roomId}) => {
   const [messages, setMessages] = useState([]);
   const [messageInput, setMessageInput] = useState('');
   const [socket, setSocket] = useState(null);
@@ -54,7 +54,11 @@ const ChatArea = () => {
   const handleMessageSubmit = (e) => {
     e.preventDefault();
     if (messageInput.trim() !== '') {
-      socket.send(messageInput);
+      const sendData = {
+        id: parseInt(roomId),
+        data: messageInput,
+      }
+      socket.send(JSON.stringify(sendData));
       setMessageInput('');
     }
   };

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../api";
+import { data } from "autoprefixer";
 
 function RoomList(props) {
   const [error, setError] = useState('');
@@ -13,9 +14,9 @@ function RoomList(props) {
     const CheckRoom = async () => {
       try {
         const response = await api.get(`/api/room/exist/${teamId}`);
-        const { roomId, userName } = response.data;
+        const { roomId, username } = response.data;
         setRoomId(roomId);
-        setUserName(userName);
+        setUserName(username);
       } catch (err) {
         setError("방 조회 실패: " + (err.response?.data?.message || "알 수 없는 오류"));
       }
@@ -77,6 +78,7 @@ function RoomList(props) {
                   <Link
                     to={`/video/${roomId}`}
                     className="bg-indigo-500 text-white active:bg-indigo-600 text-xs font-bold uppercase px-3 py-1 rounded-2xl outline-none focus:outline-none mb-1 ease-linear transition-all duration-150 mt-3 ml-24"
+                  state={{data : userName}}
                   >
                     Enter
                   </Link>

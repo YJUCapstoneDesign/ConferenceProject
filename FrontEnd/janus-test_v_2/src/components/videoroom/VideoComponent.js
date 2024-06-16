@@ -6,7 +6,7 @@ import './VideoComponent.css';
 import Sidebar from "../Sidebar";
 import Janusbutton from "../janusbutton";
 import Chatting from "./chatting/chatting";
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 
 
 // let myroom = 1234; 
@@ -16,6 +16,8 @@ let receivedFileChunk = {};
 let localTracks = {};
 
 const VideoComponent = (props) => {
+  const data = useLocation();
+  username = data.state.data;
   const [mainStream, setMainStream] = useState({});
   const [feeds, setFeeds] = useState([]);
   const [myFeed, setMyFeed] = useState({});

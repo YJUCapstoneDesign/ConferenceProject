@@ -23,7 +23,8 @@ const Signin = () => {
             const refreshToken = response.headers['authorization-refresh']
             localStorage.setItem("accessToken", JSON.stringify(accessToken));
             localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
-            navigate("/");
+            console.log(response.data);
+            navigate("/", {state: response.data});
         } catch (err) {
             setError("로그인 실패: " + (err.response?.data?.reason || "알 수 없는 오류"));
         }

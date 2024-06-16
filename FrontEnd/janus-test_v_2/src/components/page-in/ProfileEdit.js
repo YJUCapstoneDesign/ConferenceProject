@@ -41,7 +41,7 @@ function ProfileEdit() {
           <NavIn />
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
             <div className="flex items-start flex-col justify-start">
-            <h2 class="text-2xl font-semibold text-black mb-10">Edit Profile!</h2>
+            <h2 className="text-2xl font-semibold text-black mb-10">Edit Profile!</h2>
               <label htmlFor="username" className="text-sm text-gray-700 dark:text-gray-200 mr-2">Username:</label>
               <input
                 type="text"

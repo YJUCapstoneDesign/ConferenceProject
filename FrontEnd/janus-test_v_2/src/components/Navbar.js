@@ -4,6 +4,8 @@ import { FaBars, FaTimes } from 'react-icons/fa';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './css/Navbar.css';
 import api from '../components/page-in/api';
+import { listUploadedFiles } from './FileUploadDownload';  
+
 
 const baseURL = process.env.REACT_SPRING_SERVER;
 
@@ -14,19 +16,19 @@ const Navbar = () => {
   const closeMenu = () => setClick(false);
   const navigate = useNavigate();
   const LoginStateToken = localStorage.getItem('accessToken');
-  const RefreshToken = "Bearer " + JSON.parse(localStorage.getItem('refreshToken'));  
+  const RefreshToken = "Bearer " + JSON.parse(localStorage.getItem('refreshToken')); 
 
   useEffect(() => {
     if (LoginStateToken) {
       getProfileImage();
-    }}, []);
+    }
+  }, []);
 
   const getProfileImage = async () => {
     try {
       const response = await api.get('/api/image');
       if (response.status === 200) {
-        
-        let imageUrl = response.data;
+        let imageUrl = "";
         console.log(imageUrl);
         if (imageUrl.startsWith('/') === true) {
           imageUrl = baseURL + response.data;
@@ -37,6 +39,20 @@ const Navbar = () => {
       console.log(err);
     }
   }
+
+  // 팀 ID 설정 및 파일 URL 목록 가져오기
+  useEffect(() => {
+    listUploadedFiles("정준구")
+      .then((fileUrls) => {
+        // fileUrls 배열은 각 파일의 URL을 포함합니다.
+        if (fileUrls.length > 0) { // 파일이 있으면 첫 번째 파일 URL 사용
+          setImage(fileUrls[0]); // 이미지를 업데이트
+        }
+      })
+      .catch((error) => {
+        console.error('파일 목록 불러오기 실패:', error);
+      });
+  }, []); // 컴포넌트 마운트 시 한 번만 실행
 
   const logout = async () => {
     try {

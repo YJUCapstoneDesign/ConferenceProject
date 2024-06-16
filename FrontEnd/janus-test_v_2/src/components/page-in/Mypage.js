@@ -2,10 +2,15 @@ import React, { useRef, useState, useEffect } from "react";
 import api from './api';
 import { Link } from 'react-router-dom';
 import NavIn from "./InNavbar";
+import { uploadToS3 ,listUploadedFiles } from '../FileUploadDownload'; 
 
 const baseURL = process.env.REACT_SPRING_SERVER
 
+let imagesUrl = "";
+
 function Mypage() {
+
+   // 팀 ID 설정 및 파일 URL 목록 가져오기
   const profileImageRef = useRef(null);
   const [userInfo, setUserInfo] = useState({
     name: "",
@@ -14,6 +19,25 @@ function Mypage() {
     profileImageUrl: "", 
   });
   const [selectedImage, setSelectedImage] = useState(null); 
+
+  useEffect(() => { 
+    if (userInfo.name) { // userInfo.name이 존재하는 경우에만 실행
+      listUploadedFiles(userInfo.name)
+        .then((fileUrls) => {
+          // fileUrls 배열은 각 파일의 URL을 포함합니다.
+          if (fileUrls.length > 0) { // 파일이 있으면 첫 번째 파일 URL 사용
+            imagesUrl = fileUrls[0]; // imagesUrl을 업데이트
+            setUserInfo((prevUserInfo) => ({
+              ...prevUserInfo,
+              profileImageUrl: imagesUrl, // userInfo의 profileImageUrl 업데이트
+            }));
+          }
+        })
+        .catch((error) => {
+          console.error('파일 목록 불러오기 실패:', error);
+        });
+    }
+  }, [userInfo]); // userInfo 상태가 변경될 때마다 실행
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -29,7 +53,7 @@ function Mypage() {
           name: response.data.username,
           phone: response.data.phone,
           email: response.data.email,
-          profileImageUrl: imageUrl, 
+          profileImageUrl: imagesUrl, 
         });
       } catch (error) {
         console.error("Error fetching user info:", error);
@@ -47,30 +71,21 @@ function Mypage() {
     const file = event.target.files[0];
     if (file) {
       setSelectedImage(URL.createObjectURL(file)); 
-      const formData = new FormData();
-      formData.append("profileImage", file);
+      console.log(file);
 
-      try {
-        const response = await api.put("/api/update/profileImage", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        });
+      // 이미지 업로드 관련 코드 제거
 
-        console.log("Profile image updated:", response.data);
-        setUserInfo((prevState) => ({
-          ...prevState,
-          profileImageUrl: response.data.imageUrl,
-        }));
-      } catch (error) {
-        console.error("Error updating profile image:", error);
-      }
+      const files = await uploadToS3(file, userInfo.name, file.name); // 이미지 파일을 uploadToS3 함수에 전달
+      console.log(files); // 업로드된 파일 정보 출력
+      
     }
   };
 
   return (
     <div className="h-full bg-white p-8">
       <NavIn/>
+      
+      
       <div className="mt-20 bg-white rounded-lg shadow-xl pb-8">
         <div className="w-full h-[250px]">
           <img

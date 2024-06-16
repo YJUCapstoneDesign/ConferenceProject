@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.util.UriComponentsBuilder;
 import team.broadcast.global.jwt.service.JwtService;
 import team.broadcast.global.oauth2.CustomOAuth2User;
@@ -19,7 +21,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
+public class MyAuthSuccessHandler implements AuthenticationSuccessHandler, WebMvcConfigurer {
 
     private final JwtService jwtService;
 
@@ -60,5 +62,11 @@ public class MyAuthSuccessHandler implements AuthenticationSuccessHandler {
                 .build().toUriString();
 
         response.sendRedirect(targetUri);
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/**")
+                .addResourceLocations("file:src/main/resources/static/");
     }
 }

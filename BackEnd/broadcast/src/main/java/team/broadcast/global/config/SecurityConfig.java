@@ -92,7 +92,7 @@ public class SecurityConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
 
         corsConfiguration.setAllowedOriginPatterns(List.of("*"));
-        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH","PUT", "DELETE", "OPTIONS"));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Authorization-refresh", "X-Requested-With", "Cache-Control", "Content-Type", "Accept"));
         corsConfiguration.setExposedHeaders(Arrays.asList("Authorization", "Authorization-refresh"));
         corsConfiguration.setAllowCredentials(true);
@@ -150,7 +150,7 @@ public class SecurityConfig {
                         // websocket
                         .requestMatchers("/app", "/swot", "/hat").permitAll()
                         // rest api
-                        .requestMatchers("/images/**",
+                        .requestMatchers("/images/**", "/images/profile/**" ,
                                 "/api/find-pwd",
                                 "/api/mind-map/**",
                                 "/oauth2/**",

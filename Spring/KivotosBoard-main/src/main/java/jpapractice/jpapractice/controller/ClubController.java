@@ -32,12 +32,6 @@ public class ClubController {
         return "club/list";
     }
 
-//    @GetMapping("/add")
-//    public String addClubForm(Model model) {
-//        model.addAttribute("club", new ClubDto());
-//        return "club/add";
-//    }
-
     @PostMapping("/add")
     public String addClub(@ModelAttribute ClubDto clubDto,
                           Principal principal,
@@ -77,7 +71,8 @@ public class ClubController {
     @PostMapping("/update/{clubId}")
     public String updateClub(@PathVariable Long clubId,
                              @ModelAttribute ClubDto clubDto,
-                             @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+                             @RequestParam(value = "image", required = false)
+                                 MultipartFile image) throws IOException {
         clubService.updateClub(clubId, clubDto, image);
         return "redirect:/";
     }

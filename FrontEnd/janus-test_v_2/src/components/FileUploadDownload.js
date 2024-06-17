@@ -74,7 +74,7 @@ export async function listUploadedFiles(username) {
     };
 
     const command = new ListObjectsV2Command(listParams);
-    const response = await s3Client.send(command);
+    const response = await s3Client.send(command);  
 
     // 파일 URL 목록 생성 및 반환
     return response.Contents.map((object) => {

@@ -8,6 +8,7 @@ import jpapractice.jpapractice.dto.board.ClubDto;
 import jpapractice.jpapractice.repository.ClubRepository;
 import jpapractice.jpapractice.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,6 +20,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ClubService {
@@ -38,8 +40,8 @@ public class ClubService {
                 .imageUrl(imagePath)
                 .build();
 
-        club.addStudent(student); // 클럽에 학생 추가
         student.addClub(club); // 학생에 클럽 추가
+
 
 
         Club saved = clubRepository.save(club); // 클럽 저장
@@ -109,6 +111,8 @@ public class ClubService {
                 .orElseThrow(() -> new DataNotFoundException("Student not found"));
         Club club = clubRepository.findById(clubId)
                 .orElseThrow(() -> new DataNotFoundException("Club not found"));
+
+        log.info("students: {}", club.getStudents());
 
         student.getClubs().remove(club);
         club.getStudents().remove(student);

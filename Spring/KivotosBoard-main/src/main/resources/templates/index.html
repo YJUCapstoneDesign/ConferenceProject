@@ -62,7 +62,7 @@
               </form>
               <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#updateClubModal-' + ${club.id}">수정</button>
               <form th:action="@{/clubs/delete/{clubId}(clubId=${club.id})}" method ="get">
-                <button type="submit" class="btn btn-danger">삭제</button>
+                <button type="submit" class="btn btn-danger">탈퇴</button>
               </form>
             </div>
           </div>

@@ -58,7 +58,7 @@ public class ClubService {
 
     public void updateClub(Long id, ClubDto clubDto, MultipartFile image) throws IOException {
         Club club = getClubById(id);
-        if (!image.isEmpty()) {
+        if (image != null && !image.isEmpty()) {
             String imagePath = saveImage(image);
             club.setImageUrl(imagePath);
         }
@@ -67,9 +67,9 @@ public class ClubService {
         clubRepository.save(club);
     }
 
-    public void deleteClub(Long id) {
-        clubRepository.deleteById(id);
-    }
+//    public void deleteClub(Long id) {
+//        clubRepository.deleteById(id);
+//    }
 
     private String saveImage(MultipartFile image) throws IOException {
         if (image.isEmpty()) {

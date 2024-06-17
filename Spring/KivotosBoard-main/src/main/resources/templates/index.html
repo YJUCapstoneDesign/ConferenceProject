@@ -51,18 +51,53 @@
     <div class="row">
       <div class="col-md-4" th:each="club : ${clubs}">
         <div class="card mb-4 box-shadow">
-          <img class="card-img-top" th:src="${club.imageUrl}" alt="Club Image" style="height: 225px; width: 100%; display: block;">
+          <img class="card-img-top" th:src="${club.imageUrl != null ? club.imageUrl : '예시이미지주소_아직안넣어둠'}" alt="예시이미지_아직안넣어둠" style="height: 225px; width: 100%; display: block;">
           <div class="card-body">
             <h5 class="card-title" th:text="${club.name}">Club Name</h5>
             <p class="card-text" th:text="${club.description}">Club Description</p>
-            <div class="flex-fill justify-content-between">
-              <form th:action="@{/clubs/join/{clubId}(clubId=${club.id})  }" method="post">
+            <div class="d-flex justify-content-between">
+
+              <form th:action="@{/clubs/join/{clubId}(clubId=${club.id})}" method="post">
                 <button type="submit" class="btn btn-success">가입</button>
               </form>
-              <form th:action="@{/clubs/delete/{clubId}(clubId=${club.id})}" method="get">
-                <button type="submit" class="btn-danger btn">삭제</button>
+              <button type="button" class="btn btn-primary" data-bs-toggle="modal" th:data-bs-target="'#updateClubModal-' + ${club.id}">수정</button>
+              <form th:action="@{/clubs/delete/{clubId}(clubId=${club.id})}" method ="get">
+                <button type="submit" class="btn btn-danger">삭제</button>
               </form>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- update Club Modal -->
+    <div th:each="club : ${clubs}" class="modal fade" th:id="'updateClubModal-' + ${club.id}" tabindex="-1" role="dialog" aria-labelledby="updateClubModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="updateClubModalLabel">동아리 수정</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form th:action="@{/clubs/update/{clubId}(clubId=${club.id})}" method="post" enctype="multipart/form-data" th:id="'updateClubForm-' + ${club.id}">
+              <div class="mb-3">
+                <label for="updateClubName" class="form-label">동아리 이름</label>
+                <input type="text" class="form-control" id="updateClubName" name="name" th:value="${club.name}" required>
+              </div>
+              <div class="mb-3">
+                <label for="updateClubDescription" class="form-label">동아리 설명</label>
+                <textarea class="form-control" id="updateClubDescription" name="description" rows="3" th:text="${club.description}" required></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="updateClubImage" class="form-label">동아리 이미지</label>
+                <input class="form-control" type="file" id="updateClubImage" name="image">
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+            <button type="button" class="btn btn-primary" th:onclick="'submitUpdateClubForm(' + ${club.id} + ')'">저장</button>
+          </div>
         </div>
       </div>
     </div>
@@ -110,6 +145,9 @@
 <script>
   function submitAddClubForm() {
     document.getElementById('addClubForm').submit();
+  }
+  function submitUpdateClubForm(clubId) {
+    document.getElementById(`updateClubForm-${clubId}`).submit();
   }
 </script>
 </body>

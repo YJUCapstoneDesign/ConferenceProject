@@ -32,11 +32,11 @@ public class ClubController {
         return "club/list";
     }
 
-    @GetMapping("/add")
-    public String addClubForm(Model model) {
-        model.addAttribute("club", new ClubDto());
-        return "club/add";
-    }
+//    @GetMapping("/add")
+//    public String addClubForm(Model model) {
+//        model.addAttribute("club", new ClubDto());
+//        return "club/add";
+//    }
 
     @PostMapping("/add")
     public String addClub(@ModelAttribute ClubDto clubDto,
@@ -67,13 +67,18 @@ public class ClubController {
         return "redirect:/";
     }
 
+    @GetMapping("/update/{clubId}")
+    public String updateClubForm(@PathVariable Long clubId, Model model) {
+        Club club = clubService.getClubById(clubId);
+        model.addAttribute("club", club);
+        return "club/update";
+    }
+
     @PostMapping("/update/{clubId}")
-    public String updateClub(@PathVariable Long clubId, @ModelAttribute ClubDto clubDto, Model model) {
-        try {
-            clubService.updateClub(clubId, clubDto);
-        } catch (DataNotFoundException e) {
-            log.error(e.getMessage());
-        }
+    public String updateClub(@PathVariable Long clubId,
+                             @ModelAttribute ClubDto clubDto,
+                             @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
+        clubService.updateClub(clubId, clubDto, image);
         return "redirect:/";
     }
 }

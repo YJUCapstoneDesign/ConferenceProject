@@ -44,7 +44,8 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
       <a class="navbar-brand" href="/">동아리 게시판</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+              aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -69,38 +70,42 @@
 <main class="container" id="mainContent">
   <div class="row">
     <div class="col-md-8 mx-auto">
-      <table class="table">
-        <thead>
-        <tr>
-          <th colspan="2" style="text-align: center;">회원 정보</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>이름</td>
-          <td th:text="${info.studentName}"></td>
-        </tr>
-        <tr>
-          <td>아이디</td>
-          <td th:text="${info.id}"></td>
-        </tr>
-        <tr>
-          <td>나이</td>
-          <td th:text="${info.age}"></td>
-        </tr>
-        <tr>
-          <td>동아리</td>
-          <td>
-            <ul>
-              <li th:each="club : ${clubs}" th:text="${club.getName()}"></li>
-            </ul>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="card">
+        <div class="card-header" style="text-align: center; font-weight: bold;">
+          회원 정보
+        </div>
+        <div class="card-body">
+          <table class="table">
+            <tbody>
+            <tr>
+              <td style="font-weight: bold;">이름</td>
+              <td th:text="${info.studentName}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">아이디</td>
+              <td th:text="${info.id}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">나이</td>
+              <td th:text="${info.age}"></td>
+            </tr>
+            <tr>
+              <td style="font-weight: bold;">동아리</td>
+              <td>
+                <ul style="padding-left: 0;">
+                  <li th:each="club : ${clubs}" class="mb-1">
+                    <span th:text="${club.name}"></span>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="row" id ="userButton">
+  <div class="row" id="userButton">
     <div class="col-md-8 mx-auto">
       <div class="row">
         <div class="col-md-6">

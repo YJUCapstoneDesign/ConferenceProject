@@ -1,19 +1,22 @@
 package jpapractice.jpapractice;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
 @Configuration
 @EnableWebSecurity
@@ -28,31 +31,35 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public MvcRequestMatcher.Builder mvcRequestMatcherBuilder(HandlerMappingIntrospector introspector) {
+        return new MvcRequestMatcher.Builder(introspector);
+    }
 
-        // Spring Security 기본 로그인 사용하지 않는 페이지 설정 (전체)
-        http.authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-                .requestMatchers("/clubs/add", "/api/clubs").permitAll() // 이 경로를 허용
-        );
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, MvcRequestMatcher.Builder mvc) throws Exception {
+        return http
+                .headers(header -> header.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers(PathRequest.toH2Console()).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/clubs/add")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/api/clubs")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
 
-        // CSRF 토큰 활성화
-        http.csrf(csrf -> csrf.ignoringRequestMatchers(new AntPathRequestMatcher("/clubs/add"), new AntPathRequestMatcher("/api/clubs")));
+                        .anyRequest().authenticated())
 
-        // 로그인 -> 자세한 로직은 UserSecurityService.java 확인
-        http.formLogin(formLogin -> formLogin
+        .formLogin(formLogin -> formLogin
                 .loginPage("/login")
                 .usernameParameter("id")
                 .passwordParameter("passwd")
-                .defaultSuccessUrl("/"));
+                .defaultSuccessUrl("/"))
 
-        // 로그아웃
-        http.logout(logout -> logout
-                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                .logoutSuccessUrl("/")
-                .invalidateHttpSession(true));
-
-        return http.build();
+            .logout(logout -> logout
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true))
+                .build();
     }
 
     @Bean

@@ -43,22 +43,25 @@ public class SecurityConfig {
                         .requestMatchers(PathRequest.toH2Console()).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/member/join")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/clubs/add")).permitAll()
                         .requestMatchers(new AntPathRequestMatcher("/api/clubs")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/**")).permitAll()
-
+                        .requestMatchers(new AntPathRequestMatcher("/css/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/js/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/images/**")).permitAll()
                         .anyRequest().authenticated())
 
-        .formLogin(formLogin -> formLogin
-                .loginPage("/login")
-                .usernameParameter("id")
-                .passwordParameter("passwd")
-                .defaultSuccessUrl("/"))
+                .formLogin(formLogin -> formLogin
+                        .loginPage("/login")
+                        .usernameParameter("id")
+                        .passwordParameter("passwd")
+                        .defaultSuccessUrl("/"))
 
-            .logout(logout -> logout
-                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                    .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true))
+                .logout(logout -> logout
+                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                        .logoutSuccessUrl("/")
+                        .invalidateHttpSession(true))
                 .build();
     }
 

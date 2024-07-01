@@ -6,11 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import team.broadcast.domain.user.dto.PasswordUpdate;
-import team.broadcast.domain.user.dto.SignupUser;
-import team.broadcast.domain.user.dto.UpdateUser;
-import team.broadcast.domain.user.dto.UserResponse;
+import team.broadcast.domain.user.dto.*;
 import team.broadcast.domain.user.service.UserService;
 import team.broadcast.global.login.user.CustomUserDetails;
 
@@ -32,15 +28,15 @@ public class UserController {
         return "success";
     }
 
-    // 로그인 후
-    @GetMapping("/image")
-    public String image(@AuthenticationPrincipal CustomUserDetails user) {
-        return userService.getUserImage(user.getUser());
+    @GetMapping("/")
+    @Operation(summary = "이름 & 이메일 주소 조회", description = "로그인 성공 후 메인화면 이름 & 이메일 조회 API")
+    public UserResponse getEmail(@AuthenticationPrincipal CustomUserDetails user) {
+        return new UserResponse(user.getUsername(), user.getEmail());
     }
 
     @GetMapping("/profile")
     @Operation(summary = "회원 정보 상세조회", description = "회원의 정보를 상세 조회 API")
-    public UserResponse getUser(@AuthenticationPrincipal CustomUserDetails user) {
+    public UserDetailResponse getUser(@AuthenticationPrincipal CustomUserDetails user) {
         return userService.getUserProfile(user.getId());
     }
 
@@ -57,12 +53,6 @@ public class UserController {
         userService.updatePassword(userDetails.getEmail(),
                 passwordUpdate.getCurrentPassword(), passwordUpdate.getNewPassword());
     }
-
-//    @PutMapping("/update/profileImage")
-//    @Operation(summary = "프로필 이미지 수정", description = "이미지 경로를 통해 프로필 이미지 수정")
-//    public Long updateProfileImage(@AuthenticationPrincipal CustomUserDetails userDetails, MultipartFile profileImage) {
-//        return userService.updateProfileImage(userDetails.getId(), profileImage);
-//    }
 
     @DeleteMapping("/delete")
     @Operation(summary = "회원 탈퇴", description = "회원 탈퇴 API")

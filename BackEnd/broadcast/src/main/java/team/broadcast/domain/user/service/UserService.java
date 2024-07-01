@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import team.broadcast.domain.enumstore.enums.UserRole;
 import team.broadcast.domain.user.dto.SignupUser;
 import team.broadcast.domain.user.dto.UpdateUser;
-import team.broadcast.domain.user.dto.UserResponse;
+import team.broadcast.domain.user.dto.UserDetailResponse;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.exception.UserErrorCode;
 import team.broadcast.domain.user.repository.UserRepository;
@@ -68,11 +68,11 @@ public class UserService {
         return user.getId();
     }
 
-    public UserResponse getUserProfile(Long userId) {
+    public UserDetailResponse getUserProfile(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new CustomException(UserErrorCode.USER_NOT_FOUND));
 
-        return UserResponse.from(user);
+        return UserDetailResponse.from(user);
     }
 
     @Transactional

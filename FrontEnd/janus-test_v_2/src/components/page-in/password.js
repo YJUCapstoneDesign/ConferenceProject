@@ -6,6 +6,11 @@ function PassWord() {
   const [error, setError] = useState('');
 
   const MissingPassWord = async (event) => {
+    if (!email) {
+      setError("이메일 주소를 입력해주세요!");
+      return;
+    }
+    
     event.preventDefault();
     const confirmed = window.confirm("정말 초기화 하시겠습니까?");
     if (confirmed) {

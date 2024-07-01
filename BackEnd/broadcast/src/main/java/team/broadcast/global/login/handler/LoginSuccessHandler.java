@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
-import team.broadcast.domain.user.dto.UserResponse;
+import team.broadcast.domain.user.dto.UserDetailResponse;
 import team.broadcast.domain.user.entity.User;
 import team.broadcast.domain.user.repository.UserRepository;
 import team.broadcast.global.jwt.service.JwtService;
@@ -55,8 +55,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        UserResponse userResponse = UserResponse.from(user);
+        UserDetailResponse userDetailResponse = UserDetailResponse.from(user);
 
-        objectMapper.writeValue(response.getWriter(), userResponse);
+        objectMapper.writeValue(response.getWriter(), userDetailResponse);
     }
 }

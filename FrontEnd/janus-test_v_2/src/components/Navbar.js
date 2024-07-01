@@ -11,8 +11,7 @@ const baseURL = process.env.REACT_SPRING_SERVER;
 
 const Navbar = () => {
   const data = useLocation();
-  const {username, imageUrl} = data.state || {};
-  const [name, setName] = useState(username);
+  const [email, setEmail] = useState(data.state || {email: ''});
   const [click, setClick] = useState(false);
   const [image, setImage] = useState(null);
   const handleClick = () => setClick(!click);
@@ -23,19 +22,16 @@ const Navbar = () => {
 
   useEffect(() => {
     if (LoginStateToken) {
-      getProfileImage();
+      getProfile();
     }
   }, []);
 
-  const getProfileImage = async () => {
+  const getProfile = async () => {
     try {
-      const response = await api.get('/api/image');
+      const response = await api.get('/api');
       if (response.status === 200) {
-        let imageUrl = "";
-        if (imageUrl.startsWith('/') === true) {
-          imageUrl = baseURL + response.data;
-        }
-        setImage(imageUrl);
+        console.log(response.data);
+        setEmail(response.data.email);
       }
     } catch (err) {
       console.log(err);
@@ -44,7 +40,8 @@ const Navbar = () => {
 
   // 팀 ID 설정 및 파일 URL 목록 가져오기
   useEffect(() => {
-    listUploadedFiles(name)
+    if (!email) return; // 팀 ID가 없으면 실행하지 않음
+    listUploadedFiles(email)
       .then((fileUrls) => {
         // fileUrls 배열은 각 파일의 URL을 포함합니다.
         if (fileUrls.length > 0) { // 파일이 있으면 첫 번째 파일 URL 사용

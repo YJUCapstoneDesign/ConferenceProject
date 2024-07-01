@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { FaBars, FaTimes } from 'react-icons/fa'
 import '../css/Navbar.css'
+import { Link } from 'react-router-dom'
 
 const InNavbar = () => {
     const [click, setClick] = useState(false)
@@ -11,9 +12,9 @@ const InNavbar = () => {
     return (
         <div className='header bg-slate-950'>
             <nav className='navbar'>
-                <a href='/' className='logo'>
+                <Link to='/' className='logo'>
                     UNMUTE
-                </a>
+                </Link>
                 {/* <div className='hamburger' onClick={handleClick}>
                     {click ? (<FaTimes size={30} style={{ color: '#ffffff' }} />)
                         : (<FaBars size={30} style={{ color: '#ffffff' }} />)}

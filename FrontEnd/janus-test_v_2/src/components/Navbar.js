@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-scroll';
 import { FaBars, FaTimes } from 'react-icons/fa';
-import { Link as RouterLink, useLocation, useNavigate } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import './css/Navbar.css';
 import api from '../components/page-in/api';
 import { listUploadedFiles } from './FileUploadDownload';  
@@ -10,8 +10,7 @@ import { listUploadedFiles } from './FileUploadDownload';
 const baseURL = process.env.REACT_SPRING_SERVER;
 
 const Navbar = () => {
-  const data = useLocation();
-  const [email, setEmail] = useState(data.state || {email: ''});
+  const [email, setEmail] = useState('');
   const [click, setClick] = useState(false);
   const [image, setImage] = useState(null);
   const handleClick = () => setClick(!click);
@@ -28,7 +27,7 @@ const Navbar = () => {
 
   const getProfile = async () => {
     try {
-      const response = await api.get('/api');
+      const response = await api.get('/api/');
       if (response.status === 200) {
         console.log(response.data);
         setEmail(response.data.email);
@@ -51,7 +50,7 @@ const Navbar = () => {
       .catch((error) => {
         console.error('파일 목록 불러오기 실패:', error);
       });
-  }, []); // 컴포넌트 마운트 시 한 번만 실행
+  }, [email]); // 컴포넌트 마운트 시 한 번만 실행
 
   const logout = async () => {
     try {

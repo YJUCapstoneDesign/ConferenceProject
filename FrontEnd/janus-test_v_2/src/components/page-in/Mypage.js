@@ -21,8 +21,8 @@ function Mypage() {
   const [selectedImage, setSelectedImage] = useState(null); 
 
   useEffect(() => { 
-    if (userInfo.name) { // userInfo.name이 존재하는 경우에만 실행
-      listUploadedFiles(userInfo.name)
+    if (userInfo.email) { // userInfo.name이 존재하는 경우에만 실행
+      listUploadedFiles(userInfo.email)
         .then((fileUrls) => {
           // fileUrls 배열은 각 파일의 URL을 포함합니다.
           if (fileUrls.length > 0) { // 파일이 있으면 첫 번째 파일 URL 사용
@@ -75,7 +75,7 @@ function Mypage() {
 
       // 이미지 업로드 관련 코드 제거
 
-      const files = await uploadToS3(file, userInfo.name, file.name); // 이미지 파일을 uploadToS3 함수에 전달
+      const files = await uploadToS3(file, userInfo.email, file.name); // 이미지 파일을 uploadToS3 함수에 전달
       console.log(files); // 업로드된 파일 정보 출력
       
     }
